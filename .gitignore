@@ -1,3 +1,4 @@
+.gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -69,13 +70,14 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+# docs/_build/
 
 # PyBuilder
 target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # IPython
 profile_default/
@@ -117,6 +119,9 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
+# VS code settings
+.vscode
+
 # mkdocs documentation
 /site
 
@@ -127,3 +132,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vim
+.swp
+
+# Others
+miscelenious
+credentials
