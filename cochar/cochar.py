@@ -6,8 +6,30 @@ import json
 import randname
 from bisect import bisect_left
 from utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
+from utils import OCCUPATIONS_DATA
+from utils import BASIC_SKILLS
+from utils import ALL_SKILLS
+from utils import CATEGORY_SKILLS
 
-POP_PIRAMID_PATH = os.path.abspath(os.path.join('data', 'popPiramid.json'))
+_THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
+
+
+TRANSLATION_DICT = {
+    "a": "art/craft",
+    "s": "science",
+    "f": "fighting",
+    "g": "firearms",
+    "i": "interpersonal",
+    "l": "language",
+    "*": None,
+    "p": "professor"
+    # just for professor occ. (i ingored doctor, and give him 2*)
+}
+
+CATEGORY_SKILLS_LIST = [
+    "language", "art/craft", "science", "fighting", "firearms"
+]
 
 AGE_RANGE = (
     (15, 19),
@@ -38,6 +60,8 @@ class Character():
     __SEX_OPTIONS = ['M', 'F', None]
     OCCUPATIONS_GROUPS = OCCUPATIONS_GROUPS.copy()
     OCCUPATIONS_LIST = OCCUPATIONS_LIST.copy()
+    max_skill_level = 90
+
 
     def __init__(
             self,
@@ -47,8 +71,8 @@ class Character():
             first_name: str = None,
             last_name: str = None,
             country: str = "US",
-            occupation: str = None,
-            occupation_mode: str = "optimal",
+            occupation: str = "optimal",
+            # occupation_mode: str = "optimal",
             weights: bool = True) -> None:
         self._year = year
         if sex in self.__SEX_OPTIONS:
@@ -98,7 +122,31 @@ class Character():
         )
 
         self._occupation = self.get_occupation(self._occupation)
-        # self.occupation_points = self.get_skill_points(self._occupation)
+        self._occupation_points = self.get_skill_points(self._occupation)
+        self._hobby_points = self._int * 2 # Create public function for that
+
+        # Skills
+        self._skills = {}
+        self.occupation_skills_list = []
+        self.hobby_skills_list = []
+
+        ALL_SKILLS.update({"doge": self._dex // 2, "language (own)": self._edu})
+        self.skills_dict = self.get_skills_dict()
+
+        # credit rating
+        # assigning points to credit rating
+        credit_rating_points = random.randint(
+            *OCCUPATIONS_DATA[self._occupation]['credit_rating'].copy())
+        self._occupation_points -= credit_rating_points
+        self.skills_dict.setdefault('credit rating', credit_rating_points)
+
+        # combat values
+        self._damage_bonus = ""
+        self._build = 0
+        self._doge = 0
+        self.combat_values()
+
+
 
     @property
     def year(self):
@@ -178,6 +226,8 @@ class Character():
         else:
             self.age = age
             return self.age
+
+    ###################### CHARACTERISTICS ########################
 
     def _set_characteristics(self):
         # Main characteristics
@@ -260,6 +310,9 @@ class Character():
 
         self._move_rate -= count
 
+
+    ########################## OCCUPATION ###########################
+
     def get_occupation(self, occupation):
         if occupation == 'random':
             self._occupation = random.choice(self.occupations_list)
@@ -276,20 +329,155 @@ class Character():
             self._occupation = occupation
             return self._occupation
 
-    # def get_skill_points(self, occupation: str):
-    #     group_index = [
-    #         index for index, group in enumerate(self.OCCUPATIONS_GROUPS) if occupation in group
-    #     ]
-    #     points = [self.skill_points_groups[i] for i in group_index]
+    ########################### SKILLS #####################3########
 
-    #     return max(points)
+    def get_skill_points(self, occupation: str):
+        group_index = [
+            index for index, group in enumerate(self.OCCUPATIONS_GROUPS) if occupation in group
+        ]
+        points = [self.skill_points_groups[i] for i in group_index]
+
+        return max(points)
+
+    def get_skills_dict(self):
+        self.skills_dict = {}
+        occupation_input_list = OCCUPATIONS_DATA[
+            self._occupation]["skills"].copy()
+        self.occupation_skills_list = self.get_skills_list(
+            occupation_input_list)
+
+        # categories = [f"1{cat}" for cat in TRANSLATION_DICT.keys()]
+        # hobby_input_list = list(BASIC_SKILLS.keys()) + categories
+        hobby_input_list = list(BASIC_SKILLS.keys())
+        self.hobby_skills_list = self.get_skills_list(hobby_input_list)
+
+        self._assign_skill_points(self._occupation_points,
+                                  self.occupation_skills_list)
+        self._assign_skill_points(self._hobby_points, self.hobby_skills_list)
+        self.skills_dict = self.filter_skills(self.skills_dict)
+        return self.skills_dict
+
+    def get_skills_list(self, input_list: list):
+        skills_list = []
+        skills_list += list(
+            filter(
+                lambda x: len(x) > 2 and isinstance(x, str) and x not in
+                CATEGORY_SKILLS_LIST, input_list))
+        skills_list += self._get_choice_skills(input_list)
+        skills_list += self._get_category_skills(input_list)
+        return skills_list
+
+    def _get_choice_skills(self, skills_list: list):
+        result = []
+        for item in skills_list:
+            if isinstance(item, tuple):
+                population = item[1:]
+                k = item[0]
+                result.extend(random.choices(population, k=k))
+                result.extend(self._get_category_skills(result))
+                result = list(filter(lambda x: len(x) > 2, result))
+        return result
+
+    def _get_category_skills(self, skills_list: list):
+        result = []
+        for item in skills_list:
+            if len(item) == 2:
+                k = int(item[0])
+                if item[1] == "*":
+                    population = list(BASIC_SKILLS.keys())
+                else:
+                    population = list(CATEGORY_SKILLS[TRANSLATION_DICT.get(
+                        item[1])].keys())
+                result.extend(random.choices(population, k=k))
+
+            elif item in CATEGORY_SKILLS_LIST:
+                population = list(CATEGORY_SKILLS[item].keys())
+                result.extend([random.choice(population)])
+
+        return result
+
+    def _assign_skill_points(self, points: int, skills_list: list):
+        for skill in skills_list:
+            if skill in ALL_SKILLS:
+                self.skills_dict.setdefault(skill, ALL_SKILLS[skill])
+            else:
+                self.skills_dict.setdefault(skill, 1)
+
+        while points:
+            skill = random.choice(skills_list)
+            if points <= self.max_skill_level - self.skills_dict[skill]:
+                points_allocation = random.randint(0, points)
+            elif sum(list(self.skills_dict.values())) % 90 == 0:
+                break
+            elif self.skills_dict[skill] >= self.max_skill_level:
+                continue
+            else:
+                points_allocation = random.randint(
+                    0, self.max_skill_level - self.skills_dict[skill])
+            self.skills_dict[skill] += points_allocation
+            points -= points_allocation
+
+    def filter_skills(self, skills_dict: dict):
+        """Filter out all skills with basic value form given dict.
+
+        >>>example_dict = {'psychoanalysis': 1, 'language (spanish)': 66}
+        >>>filter_skills(example_dict)
+        {'language (spanish)': 66}
+        """
+        return dict(
+            filter(
+                lambda item: ALL_SKILLS.get(item[
+                    0], ALL_SKILLS.setdefault(item[0], 1)) != item[1],
+                skills_dict.items()))
+
+    ######################## COMBAT VALUES #############################
+
+    def combat_values(self):
+        VALUE_MATRIX = {
+            'combat_range': [64, 84, 124, 164, 204, 283, 364, 444, 524],
+            'damage_bonus':
+            ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6'],
+            'build': [-2, -1, 0, 1, 2, 3, 4, 5, 6]
+        }
+
+        sum_str_siz = self._str + self._siz
+        combat_range = bisect_left(VALUE_MATRIX['combat_range'], sum_str_siz)
+        self._damage_bonus = VALUE_MATRIX['damage_bonus'][combat_range]
+        self._build = VALUE_MATRIX['build'][combat_range]
+
+        # self._doge = self._dex // 2 if self._doge == 0 else self._doge
+
+        if self._doge == 0:
+            self._doge = self._dex // 2
 
 
     def __str__(self) -> str:
         return f"""
         Character:
-            First name: {self._first_name}
-            Last name:  {self._last_name}
+            "personals":
+                "name": "{self._first_name} {self._last_name}",
+                "occupation": {self._occupation.capitalize()},
+                "age": {self._age},
+                "sex": {self._sex.upper()},
+            "characteristics":
+                "str": {self._str},
+                "con": {self._con},
+                "siz": {self._siz},
+                "dex": {self._dex},
+                "app": {self._app},
+                "edu": {self._edu},
+                "int": {self._int},
+                "pow": {self._pow},
+                "move_rate": {self._move_rate},
+            "hit_points": {self._hit_points},
+            "sanity": {self._sanity_points},
+            "luck": {self._luck},
+            "magic_points": {self._magic_points},
+            "skills": {self.skills_dict},
+            "combat":
+                "damage bonus": {self._damage_bonus},
+                "build": {self._build},
+                "doge": {self._doge}
         """
 
     def __eq__(self, o: object) -> bool:
@@ -301,4 +489,4 @@ class Character():
 if __name__ == "__main__":
     print(Character(first_name="Adam"))
     print(Character(age=15))
-    print(Character().__dict__)
+    print(Character())
