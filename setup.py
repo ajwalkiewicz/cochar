@@ -8,13 +8,13 @@ with open(f"{THIS_FOLDER}/README_PYPI.md", "r") as fh:
 
 setup(
     name="cochar",
-    version="0.0.0",
+    version="0.0.2",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ajwalkiewicz/cochar",
     project_urls={
-        "Documentation": "https://ajwalkiewicz.github.io/randnames/_build/html/index.html"
+        "Documentation": "https://ajwalkiewicz.github.io/cochar/_build/html/index.html"
         },
     author="Adam Walkiewicz",
     license="MIT",

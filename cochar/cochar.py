@@ -5,11 +5,11 @@ import os
 import json
 import randname
 from bisect import bisect_left
-from utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
-from utils import OCCUPATIONS_DATA
-from utils import BASIC_SKILLS
-from utils import ALL_SKILLS
-from utils import CATEGORY_SKILLS
+from .utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
+from .utils import OCCUPATIONS_DATA
+from .utils import BASIC_SKILLS
+from .utils import ALL_SKILLS
+from .utils import CATEGORY_SKILLS
 
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
