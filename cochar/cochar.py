@@ -1,8 +1,13 @@
 """Call of Cthulhu character generator
+
+Example:
+
+>>> Character()
 """
 import random
 import os
 import json
+from typing import Counter
 import randname
 from bisect import bisect_left
 from .utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
@@ -10,6 +15,7 @@ from .utils import OCCUPATIONS_DATA
 from .utils import BASIC_SKILLS
 from .utils import ALL_SKILLS
 from .utils import CATEGORY_SKILLS
+# from .utils import *
 
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
@@ -50,11 +56,22 @@ AGE_RANGE = (
     (90, 94),
     (95, 99),
 )
+
 YEAR_RANGE = (1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000,
               2005, 2010, 2015, 2020)
 
-
 class Character():
+    """Character
+
+    :raises ValueError: [description]
+    :raises ValueError: [description]
+    :raises ValueError: [description]
+    :raises ValueError: [description]
+    :raises ValueError: [description]
+    :raises ValueError: [description]
+    :return: [description]
+    :rtype: [type]
+    """
     _MIN_AGE = 15
     _MAX_AGE = 90
     __SEX_OPTIONS = ['M', 'F', None]
@@ -74,6 +91,27 @@ class Character():
             occupation: str = "optimal",
             # occupation_mode: str = "optimal",
             weights: bool = True) -> None:
+        """[summary]
+
+        :param year: [description], defaults to 1925
+        :type year: int, optional
+        :param age: [description], defaults to None
+        :type age: str, optional
+        :param sex: [description], defaults to None
+        :type sex: str, optional
+        :param first_name: [description], defaults to None
+        :type first_name: str, optional
+        :param last_name: [description], defaults to None
+        :type last_name: str, optional
+        :param country: [description], defaults to "US"
+        :type country: str, optional
+        :param occupation: [description], defaults to "optimal"
+        :type occupation: str, optional
+        :param weights: [description], defaults to True
+        :type weights: bool, optional
+        :raises ValueError: [description]
+        :raises ValueError: [description]
+        """
         self._year = year
         if sex in self.__SEX_OPTIONS:
             self._sex = self.set_sex(sex)
@@ -86,6 +124,7 @@ class Character():
         self._first_name = randname.first_name(self._year, self._sex, self._country, self._weights) if not first_name else first_name
         self._last_name = randname.first_name(self._year, self._sex, self._country, self._weights) if not last_name else last_name
         # characteristics
+        self._characteristics = {}
         self._str = 0
         self._con = 0
         self._siz = 0
@@ -95,7 +134,7 @@ class Character():
         self._int = 0
         self._pow = 0
         self._move_rate = 0
-        self._set_characteristics()
+        self.set_characteristics()
         # derived atributes
         self._sanity_points = 0
         self._magic_points = 0
@@ -121,7 +160,7 @@ class Character():
             self._edu * 2 + self._str * 2,  # 5
         )
 
-        self._occupation = self.get_occupation(self._occupation)
+        self._occupation = self.set_occupation(self._occupation)
         self._occupation_points = self.get_skill_points(self._occupation)
         self._hobby_points = self._int * 2 # Create public function for that
 
@@ -131,22 +170,20 @@ class Character():
         self.hobby_skills_list = []
 
         ALL_SKILLS.update({"doge": self._dex // 2, "language (own)": self._edu})
-        self.skills_dict = self.get_skills_dict()
+        self._skills = self.set_skills_dict()
 
         # credit rating
         # assigning points to credit rating
         credit_rating_points = random.randint(
             *OCCUPATIONS_DATA[self._occupation]['credit_rating'].copy())
         self._occupation_points -= credit_rating_points
-        self.skills_dict.setdefault('credit rating', credit_rating_points)
+        self._skills.setdefault('credit rating', credit_rating_points)
 
         # combat values
         self._damage_bonus = ""
         self._build = 0
         self._doge = 0
         self.combat_values()
-
-
 
     @property
     def year(self):
@@ -172,6 +209,18 @@ class Character():
     def occupation(self):
         return self._occupation
 
+    @property
+    def characteristics(self):
+        return self._characteristics
+
+    @year.setter
+    def year(self, new_year):
+        try:
+            int(new_year)
+            self._year = new_year
+        except ValueError:
+            raise ValueError("invalid year. year must be integer")
+
     @sex.setter
     def sex(self, new_sex):
         if new_sex in ['M', 'F', None]:
@@ -186,6 +235,18 @@ class Character():
         else:
             raise ValueError(f"age not in range: [{self._MIN_AGE}, {self._MAX_AGE}]")
 
+    @country.setter
+    def country(self, new_country):
+        # TO DO
+        self._country = new_country
+
+    @weights.setter
+    def weights(self, new_weights):
+        if isinstance(new_weights, bool):
+            self._weights = new_weights
+        else:
+            raise ValueError("weights must be a bool")
+
     @occupation.setter
     def occupation(self, new_occupation):
         # TO DO
@@ -193,19 +254,19 @@ class Character():
     
     @staticmethod
     def set_sex(sex):
-        """Set character Sex
-
-        :param sex: new sex
-        :type sex: [type]
-        :return: [description]
-        :rtype: [type]
-        """
         if sex is None:
             return random.choice(['M', 'F'])
         else:
             return sex.upper()
 
     def set_age(self, age=None):
+        """Set age  
+
+        :param age: new age, defaults to None
+        :type age: int, optional
+        :return: new age
+        :rtype: int
+        """
         if age is None:
             variable_year = self._year
             if variable_year < 1950:
@@ -221,15 +282,20 @@ class Character():
                     self._sex][3:-1]
                 age_range = random.choices(age_population,
                                            weights=age_weights)[0]
-                self.age = random.randint(*age_range)
-            return self.age
+                self._age = random.randint(*age_range)
+            return self._age
         else:
-            self.age = age
-            return self.age
+            self._age = age
+            return self._age
 
     ###################### CHARACTERISTICS ########################
 
-    def _set_characteristics(self):
+    def set_characteristics(self):
+        """[summary]
+
+        :return: [description]
+        :rtype: [type]
+        """
         # Main characteristics
         self._str = random.randint(15, 90)
         self._con = random.randint(15, 90)
@@ -262,6 +328,20 @@ class Character():
 
         self._characteristic_test('_edu', mod_edu)
         self._correct_move_rate(mod_move_rate)
+
+        self._characteristics = {
+            "str": self._str,
+            "con": self._con,
+            "siz": self._siz,
+            "dex": self._dex,
+            "app": self._app,
+            "edu": self._edu,
+            "int": self._int,
+            "pow": self._pow,
+            "move_rate": self._move_rate,
+        }
+
+        return self._characteristics
 
     def _set_derived_attributes(self):
         # Warning! First use add_characteristics method
@@ -313,7 +393,14 @@ class Character():
 
     ########################## OCCUPATION ###########################
 
-    def get_occupation(self, occupation):
+    def set_occupation(self, occupation):
+        """[summary]
+
+        :param occupation: [description]
+        :type occupation: [type]
+        :return: [description]
+        :rtype: [type]
+        """
         if occupation == 'random':
             self._occupation = random.choice(self.occupations_list)
             return self._occupation
@@ -332,6 +419,13 @@ class Character():
     ########################### SKILLS #####################3########
 
     def get_skill_points(self, occupation: str):
+        """[summary]
+
+        :param occupation: [description]
+        :type occupation: str
+        :return: [description]
+        :rtype: [type]
+        """
         group_index = [
             index for index, group in enumerate(self.OCCUPATIONS_GROUPS) if occupation in group
         ]
@@ -339,25 +433,31 @@ class Character():
 
         return max(points)
 
-    def get_skills_dict(self):
-        self.skills_dict = {}
+    def set_skills_dict(self):
+        """[summary]
+
+        :return: [description]
+        :rtype: [type]
+        """
+        self._skills = {}
         occupation_input_list = OCCUPATIONS_DATA[
             self._occupation]["skills"].copy()
-        self.occupation_skills_list = self.get_skills_list(
+        self.occupation_skills_list = self._get_skills_list(
             occupation_input_list)
 
         # categories = [f"1{cat}" for cat in TRANSLATION_DICT.keys()]
         # hobby_input_list = list(BASIC_SKILLS.keys()) + categories
         hobby_input_list = list(BASIC_SKILLS.keys())
-        self.hobby_skills_list = self.get_skills_list(hobby_input_list)
+        self.hobby_skills_list = self._get_skills_list(hobby_input_list)
 
         self._assign_skill_points(self._occupation_points,
                                   self.occupation_skills_list)
         self._assign_skill_points(self._hobby_points, self.hobby_skills_list)
-        self.skills_dict = self.filter_skills(self.skills_dict)
-        return self.skills_dict
+        self._skills = self.filter_skills(self._skills)
+        
+        return self._skills
 
-    def get_skills_list(self, input_list: list):
+    def _get_skills_list(self, input_list: list):
         skills_list = []
         skills_list += list(
             filter(
@@ -399,36 +499,36 @@ class Character():
     def _assign_skill_points(self, points: int, skills_list: list):
         for skill in skills_list:
             if skill in ALL_SKILLS:
-                self.skills_dict.setdefault(skill, ALL_SKILLS[skill])
+                self._skills.setdefault(skill, ALL_SKILLS[skill])
             else:
-                self.skills_dict.setdefault(skill, 1)
+                self._skills.setdefault(skill, 1)
 
         while points:
             skill = random.choice(skills_list)
-            if points <= self.max_skill_level - self.skills_dict[skill]:
+            if points <= self.max_skill_level - self._skills[skill]:
                 points_allocation = random.randint(0, points)
-            elif sum(list(self.skills_dict.values())) % 90 == 0:
+            elif sum(list(self._skills.values())) % 90 == 0:
                 break
-            elif self.skills_dict[skill] >= self.max_skill_level:
+            elif self._skills[skill] >= self.max_skill_level:
                 continue
             else:
                 points_allocation = random.randint(
-                    0, self.max_skill_level - self.skills_dict[skill])
-            self.skills_dict[skill] += points_allocation
+                    0, self.max_skill_level - self._skills[skill])
+            self._skills[skill] += points_allocation
             points -= points_allocation
 
-    def filter_skills(self, skills_dict: dict):
+    def filter_skills(self, _skills: dict):
         """Filter out all skills with basic value form given dict.
 
-        >>>example_dict = {'psychoanalysis': 1, 'language (spanish)': 66}
-        >>>filter_skills(example_dict)
+        >>> example_dict = {'psychoanalysis': 1, 'language (spanish)': 66}
+        >>> filter_skills(example_dict)
         {'language (spanish)': 66}
         """
         return dict(
             filter(
                 lambda item: ALL_SKILLS.get(item[
                     0], ALL_SKILLS.setdefault(item[0], 1)) != item[1],
-                skills_dict.items()))
+                _skills.items()))
 
     ######################## COMBAT VALUES #############################
 
@@ -473,15 +573,15 @@ class Character():
             "sanity": {self._sanity_points},
             "luck": {self._luck},
             "magic_points": {self._magic_points},
-            "skills": {self.skills_dict},
             "combat":
                 "damage bonus": {self._damage_bonus},
                 "build": {self._build},
-                "doge": {self._doge}
+                "doge": {self._doge},
+            "skills": {self._skills},
         """
 
     def __eq__(self, o: object) -> bool:
-        pass
+        return True if self.__dict__ == o.__dict__ else False
 
     def __repr__(self) -> str:
         pass
@@ -489,4 +589,4 @@ class Character():
 if __name__ == "__main__":
     print(Character(first_name="Adam"))
     print(Character(age=15))
-    print(Character())
+    print(Character().__dict__)

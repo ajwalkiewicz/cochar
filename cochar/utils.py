@@ -1,4 +1,7 @@
-#!/usr/bin/python3
+"""
+Utilities
+"""
+
 """
     legend:
     a - art/craft
