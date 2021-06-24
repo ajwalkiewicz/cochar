@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>cochar.cochar module &#8212; cochar 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to cochar’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to cochar’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.0.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cochar.cochar module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>cochar package</p>
+<hr class="docutils" />
+<section id="module-cochar.cochar">
+<span id="cochar-cochar-module"></span><h1>cochar.cochar module<a class="headerlink" href="#module-cochar.cochar" title="Permalink to this headline">¶</a></h1>
+<p>Call of Cthulhu character generator</p>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Character</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="cochar.cochar.Character">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">Character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1925</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'US'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'optimal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – [description]</p></li>
+<li><p><strong>ValueError</strong> – [description]</p></li>
+<li><p><strong>ValueError</strong> – [description]</p></li>
+<li><p><strong>ValueError</strong> – [description]</p></li>
+<li><p><strong>ValueError</strong> – [description]</p></li>
+<li><p><strong>ValueError</strong> – [description]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cochar.cochar.Character.OCCUPATIONS_GROUPS">
+<span class="sig-name descname"><span class="pre">OCCUPATIONS_GROUPS</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[['antiquarian',</span> <span class="pre">'clergy',</span> <span class="pre">'librarian',</span> <span class="pre">'journalist',</span> <span class="pre">'engineer',</span> <span class="pre">'doctor</span> <span class="pre">of</span> <span class="pre">medicine',</span> <span class="pre">'missionary',</span> <span class="pre">'parapsychologist',</span> <span class="pre">'author',</span> <span class="pre">'lawyer',</span> <span class="pre">'professor'],</span> <span class="pre">['artist',</span> <span class="pre">'zealot',</span> <span class="pre">'musician'],</span> <span class="pre">['artist',</span> <span class="pre">'police</span> <span class="pre">detective',</span> <span class="pre">'athlete',</span> <span class="pre">'tribe</span> <span class="pre">member',</span> <span class="pre">'farmer',</span> <span class="pre">'musician',</span> <span class="pre">'police</span> <span class="pre">officer',</span> <span class="pre">'military</span> <span class="pre">officer',</span> <span class="pre">'pilot',</span> <span class="pre">'private</span> <span class="pre">investigator',</span> <span class="pre">'criminal',</span> <span class="pre">'drifter',</span> <span class="pre">'soldier'],</span> <span class="pre">['dilettante',</span> <span class="pre">'entertainer',</span> <span class="pre">'zealot',</span> <span class="pre">'drifter'],</span> <span class="pre">['police</span> <span class="pre">detective',</span> <span class="pre">'athlete',</span> <span class="pre">'tribe</span> <span class="pre">member',</span> <span class="pre">'farmer',</span> <span class="pre">'police</span> <span class="pre">officer',</span> <span class="pre">'military</span> <span class="pre">officer',</span> <span class="pre">'private</span> <span class="pre">investigator',</span> <span class="pre">'criminal',</span> <span class="pre">'drifter',</span> <span class="pre">'soldier']]</span></em><a class="headerlink" href="#cochar.cochar.Character.OCCUPATIONS_GROUPS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cochar.cochar.Character.OCCUPATIONS_LIST">
+<span class="sig-name descname"><span class="pre">OCCUPATIONS_LIST</span></span><em class="property"> <span class="pre">=</span> <span class="pre">['antiquarian',</span> <span class="pre">'artist',</span> <span class="pre">'athlete',</span> <span class="pre">'author',</span> <span class="pre">'entertainer',</span> <span class="pre">'soldier',</span> <span class="pre">'lawyer',</span> <span class="pre">'librarian',</span> <span class="pre">'musician',</span> <span class="pre">'missionary',</span> <span class="pre">'military</span> <span class="pre">officer',</span> <span class="pre">'parapsychologist',</span> <span class="pre">'pilot',</span> <span class="pre">'clergy',</span> <span class="pre">'criminal',</span> <span class="pre">'dilettante']</span></em><a class="headerlink" href="#cochar.cochar.Character.OCCUPATIONS_LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.age">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">age</span></span><a class="headerlink" href="#cochar.cochar.Character.age" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.characteristics">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">characteristics</span></span><a class="headerlink" href="#cochar.cochar.Character.characteristics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.combat_values">
+<span class="sig-name descname"><span class="pre">combat_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.combat_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.country">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#cochar.cochar.Character.country" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.filter_skills">
+<span class="sig-name descname"><span class="pre">filter_skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_skills</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.filter_skills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter out all skills with basic value form given dict.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">example_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;psychoanalysis&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;language (spanish)&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filter_skills</span><span class="p">(</span><span class="n">example_dict</span><span class="p">)</span>
+<span class="go">{&#39;language (spanish)&#39;: 66}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.get_skill_points">
+<span class="sig-name descname"><span class="pre">get_skill_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.get_skill_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>occupation</strong> (<em>str</em>) – [description]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cochar.cochar.Character.max_skill_level">
+<span class="sig-name descname"><span class="pre">max_skill_level</span></span><em class="property"> <span class="pre">=</span> <span class="pre">90</span></em><a class="headerlink" href="#cochar.cochar.Character.max_skill_level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.occupation">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">occupation</span></span><a class="headerlink" href="#cochar.cochar.Character.occupation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_age">
+<span class="sig-name descname"><span class="pre">set_age</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.set_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set age</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>age</strong> (<em>int</em><em>, </em><em>optional</em>) – new age, defaults to None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new age</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_characteristics">
+<span class="sig-name descname"><span class="pre">set_characteristics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.set_characteristics" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_occupation">
+<span class="sig-name descname"><span class="pre">set_occupation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.set_occupation" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>occupation</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_sex">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">set_sex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sex</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.set_sex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_skills_dict">
+<span class="sig-name descname"><span class="pre">set_skills_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.set_skills_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.sex">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">sex</span></span><a class="headerlink" href="#cochar.cochar.Character.sex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.weights">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#cochar.cochar.Character.weights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.year">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">year</span></span><a class="headerlink" href="#cochar.cochar.Character.year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cochar.utils">
+<span id="cochar-utils-module"></span><h1>cochar.utils module<a class="headerlink" href="#module-cochar.utils" title="Permalink to this headline">¶</a></h1>
+<p>Utilities</p>
+</section>
+<section id="module-cochar.errors">
+<span id="cochar-errors-module"></span><h1>cochar.errors module<a class="headerlink" href="#module-cochar.errors" title="Permalink to this headline">¶</a></h1>
+<p>Errors</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">cochar.cochar module</a></li>
+<li><a class="reference internal" href="#module-cochar.utils">cochar.utils module</a></li>
+<li><a class="reference internal" href="#module-cochar.errors">cochar.errors module</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to cochar’s documentation!</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cochar.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to cochar’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.0.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">cochar.cochar module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Adam Walkiewicz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    </div>
+  </body>
+</html>

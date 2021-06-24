@@ -1,0 +1,29 @@
+cochar package
+==============
+
+Submodules
+----------
+
+cochar.cochar module
+--------------------
+
+.. automodule:: cochar.cochar
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cochar.utils module
+-------------------
+
+.. automodule:: cochar.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: cochar
+   :members:
+   :undoc-members:
+   :show-inheritance:
