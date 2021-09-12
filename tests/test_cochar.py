@@ -1,5 +1,5 @@
 import unittest
-from cochar import Character 
+from cochar import Character
 from unittest.mock import patch
 
 class TestCharacter(unittest.TestCase):
@@ -17,8 +17,10 @@ class TestCharacter(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_character(self):
-        pass
+    def test_dummy(self):
+        char = Character()
+        char.age = 21
+        self.assertEqual(char.age, 21)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Call of Cthulhu character generator
 
 Example:
@@ -7,78 +8,30 @@ Example:
 import random
 import os
 import json
-from typing import Counter
 import randname
 from bisect import bisect_left
-from .utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
-from .utils import OCCUPATIONS_DATA
-from .utils import BASIC_SKILLS
-from .utils import ALL_SKILLS
-from .utils import CATEGORY_SKILLS
+from utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
+from utils import OCCUPATIONS_DATA
+from utils import BASIC_SKILLS
+from utils import ALL_SKILLS
+from utils import CATEGORY_SKILLS
+from utils import TRANSLATION_DICT
+from utils import CATEGORY_SKILLS_LIST
+from utils import AGE_RANGE
+from utils import YEAR_RANGE
 # from .utils import *
 
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
 
 
-TRANSLATION_DICT = {
-    "a": "art/craft",
-    "s": "science",
-    "f": "fighting",
-    "g": "firearms",
-    "i": "interpersonal",
-    "l": "language",
-    "*": None,
-    "p": "professor"
-    # just for professor occ. (i ingored doctor, and give him 2*)
-}
-
-CATEGORY_SKILLS_LIST = [
-    "language", "art/craft", "science", "fighting", "firearms"
-]
-
-AGE_RANGE = (
-    (15, 19),
-    (20, 24),
-    (25, 29),
-    (30, 34),
-    (35, 39),
-    (40, 44),
-    (45, 49),
-    (50, 54),
-    (55, 59),
-    (60, 64),
-    (65, 69),
-    (70, 74),
-    (75, 79),
-    (80, 84),
-    (85, 89),
-    (90, 94),
-    (95, 99),
-)
-
-YEAR_RANGE = (1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000,
-              2005, 2010, 2015, 2020)
-
 class Character():
-    """Character
-
-    :raises ValueError: [description]
-    :raises ValueError: [description]
-    :raises ValueError: [description]
-    :raises ValueError: [description]
-    :raises ValueError: [description]
-    :raises ValueError: [description]
-    :return: [description]
-    :rtype: [type]
-    """
-    _MIN_AGE = 15
-    _MAX_AGE = 90
-    __SEX_OPTIONS = ['M', 'F', None]
-    OCCUPATIONS_GROUPS = OCCUPATIONS_GROUPS.copy()
-    OCCUPATIONS_LIST = OCCUPATIONS_LIST.copy()
-    max_skill_level = 90
-
+    _MIN_AGE: int = 15
+    _MAX_AGE: int = 90
+    __SEX_OPTIONS: list = ['M', 'F', None]
+    OCCUPATIONS_GROUPS: list = OCCUPATIONS_GROUPS.copy()
+    OCCUPATIONS_LIST: list = OCCUPATIONS_LIST.copy()
+    max_skill_level: int = 90
 
     def __init__(
             self,
@@ -91,27 +44,6 @@ class Character():
             occupation: str = "optimal",
             # occupation_mode: str = "optimal",
             weights: bool = True) -> None:
-        """[summary]
-
-        :param year: [description], defaults to 1925
-        :type year: int, optional
-        :param age: [description], defaults to None
-        :type age: str, optional
-        :param sex: [description], defaults to None
-        :type sex: str, optional
-        :param first_name: [description], defaults to None
-        :type first_name: str, optional
-        :param last_name: [description], defaults to None
-        :type last_name: str, optional
-        :param country: [description], defaults to "US"
-        :type country: str, optional
-        :param occupation: [description], defaults to "optimal"
-        :type occupation: str, optional
-        :param weights: [description], defaults to True
-        :type weights: bool, optional
-        :raises ValueError: [description]
-        :raises ValueError: [description]
-        """
         self._year = year
         if sex in self.__SEX_OPTIONS:
             self._sex = self.set_sex(sex)
@@ -183,7 +115,7 @@ class Character():
         self._damage_bonus = ""
         self._build = 0
         self._doge = 0
-        self.combat_values()
+        self.set_combat_values()
 
     @property
     def year(self):
@@ -212,6 +144,63 @@ class Character():
     @property
     def characteristics(self):
         return self._characteristics
+
+    @property
+    def strength(self):
+        return self._str
+
+    @property
+    def condition(self):
+        return self._con
+
+    @property
+    def size(self):
+        return self._siz
+
+    @property
+    def dexterity(self):
+        return self._dex
+
+    @property
+    def apperance(self):
+        return self._app
+
+    @property
+    def edducation(self):
+        return self._edu
+
+    @property
+    def intelligence(self):
+        return self._int
+
+    @property
+    def power(self):
+        return self._pow
+
+    @property
+    def move_rate(self):
+        return self._move_rate
+
+    @strength.setter
+    def strength(self, new_strength):
+        try:
+            int(new_strength)
+        except ValueError:
+            raise ValueError("Invalid strength. Strength must me an integer")
+        if new_strength < 0:
+            raise ValueError("Strength cannot be less than 0")
+        self._str = new_strength
+
+    @condition.setter
+    def condition(self, new_condition):
+        try:
+            int(new_condition)
+        except ValueError:
+            raise ValueError("Invalid condition. Strength must me an integer")
+        if new_condition < 0:
+            raise ValueError("Strength cannot be less than 0")
+        self._con = new_condition
+
 
     @year.setter
     def year(self, new_year):
@@ -532,7 +521,7 @@ class Character():
 
     ######################## COMBAT VALUES #############################
 
-    def combat_values(self):
+    def set_combat_values(self):
         VALUE_MATRIX = {
             'combat_range': [64, 84, 124, 164, 204, 283, 364, 444, 524],
             'damage_bonus':
@@ -583,8 +572,8 @@ class Character():
     def __eq__(self, o: object) -> bool:
         return True if self.__dict__ == o.__dict__ else False
 
-    def __repr__(self) -> str:
-        pass
+    # def __repr__(self) -> str:
+    #     pass
 
 if __name__ == "__main__":
     print(Character(first_name="Adam"))

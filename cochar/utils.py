@@ -20,6 +20,46 @@ Utilities
     }
 """
 
+TRANSLATION_DICT = {
+    "a": "art/craft",
+    "s": "science",
+    "f": "fighting",
+    "g": "firearms",
+    "i": "interpersonal",
+    "l": "language",
+    "*": None,
+    "p": "professor"
+    # just for professor occ. (i ingored doctor, and give him 2*)
+}
+
+CATEGORY_SKILLS_LIST = [
+    "language", "art/craft", "science", "fighting", "firearms"
+]
+
+AGE_RANGE = (
+    (15, 19),
+    (20, 24),
+    (25, 29),
+    (30, 34),
+    (35, 39),
+    (40, 44),
+    (45, 49),
+    (50, 54),
+    (55, 59),
+    (60, 64),
+    (65, 69),
+    (70, 74),
+    (75, 79),
+    (80, 84),
+    (85, 89),
+    (90, 94),
+    (95, 99),
+)
+
+YEAR_RANGE = (1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000,
+              2005, 2010, 2015, 2020)
+
+
 OCCUPATIONS_GROUPS = [
     [
         'antiquarian', 'clergy', 'librarian', 'journalist', 'engineer',
