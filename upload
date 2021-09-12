@@ -64,8 +64,8 @@ main(){
     # change version in all files that contains info about it
     change_version && \
     # clean dist directory
-    rm -rv build 
-    rm -rv -i $(echo dist/*) 
+    rm -rv build  && \
+    rm -rv -i $(echo dist/*) && \ 
     # create package, tar and wheel package
     python3 setup.py sdist bdist_wheel && \
     # check whether packages are good

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import unittest
 from cochar import Character
 from unittest.mock import patch
