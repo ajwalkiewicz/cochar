@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import unittest
+
+from randname.randname import last_name
 from cochar import Character
 from unittest.mock import patch
 
@@ -22,6 +24,41 @@ class TestCharacter(unittest.TestCase):
         char = Character()
         char.age = 21
         self.assertEqual(char.age, 21)
+
+    def test_general_wrong_things(self):
+        c = Character(
+            # year="first",
+            # age="1",
+            first_name="",
+            last_name="",
+            # country="San Escobar",
+            # occupation="not optima",
+            # occupation_points="twelfe",
+            # hobby_points="milion",
+            # characteristics="Nothing",
+            # luck="a lot",
+            skills="Chuck Norris",
+            # combat_values={"hello": "world"},
+            weights=5
+        )
+
+        with self.assertRaises(ValueError):
+            c = Character(sex="Ass",)
+
+    def test_age_normal(self):
+        self.global_char.age = 45
+
+    def test_age_below_range(self):
+        with self.assertRaises(ValueError):
+            self.global_char.age = 14
+
+    def test_age_above_range(self):
+        with self.assertRaises(ValueError):
+            self.global_char.age = 91
+
+    def test_age_not_integer(self):
+        with self.assertRaises(ValueError):
+            self.global_char.age = "a"    
 
     def test_strength_normal(self):
         self.global_char.strength = 0
@@ -178,8 +215,6 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(ValueError):
             c.skills = skills
 
-    
-
 #### OCCUPATIONS ####
 
     def test_occupation_antiquarian(self):
@@ -316,6 +351,21 @@ class TestCharacter(unittest.TestCase):
         occupation = "zealot"
         c = Character(occupation=occupation) 
         self.assertEqual(c.occupation, occupation)
+
+
+########## TEST DUNDER METHODS ####################
+
+    def test_repr_true(self):
+        c = Character()
+        d = eval(c.__repr__())
+        assert c == d
+
+    def test_repr_false(self):
+        c = Character(occupation="artist")
+        d = eval(c.__repr__())
+        c.occupation = "criminal"
+        assert c != d
+
 
 if __name__ == "__main__":
     unittest.main()

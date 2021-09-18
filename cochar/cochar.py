@@ -26,8 +26,8 @@ _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
 
 class Character():
-    _MIN_AGE: int = 15
-    _MAX_AGE: int = 90
+    MIN_AGE: int = 15
+    MAX_AGE: int = 90
     __SEX_OPTIONS: list = ['M', 'F', None]
     OCCUPATIONS_GROUPS: list = OCCUPATIONS_GROUPS.copy()
     OCCUPATIONS_LIST: list = OCCUPATIONS_LIST.copy()
@@ -46,6 +46,7 @@ class Character():
             hobby_points: int = None,
             # occupation_mode: str = "optimal",
             characteristics: dict = None, # Highly not recommended
+            luck: int = None,
             skills: dict = None, # Highly not recomended
             combat_values: dict = None, # Highly not recommended
             weights: bool = True) -> None:
@@ -86,12 +87,19 @@ class Character():
             self.characteristics = characteristics
         else:
             self.set_characteristics()
+        
+        ### Luck - it's unique as it is always total random skill, not related with anything
+        if luck:
+            self._luck = luck
+        else:
+            self._luck = random.randint(15, 90)
+
         ### derived atributes ###
         self._sanity_points: int = 0
         self._magic_points: int = 0
         self._hit_points: int = 0
-        self._luck: int = 0
         self._set_derived_attributes()
+
         ### occupation ###
 
         if occupation in self.OCCUPATIONS_LIST + ["optimal", "random", None]:
@@ -129,18 +137,20 @@ class Character():
             # To do: Add validatoin
             self._skills = skills
         else:
+            # Order of following instructions is very important!
             self._skills: dict[str, int] = {}
-            self.occupation_skills_list: list[str] = []
-            self.hobby_skills_list: list[str] = []
+            # self.occupation_skills_list: list[str] = []
+            # self.hobby_skills_list: list[str] = []
 
             ALL_SKILLS.update({"doge": self._dex // 2, "language (own)": self._edu})
-            self._skills: dict = self.set_skills_dict()
 
-            #### credit rating ###
-            # assigning points to credit rating
+            # Assigning points to credit rating
             credit_rating_points: int = random.randint(
                 *OCCUPATIONS_DATA[self._occupation]['credit_rating'].copy())
-            self._occupation_points -= credit_rating_points
+
+            # self._occupation_points -= credit_rating_points
+            occupation_points_to_distribute = self._occupation_points - credit_rating_points
+            self._skills: dict = self.set_skills_dict(occupation_points_to_distribute)
             self._skills.setdefault('credit rating', credit_rating_points)
 
 
@@ -151,8 +161,12 @@ class Character():
             "doge:": 0
         }
 
+        # Solve it better
         if combat_values:
             self._combat_values = combat_values
+            self._damage_bonus = combat_values["damage_bonus"]
+            self._build = combat_values["build"]
+            self._doge = combat_values["doge"]
         else:
             self._damage_bonus: str = ""
             self._build: int = 0
@@ -192,10 +206,13 @@ class Character():
 
     @age.setter
     def age(self, new_age: int) -> int:
-        if self._MIN_AGE <= new_age <= self._MAX_AGE:
+        if not isinstance(new_age, int):
+            raise ValueError("Invalid age. Age must be an integer")
+
+        if self.MIN_AGE <= new_age <= self.MAX_AGE:
             self._age = new_age
         else:
-            raise ValueError(f"age not in range: [{self._MIN_AGE}, {self._MAX_AGE}]")
+            raise ValueError(f"age not in range: [{self.MIN_AGE}, {self.MAX_AGE}]")
         return self._age
 
     @property
@@ -237,7 +254,7 @@ class Character():
     @property
     def characteristics(self) -> dict:
         return self._characteristics
-
+    # To Do setter
 
     @property
     def strength(self) -> int:
@@ -245,9 +262,7 @@ class Character():
 
     @strength.setter
     def strength(self, new_strength: int) -> int:
-        try:
-            int(new_strength)
-        except ValueError:
+        if not isinstance(new_strength, int):
             raise ValueError("Invalid strength. Strength must be an integer")
         if new_strength < 0:
             raise ValueError("Strength cannot be less than 0")
@@ -260,9 +275,7 @@ class Character():
 
     @condition.setter
     def condition(self, new_condition: int) -> int:
-        try:
-            int(new_condition)
-        except ValueError:
+        if not isinstance(new_condition, int):
             raise ValueError("Invalid condition. Strength must me an integer")
         if new_condition < 0:
             raise ValueError("Strength cannot be less than 0")
@@ -275,9 +288,7 @@ class Character():
 
     @size.setter
     def size(self, new_size: int) -> int:
-        try:
-            int(new_size)
-        except ValueError:
+        if not isinstance(new_size, int):
             raise ValueError("Invalid size points. Size points must be an integer")
         if new_size < 0:
             raise ValueError("Size points cannot be less than 0")
@@ -290,9 +301,7 @@ class Character():
 
     @dexterity.setter
     def dexterity(self, new_dexterity: int) -> int:
-        try:
-            int(new_dexterity)
-        except ValueError:
+        if not isinstance(new_dexterity, int):
             raise ValueError("Invalid dexterity points. Dexterity points must be an integer")
         if new_dexterity < 0:
             raise ValueError("Dexterity points cannot be less than 0")
@@ -305,9 +314,7 @@ class Character():
 
     @apperance.setter
     def apperance(self, new_apperance: int) -> int:
-        try:
-            int(new_apperance)
-        except ValueError:
+        if not isinstance(new_apperance, int):
             raise ValueError("Invalid apperance points. Apperance points must be an integer")
         if new_apperance < 0:
             raise ValueError("Apperance points cannot be less than 0")
@@ -320,9 +327,7 @@ class Character():
 
     @edducation.setter
     def edducation(self, new_edducation: int) -> int:
-        try:
-            int(new_edducation)
-        except ValueError:
+        if not isinstance(new_edducation, int):
             raise ValueError("Invalid edducation points. Edducation points must be an integer")
         if new_edducation < 0:
             raise ValueError("Edducation points cannot be less than 0")
@@ -335,9 +340,7 @@ class Character():
 
     @intelligence.setter
     def intelligence(self, new_inteligennce: int) -> int:
-        try:
-            int(new_inteligennce)
-        except ValueError:
+        if not isinstance(new_inteligennce, int):
             raise ValueError("Invalid intelligence points. Intelligence points must be an integer")
         if new_inteligennce < 0:
             raise ValueError("Intelligence points cannot be less than 0")
@@ -350,9 +353,7 @@ class Character():
 
     @power.setter
     def power(self, new_power: int) -> int:
-        try:
-            int(new_power)
-        except ValueError:
+        if not isinstance(new_power, int):
             raise ValueError("Invalid power points. Power points must be an integer")
         if new_power < 0:
             raise ValueError("Power points cannot be less than 0")
@@ -396,9 +397,7 @@ class Character():
         for item, value in new_characteristics.items():
             if item not in self._characteristics.keys():
                 raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
-            try:
-                int(value)
-            except ValueError:
+            if not isinstance(new_characteristics, int):
                 raise ValueError(f"Invalid {item}. {item} must be an integer")
             if value < 0:
                 raise ValueError("{item} cannot be less than 0")
@@ -432,9 +431,7 @@ class Character():
 
     @occupation_points.setter
     def occupation_points(self, new_occupation_points: int) -> int:
-        try:
-            int(new_occupation_points)
-        except ValueError:
+        if not isinstance(new_occupation_points, int):
             raise ValueError("Invalid occupation points. Occupation points must be an integer")
         if new_occupation_points < 0:
             raise ValueError("Occupation points cannot be less than 0")
@@ -447,9 +444,7 @@ class Character():
 
     @hobby_points.setter
     def hobby_points(self, new_hobby_points: int) -> int:
-        try:
-            int(new_hobby_points)
-        except ValueError:
+        if not isinstance(new_hobby_points, int):
             raise ValueError("Invalid hobby points. Hobby points must be an integer")
         if new_hobby_points < 0:
             raise ValueError("Hobby points cannot be less than 0")
@@ -462,9 +457,7 @@ class Character():
 
     @sanity_points.setter
     def sanity_points(self, new_sanity_points: int) -> int:
-        try:
-            int(new_sanity_points)
-        except ValueError:
+        if not isinstance(new_sanity_points, int):
             raise ValueError("Invalid sanity points. Sanity points must be an integer")
         if new_sanity_points < 0:
             raise ValueError("Sanity points cannot be less than 0")
@@ -477,9 +470,7 @@ class Character():
 
     @magic_points.setter
     def magic_points(self, new_magic_points: int) -> int:
-        try:
-            int(new_magic_points)
-        except ValueError:
+        if not isinstance(new_magic_points, int):
             raise ValueError("Invalid magic points. Magic points must be an integer")
         if new_magic_points < 0:
             raise ValueError("Magic points cannot be less than 0")
@@ -492,9 +483,7 @@ class Character():
 
     @hit_points.setter
     def hit_points(self, new_hit_points: int) -> int:
-        try:
-            int(new_hit_points)
-        except ValueError:
+        if not isinstance(new_hit_points, int):
             raise ValueError("Invalidluckt points. Hit points must be an integer")
         if new_hit_points < 0:
             raise ValueError("Hit points cannot be less than 0")
@@ -507,9 +496,7 @@ class Character():
 
     @luck.setter
     def luck(self, new_luck: int) -> int:
-        try:
-            int(new_luck)
-        except ValueError:
+        if not isinstance(new_luck, int):
             raise ValueError("Invalid luck points. Luck points must be an integer")
         if new_luck < 0:
             raise ValueError("Luck points cannot be less than 0")
@@ -632,7 +619,6 @@ class Character():
         self._sanity_points = self._pow
         self._magic_points = self._pow // 5
         self._hit_points = (self._siz + self._con) // 10
-        self._luck = random.randint(15, 90)
 
         if self.age <= 19:
             self._luck = max(self._luck, random.randint(15, 90))
@@ -717,7 +703,7 @@ class Character():
 
         return max(points)
 
-    def set_skills_dict(self):
+    def set_skills_dict(self, occupation_points: int):
         """[summary]
 
         :return: [description]
@@ -726,17 +712,17 @@ class Character():
         self._skills = {}
         occupation_input_list = OCCUPATIONS_DATA[
             self._occupation]["skills"].copy()
-        self.occupation_skills_list = self._get_skills_list(
+        occupation_skills_list = self._get_skills_list(
             occupation_input_list)
 
         # categories = [f"1{cat}" for cat in TRANSLATION_DICT.keys()]
         # hobby_input_list = list(BASIC_SKILLS.keys()) + categories
         hobby_input_list = list(BASIC_SKILLS.keys())
-        self.hobby_skills_list = self._get_skills_list(hobby_input_list)
+        hobby_skills_list = self._get_skills_list(hobby_input_list)
 
         self._assign_skill_points(self._occupation_points,
-                                  self.occupation_skills_list)
-        self._assign_skill_points(self._hobby_points, self.hobby_skills_list)
+                                  occupation_skills_list)
+        self._assign_skill_points(self._hobby_points, hobby_skills_list)
         self._skills = self.filter_skills(self._skills)
         
         return self._skills
@@ -842,10 +828,6 @@ class Character():
 
         return self._combat_values
 
-    ### Other general functions
-    # to do
-    # set new occupation
-
     ######################## GENERAL FUNCTIONS #############################
 
     @classmethod
@@ -886,7 +868,7 @@ class Character():
         return True if self.__dict__ == o.__dict__ else False
 
     def __repr__(self) -> str:
-        return f"Character(age={self._age}, sex='{self._sex}', first_name='{self._first_name}', last_name='{self._last_name}', country='{self._country}', occupation='{self._occupation}', characteristics={self._characteristics}, skills={self._skills}, combat_values={self._combat_values}, weights={self._weights})"
+        return f"Character(age={self._age}, sex='{self._sex}', first_name='{self._first_name}', last_name='{self._last_name}', country='{self._country}', occupation='{self._occupation}', characteristics={self._characteristics}, luck={self._luck}, skills={self._skills}, combat_values={self._combat_values}, weights={self._weights})"
 
 if __name__ == "__main__":
     print(Character(first_name="Adam"))
@@ -895,7 +877,10 @@ if __name__ == "__main__":
     c = Character()
 
 # to do
-# add validation during initialization
-# types for skills
-# fix issues with creddit rating substruction from occupation points
-# finylly create repr
+# [ ]add validation during initialization
+# [x] types for skills
+# [x] ix issues with creddit rating substruction from occupation points
+# [x] finylly create repr
+# [ ] create function for credit rating
+# [ ] change validation for integer in setters from try: int(x) to isinstance
+# [ ] fix combat values

@@ -293,6 +293,7 @@ OCCUPATIONS_DATA: Dict[str, Dict[str, List[Union[int, str]]]] = {
     },
 }
 
+# Credit ratin is not in a default basic skills
 BASIC_SKILLS: Dict[str, int] = {
     "accounting": 5,
     "acting": 5,
