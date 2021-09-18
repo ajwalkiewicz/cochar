@@ -155,6 +155,31 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.global_char.luck = "a"
 
+    def test_skills_correct(self):
+        skills = {"ride": 50, "occult": 50}
+        c = Character()
+        c.skills = skills
+
+    def test_skills_incorrect_type(self):
+        skills = "ride"
+        c = Character()
+        with self.assertRaises(ValueError):
+            c.skills = skills
+
+    def test_skills_incorrect_key(self):
+        skills = {"ride": 50, "fake skill": 50}
+        c = Character()
+        with self.assertRaises(ValueError):
+            c.skills = skills
+
+    def test_skills_incorrect_value_below_0(self):
+        skills = {"ride": 50, "occult": -1}
+        c = Character()
+        with self.assertRaises(ValueError):
+            c.skills = skills
+
+    
+
 #### OCCUPATIONS ####
 
     def test_occupation_antiquarian(self):

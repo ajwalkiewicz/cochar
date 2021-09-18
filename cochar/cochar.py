@@ -515,6 +515,26 @@ class Character():
             raise ValueError("Luck points cannot be less than 0")
         self._luck = new_luck
         return self._luck
+
+    @property
+    def skills(self) -> dict:
+        return self._skills
+
+    @skills.setter
+    def skills(self, new_skills: dict) -> dict:
+        if not isinstance(new_skills, dict):
+            raise ValueError("Invalid skills. Skills must be a dict")
+
+        for key, value in new_skills.items():
+            if key not in ALL_SKILLS:
+                raise ValueError(f"Skill: {value}, doesn't exist")
+            if not isinstance(value, int):
+                raise ValueError(f"Skill value: {value}, must be an integer")
+            if value < 0:
+                raise ValueError(f"Skill value: {value}, cannot be below 0")
+
+        self._skills = new_skills
+        return self._skills
     
     @staticmethod
     def set_sex(sex: Union[str, None]) -> str:
