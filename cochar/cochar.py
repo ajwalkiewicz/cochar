@@ -25,7 +25,6 @@ from .utils import YEAR_RANGE
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
 
-
 class Character():
     _MIN_AGE: int = 15
     _MAX_AGE: int = 90
@@ -43,7 +42,12 @@ class Character():
             last_name: str = None,
             country: str = "US",
             occupation: str = "optimal",
+            occupation_points: int = None,
+            hobby_points: int = None,
             # occupation_mode: str = "optimal",
+            characteristics: dict = None, # Highly not recommended
+            skills: dict = None, # Highly not recomended
+            combat_values: dict = None, # Highly not recommended
             weights: bool = True) -> None:
             # add skills (for repr)
         self._year: int = year
@@ -54,11 +58,21 @@ class Character():
         self._age: int = self.set_age(age)
         self._country: str = country
         self._weights: bool = weights
-        # personals
+        ### personals ###
         self._first_name: str = randname.first_name(self._year, self._sex, self._country, self._weights) if not first_name else first_name
         self._last_name: str = randname.first_name(self._year, self._sex, self._country, self._weights) if not last_name else last_name
-        # characteristics
-        self._characteristics: dict[str, int] = {}
+        ### characteristics ###
+        self._characteristics: Dict[str, int] = {
+            "str": 0,
+            "con": 0,
+            "siz": 0,
+            "dex": 0,
+            "app": 0,
+            "edu": 0,
+            "int": 0,
+            "pow": 0,
+            "move_rate": 0,
+        }
         self._str: int = 0
         self._con: int = 0
         self._siz: int = 0
@@ -68,14 +82,18 @@ class Character():
         self._int: int = 0
         self._pow: int = 0
         self._move_rate: int = 0
-        self.set_characteristics()
-        # derived atributes
+        if characteristics:
+            self.characteristics = characteristics
+        else:
+            self.set_characteristics()
+        ### derived atributes ###
         self._sanity_points: int = 0
         self._magic_points: int = 0
         self._hit_points: int = 0
         self._luck: int = 0
         self._set_derived_attributes()
-        # occupation
+        ### occupation ###
+
         if occupation in self.OCCUPATIONS_LIST + ["optimal", "random", None]:
             self._occupation = occupation
         else:
@@ -95,107 +113,150 @@ class Character():
         )
 
         self._occupation: str = self.set_occupation(self._occupation)
-        self._occupation_points: int = self.get_skill_points(self._occupation)
-        self._hobby_points: int = self._int * 2 # Create public function for that
 
-        # Skills
-        self._skills: dict[str, int] = {}
-        self.occupation_skills_list: list[str] = []
-        self.hobby_skills_list: list[str] = []
+        if occupation_points:
+            self.occupation_points = occupation_points
+        else:
+            self._occupation_points: int = self.get_skill_points(self._occupation)
+        
+        if hobby_points:
+            self.hobby_points = hobby_points
+        else:
+            self._hobby_points: int = self._int * 2 # Create public function for that
 
-        ALL_SKILLS.update({"doge": self._dex // 2, "language (own)": self._edu})
-        self._skills: dict = self.set_skills_dict()
+        ### Skills ###
+        if skills:
+            # To do: Add validatoin
+            self._skills = skills
+        else:
+            self._skills: dict[str, int] = {}
+            self.occupation_skills_list: list[str] = []
+            self.hobby_skills_list: list[str] = []
 
-        # credit rating
-        # assigning points to credit rating
-        credit_rating_points: int = random.randint(
-            *OCCUPATIONS_DATA[self._occupation]['credit_rating'].copy())
-        self._occupation_points -= credit_rating_points
-        self._skills.setdefault('credit rating', credit_rating_points)
+            ALL_SKILLS.update({"doge": self._dex // 2, "language (own)": self._edu})
+            self._skills: dict = self.set_skills_dict()
 
-        # combat values
-        self._damage_bonus: str = ""
-        self._build: int = 0
-        self._doge: int = 0
-        self.set_combat_values()
+            #### credit rating ###
+            # assigning points to credit rating
+            credit_rating_points: int = random.randint(
+                *OCCUPATIONS_DATA[self._occupation]['credit_rating'].copy())
+            self._occupation_points -= credit_rating_points
+            self._skills.setdefault('credit rating', credit_rating_points)
+
+
+        ### combat values ###
+        self._combat_values: Dict[str, Union[str, int]] = {
+            "damage_bonus": "",
+            "build": 0,
+            "doge:": 0
+        }
+
+        if combat_values:
+            self._combat_values = combat_values
+        else:
+            self._damage_bonus: str = ""
+            self._build: int = 0
+            self._doge: int = 0
+            self.set_combat_values()
+
+    ###################### PROPERTIES ########################
 
     @property
     def year(self) -> int:
         return self._year
+
+    @year.setter
+    def year(self, new_year: int) -> int:
+        try:
+            int(new_year)
+            self._year = new_year
+        except ValueError:
+            raise ValueError("invalid year. year must be integer")
+        return self._year
     
     @property
     def sex(self) -> Union[str, None]:
+        return self._sex
+
+    @sex.setter
+    def sex(self, new_sex: Union[str, None]) -> Union[str, None]:
+        if new_sex in ['M', 'F', None]:
+            self._sex = self.set_sex(new_sex)
+        else:
+            raise ValueError("incorrect sex falue: sex -> ['M', 'F', None']")
         return self._sex
     
     @property
     def age(self) -> int:
         return self._age
 
+    @age.setter
+    def age(self, new_age: int) -> int:
+        if self._MIN_AGE <= new_age <= self._MAX_AGE:
+            self._age = new_age
+        else:
+            raise ValueError(f"age not in range: [{self._MIN_AGE}, {self._MAX_AGE}]")
+        return self._age
+
     @property
     def country(self) -> str:
+        return self._country
+
+    @country.setter
+    def country(self, new_country: str) -> str:
+        if new_country in randname.available_countries():
+            self._country = new_country
+        else:
+            raise ValueError(f"Country not available: {new_country} -> {randname.available_countries()}")
         return self._country
     
     @property
     def weights(self) -> bool:
         return self._weights
 
+    @weights.setter
+    def weights(self, new_weights: bool) -> bool:
+        if isinstance(new_weights, bool):
+            self._weights = new_weights
+        else:
+            raise ValueError("Weights must be bool type")
+        return self._weights
+
     @property
     def occupation(self) -> str:
+        return self._occupation
+
+    @occupation.setter
+    def occupation(self, new_occupation: str) -> str:
+        if new_occupation in self.OCCUPATIONS_LIST:
+            self._occupation = new_occupation
+        else:
+            raise ValueError(f"Occupation: {new_occupation} not in -> {self.OCCUPATIONS_LIST}")
         return self._occupation
 
     @property
     def characteristics(self) -> dict:
         return self._characteristics
 
+
     @property
     def strength(self) -> int:
         return self._str
-
-    @property
-    def condition(self) -> int:
-        return self._con
-
-    @property
-    def size(self) -> int:
-        return self._siz
-
-    @property
-    def dexterity(self) -> int:
-        return self._dex
-
-    @property
-    def apperance(self) -> int:
-        return self._app
-
-    @property
-    def edducation(self) -> int:
-        return self._edu
-
-    @property
-    def intelligence(self) -> int:
-        return self._int
-
-    @property
-    def power(self) -> int:
-        return self._pow
-
-    @property
-    def move_rate(self) -> int:
-        return self._move_rate
-
-    # add property for name
-    # and characteristics
-    # and skills
 
     @strength.setter
     def strength(self, new_strength: int) -> int:
         try:
             int(new_strength)
         except ValueError:
-            raise ValueError("Invalid strength. Strength must me an integer")
+            raise ValueError("Invalid strength. Strength must be an integer")
         if new_strength < 0:
             raise ValueError("Strength cannot be less than 0")
         self._str = new_strength
+        return self._str
+
+    @property
+    def condition(self) -> int:
+        return self._con
 
     @condition.setter
     def condition(self, new_condition: int) -> int:
@@ -206,46 +267,254 @@ class Character():
         if new_condition < 0:
             raise ValueError("Strength cannot be less than 0")
         self._con = new_condition
+        return self._con
 
+    @property
+    def size(self) -> int:
+        return self._siz
 
-    @year.setter
-    def year(self, new_year: int) -> int:
+    @size.setter
+    def size(self, new_size: int) -> int:
         try:
-            int(new_year)
-            self._year = new_year
+            int(new_size)
         except ValueError:
-            raise ValueError("invalid year. year must be integer")
+            raise ValueError("Invalid size points. Size points must be an integer")
+        if new_size < 0:
+            raise ValueError("Size points cannot be less than 0")
+        self._siz = new_size
+        return self._siz
 
-    @sex.setter
-    def sex(self, new_sex: Union[str, None]) -> Union[str, None]:
-        if new_sex in ['M', 'F', None]:
-            self._sex = self.set_sex(new_sex)
-        else:
-            raise ValueError("incorrect sex falue: sex -> ['M', 'F', None']")
+    @property
+    def dexterity(self) -> int:
+        return self._dex
 
-    @age.setter
-    def age(self, new_age: int) -> int:
-        if self._MIN_AGE <= new_age <= self._MAX_AGE:
-            self._age = new_age
-        else:
-            raise ValueError(f"age not in range: [{self._MIN_AGE}, {self._MAX_AGE}]")
+    @dexterity.setter
+    def dexterity(self, new_dexterity: int) -> int:
+        try:
+            int(new_dexterity)
+        except ValueError:
+            raise ValueError("Invalid dexterity points. Dexterity points must be an integer")
+        if new_dexterity < 0:
+            raise ValueError("Dexterity points cannot be less than 0")
+        self._dex = new_dexterity
+        return self._dex
 
-    @country.setter
-    def country(self, new_country: str) -> str:
-        # TO DO
-        self._country = new_country
+    @property
+    def apperance(self) -> int:
+        return self._app
 
-    @weights.setter
-    def weights(self, new_weights: bool) -> bool:
-        if isinstance(new_weights, bool):
-            self._weights = new_weights
-        else:
-            raise ValueError("weights must be a bool")
+    @apperance.setter
+    def apperance(self, new_apperance: int) -> int:
+        try:
+            int(new_apperance)
+        except ValueError:
+            raise ValueError("Invalid apperance points. Apperance points must be an integer")
+        if new_apperance < 0:
+            raise ValueError("Apperance points cannot be less than 0")
+        self._app = new_apperance
+        return self._app
 
-    @occupation.setter
-    def occupation(self, new_occupation: str) -> str:
-        # TO DO
-        self._occupation = new_occupation
+    @property
+    def edducation(self) -> int:
+        return self._edu
+
+    @edducation.setter
+    def edducation(self, new_edducation: int) -> int:
+        try:
+            int(new_edducation)
+        except ValueError:
+            raise ValueError("Invalid edducation points. Edducation points must be an integer")
+        if new_edducation < 0:
+            raise ValueError("Edducation points cannot be less than 0")
+        self._edu = new_edducation
+        return self._edu
+
+    @property
+    def intelligence(self) -> int:
+        return self._int
+
+    @intelligence.setter
+    def intelligence(self, new_inteligennce: int) -> int:
+        try:
+            int(new_inteligennce)
+        except ValueError:
+            raise ValueError("Invalid intelligence points. Intelligence points must be an integer")
+        if new_inteligennce < 0:
+            raise ValueError("Intelligence points cannot be less than 0")
+        self._int = new_inteligennce
+        return self._int
+
+    @property
+    def power(self) -> int:
+        return self._pow
+
+    @power.setter
+    def power(self, new_power: int) -> int:
+        try:
+            int(new_power)
+        except ValueError:
+            raise ValueError("Invalid power points. Power points must be an integer")
+        if new_power < 0:
+            raise ValueError("Power points cannot be less than 0")
+        self._pow = new_power
+        return self._pow
+
+    @property
+    def move_rate(self) -> int:
+        return self._move_rate
+
+    # TO do setter fo move_rate
+
+    @property
+    def first_name(self) -> str:
+        return self._first_name
+
+    @first_name.setter
+    def first_name(self, new_first_name: str) -> str:
+        if new_first_name == "":
+            raise ValueError("Invalid first name. Name cannot be an empty string")
+        self._first_name = str(new_first_name) 
+        return self._first_name
+
+    @property
+    def last_name(self, new_last_name: str) -> str:
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, new_last_name: str) -> str:
+        if new_last_name == "":
+            raise ValueError("Invalid last name. Name cannot be an empty string")
+        self._first_name = str(new_last_name) 
+        return self._first_name
+
+    @property
+    def characteristics(self) -> Dict[str, int]:
+        return self._characteristics
+
+    @characteristics.setter
+    def characteristics(self, new_characteristics: Dict[str, int]) -> Dict[str, int]:
+        for item, value in new_characteristics.items():
+            if item not in self._characteristics.keys():
+                raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
+            try:
+                int(value)
+            except ValueError:
+                raise ValueError(f"Invalid {item}. {item} must be an integer")
+            if value < 0:
+                raise ValueError("{item} cannot be less than 0")
+            self._characteristics.update({item: value})
+            self.__dict__.update({f"_{item}": value})
+        return self._characteristics
+
+    @property
+    def skills(self) -> Dict[str, int]:
+        return self._skills
+
+    @skills.setter
+    def skills(self, **new_skills: Dict[str, int]) -> Dict[str, int]:
+        # To do: add validation
+        self._skills.update(new_skills)
+        return self._skills
+
+    @property
+    def combat_values(self) -> Dict[str, int]:
+        return self._combat_values
+
+    @combat_values.setter
+    def combat_values(self, new_combat_vaues: Dict[str, int]) -> Dict[str, int]:
+        # To do: add validation
+        self._combat_values = new_combat_vaues
+        return self._combat_values
+
+    @property
+    def occupation_points(self) -> int:
+        return self._occupation_points
+
+    @occupation_points.setter
+    def occupation_points(self, new_occupation_points: int) -> int:
+        try:
+            int(new_occupation_points)
+        except ValueError:
+            raise ValueError("Invalid occupation points. Occupation points must be an integer")
+        if new_occupation_points < 0:
+            raise ValueError("Occupation points cannot be less than 0")
+        self._occupation_points = new_occupation_points
+        return self._occupation_points
+
+    @property
+    def hobby_points(self) -> int:
+        return self._hobby_points
+
+    @hobby_points.setter
+    def hobby_points(self, new_hobby_points: int) -> int:
+        try:
+            int(new_hobby_points)
+        except ValueError:
+            raise ValueError("Invalid hobby points. Hobby points must be an integer")
+        if new_hobby_points < 0:
+            raise ValueError("Hobby points cannot be less than 0")
+        self._hobby_points = new_hobby_points
+        return self._hobby_points
+
+    @property
+    def sanity_points(self) -> int:
+        return self._sanity_points
+
+    @sanity_points.setter
+    def sanity_points(self, new_sanity_points: int) -> int:
+        try:
+            int(new_sanity_points)
+        except ValueError:
+            raise ValueError("Invalid sanity points. Sanity points must be an integer")
+        if new_sanity_points < 0:
+            raise ValueError("Sanity points cannot be less than 0")
+        self._sanity_points = new_sanity_points
+        return self._sanity_points
+
+    @property
+    def magic_points(self) -> int:
+        return self._magic_points
+
+    @magic_points.setter
+    def magic_points(self, new_magic_points: int) -> int:
+        try:
+            int(new_magic_points)
+        except ValueError:
+            raise ValueError("Invalid magic points. Magic points must be an integer")
+        if new_magic_points < 0:
+            raise ValueError("Magic points cannot be less than 0")
+        self._magic_points = new_magic_points
+        return self._magic_points
+
+    @property
+    def hit_points(self) -> int:
+        return self._hit_points
+
+    @hit_points.setter
+    def hit_points(self, new_hit_points: int) -> int:
+        try:
+            int(new_hit_points)
+        except ValueError:
+            raise ValueError("Invalidluckt points. Hit points must be an integer")
+        if new_hit_points < 0:
+            raise ValueError("Hit points cannot be less than 0")
+        self._hit_points = new_hit_points
+        return self._hit_points
+
+    @property
+    def luck(self) -> int:
+        return self._luck
+
+    @luck.setter
+    def luck(self, new_luck: int) -> int:
+        try:
+            int(new_luck)
+        except ValueError:
+            raise ValueError("Invalid luck points. Luck points must be an integer")
+        if new_luck < 0:
+            raise ValueError("Luck points cannot be less than 0")
+        self._luck = new_luck
+        return self._luck
     
     @staticmethod
     def set_sex(sex: Union[str, None]) -> str:
@@ -527,7 +796,7 @@ class Character():
 
     ######################## COMBAT VALUES #############################
 
-    def set_combat_values(self) -> None:
+    def set_combat_values(self) -> Dict[str, Union[str, int]]:
         VALUE_MATRIX = {
             'combat_range': [64, 84, 124, 164, 204, 283, 364, 444, 524],
             'damage_bonus':
@@ -545,49 +814,68 @@ class Character():
         if self._doge == 0:
             self._doge = self._dex // 2
 
+        self._combat_values = {
+            "damage_bonus": self._damage_bonus,
+            "build": self._build,
+            "doge": self._doge
+        }
+
+        return self._combat_values
+
+    ### Other general functions
+    # to do
+    # set new occupation
+
+    ######################## GENERAL FUNCTIONS #############################
+
+    @classmethod
+    def generate_character(cls, *args, **kwargs):
+        return cls(*args, **kwargs)
+
+
+    ######################## DUNDER METHODS #############################
 
     def __str__(self) -> str:
-        return f"""
-        Character:
-            "personals":
-                "name": "{self._first_name} {self._last_name}",
-                "occupation": {self._occupation.capitalize()},
-                "age": {self._age},
-                "sex": {self._sex.upper()},
-            "characteristics":
-                "str": {self._str},
-                "con": {self._con},
-                "siz": {self._siz},
-                "dex": {self._dex},
-                "app": {self._app},
-                "edu": {self._edu},
-                "int": {self._int},
-                "pow": {self._pow},
-                "move_rate": {self._move_rate},
-            "hit_points": {self._hit_points},
-            "sanity": {self._sanity_points},
-            "luck": {self._luck},
-            "magic_points": {self._magic_points},
-            "combat":
-                "damage bonus": {self._damage_bonus},
-                "build": {self._build},
-                "doge": {self._doge},
-            "skills": {self._skills},
-        """
+        return f"""Character:
+    Personals:
+        name: {self._first_name} {self._last_name},
+        occupation: {self._occupation.capitalize()},
+        age: {self._age},
+        sex: {self._sex.upper()},
+    Characteristics:
+        str: {self._str},
+        con: {self._con},
+        siz: {self._siz},
+        dex: {self._dex},
+        app: {self._app},
+        edu: {self._edu},
+        int: {self._int},
+        pow: {self._pow},
+        move_rate: {self._move_rate},
+    Hit points: {self._hit_points},
+    Sanity: {self._sanity_points},
+    Luck: {self._luck},
+    Magic points: {self._magic_points},
+    Combat:
+        damage bonus: {self._damage_bonus},
+        build: {self._build},
+        doge: {self._doge},
+    Skills: {self._skills},"""
 
     def __eq__(self, o: object) -> bool:
         return True if self.__dict__ == o.__dict__ else False
 
-    # def __repr__(self) -> str:
-    #     pass
+    def __repr__(self) -> str:
+        return f"Character(age={self._age}, sex='{self._sex}', first_name='{self._first_name}', last_name='{self._last_name}', country='{self._country}', occupation='{self._occupation}', characteristics={self._characteristics}, skills={self._skills}, combat_values={self._combat_values}, weights={self._weights})"
 
 if __name__ == "__main__":
     print(Character(first_name="Adam"))
     print(Character(age=15))
     print(Character().__dict__)
-
+    c = Character()
 
 # to do
-# name, skills, characteristics properties
-# repr
+# add validation during initialization
 # types for skills
+# fix issues with creddit rating substruction from occupation points
+# finylly create repr

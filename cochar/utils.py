@@ -1,8 +1,6 @@
 """
 Utilities
-"""
 
-"""
     legend:
     a - art/craft
     s -science
@@ -19,8 +17,9 @@ Utilities
         "skills": []
     }
 """
+from typing import Dict, List, Tuple, Union
 
-TRANSLATION_DICT = {
+TRANSLATION_DICT: Dict[str, str] = {
     "a": "art/craft",
     "s": "science",
     "f": "fighting",
@@ -32,11 +31,11 @@ TRANSLATION_DICT = {
     # just for professor occ. (i ingored doctor, and give him 2*)
 }
 
-CATEGORY_SKILLS_LIST = [
+CATEGORY_SKILLS_LIST: List [str] = [
     "language", "art/craft", "science", "fighting", "firearms"
 ]
 
-AGE_RANGE = (
+AGE_RANGE: Tuple[int, int] = (
     (15, 19),
     (20, 24),
     (25, 29),
@@ -56,11 +55,11 @@ AGE_RANGE = (
     (95, 99),
 )
 
-YEAR_RANGE = (1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000,
+YEAR_RANGE: Tuple[int] = (1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000,
               2005, 2010, 2015, 2020)
 
 
-OCCUPATIONS_GROUPS = [
+OCCUPATIONS_GROUPS: List[List[str]] = [
     [
         'antiquarian', 'clergy', 'librarian', 'journalist', 'engineer',
         'doctor of medicine', 'missionary', 'parapsychologist', 'author',
@@ -80,13 +79,37 @@ OCCUPATIONS_GROUPS = [
     ]
 ]  # 5
 
-OCCUPATIONS_LIST = [
-    "antiquarian", "artist", "athlete", "author", "entertainer", "soldier",
-    "lawyer", "librarian", "musician", "missionary", "military officer",
-    "parapsychologist", "pilot", "clergy", "criminal", "dilettante"
+OCCUPATIONS_LIST: List[str] = [
+    'antiquarian',
+    'artist',
+    'athlete',
+    'author',
+    'clergy',
+    'criminal',
+    'dilettante',
+    'doctor of medicine',
+    'drifter',
+    'engineer',
+    'entertainer',
+    'farmer',
+    'journalist',
+    'lawyer',
+    'librarian',
+    'military officer',
+    'missionary',
+    'musician',
+    'parapsychologist',
+    'pilot',
+    'police detective',
+    'police officer',
+    'private investigator',
+    'professor',
+    'soldier',
+    'tribe member',
+    'zealot',
 ]
 
-OCCUPATIONS_DATA = {
+OCCUPATIONS_DATA: Dict[str, Dict[str, List[Union[int, str]]]] = {
     "antiquarian": {
         "credit_rating": [30, 70],
         "skills": ['appraise', 'history', 'library use', 'spot hidden']
@@ -225,7 +248,14 @@ OCCUPATIONS_DATA = {
         "credit_rating": [20, 50],
         "skills": [
             "firearms", "law", "listen", "psychology", "spot hidden",
-            (1, "art/craft (acting)", "Disguise"), "1i", "1*"
+            (1, "art/craft (acting)", "disguise"), "1i", "1*"
+        ]
+    },
+    "police officer": {
+        "credit_rating": [9, 30],
+        "skills": [
+            "fighting (brawl)", "firearms", "first aid", "law", "psychology", "spot hidden",
+            (1, "drive auto", "ride"), "1i"
         ]
     },
     "private investigator": {
@@ -263,7 +293,7 @@ OCCUPATIONS_DATA = {
     },
 }
 
-BASIC_SKILLS = {
+BASIC_SKILLS: Dict[str, int] = {
     "accounting": 5,
     "acting": 5,
     "anthropology": 1,
@@ -313,7 +343,7 @@ BASIC_SKILLS = {
     "track": 10
 }
 
-CATEGORY_SKILLS = {
+CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
     "art/craft": {
         "art/craft (acting)": 5,
         "art/craft (barber)": 5,
@@ -419,7 +449,7 @@ CATEGORY_SKILLS = {
 }
 
 # Creating ALL_SKILLS dictionary
-ALL_SKILLS = {}
+ALL_SKILLS: Dict[str, int] = {}
 ALL_SKILLS.update(BASIC_SKILLS)
 
 for category in CATEGORY_SKILLS.keys():
