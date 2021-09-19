@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import unittest
 
-from randname.randname import last_name
+from randname import randname
 from cochar import Character
 from unittest.mock import patch
 
@@ -44,6 +44,46 @@ class TestCharacter(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             c = Character(sex="Ass",)
+
+    def test_first_name(self):
+        c = Character(first_name="")
+        self.assertIsInstance(c.first_name, str)
+
+    def test_first_name_manually_set(self):
+        name = "John"
+        c = Character(first_name=name)
+        self.assertEqual(c.first_name, name)
+
+    def test_first_name_setter(self):
+        name = "@#$%^&*()_+=`~0"
+        c = Character()
+        c.first_name = name
+        self.assertEqual(c.first_name, name)
+
+    def test_first_name_setter_invalid(self):
+        c = Character()
+        with self.assertRaises(ValueError):
+            c.first_name = ""
+
+    def test_last_name(self):
+        c = Character(last_name="")
+        self.assertIsInstance(c.last_name, str)
+
+    def test_last_name_manually_set(self):
+        name = "John"
+        c = Character(last_name=name)
+        self.assertEqual(c.last_name, name)
+
+    def test_last_name_setter(self):
+        name = "@#$%^&*()_+=`~0\n|[]{};':\",.<>?"
+        c = Character()
+        c.last_name = name
+        self.assertEqual(c.last_name, name)
+
+    def test_last_name_setter_invalid(self):
+        c = Character()
+        with self.assertRaises(ValueError):
+            c.last_name = ""
 
     def test_age_normal(self):
         self.global_char.age = 45
@@ -351,6 +391,12 @@ class TestCharacter(unittest.TestCase):
         occupation = "zealot"
         c = Character(occupation=occupation) 
         self.assertEqual(c.occupation, occupation)
+
+########## TEST GENERAL FUNCTIONS ####################
+
+    def test_generate_last_name(self):
+        year = 1925
+        sex = 'M'
 
 
 ########## TEST DUNDER METHODS ####################

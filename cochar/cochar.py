@@ -11,6 +11,8 @@ import json
 import randname
 from typing import Dict, List, Tuple, Union
 from bisect import bisect_left
+
+from randname.randname import last_name
 from .utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
 from .utils import OCCUPATIONS_DATA
 from .utils import BASIC_SKILLS
@@ -60,8 +62,10 @@ class Character():
         self._country: str = country
         self._weights: bool = weights
         ### personals ###
-        self._first_name: str = randname.first_name(self._year, self._sex, self._country, self._weights) if not first_name else first_name
-        self._last_name: str = randname.first_name(self._year, self._sex, self._country, self._weights) if not last_name else last_name
+        # self._first_name: str = randname.first_name(self._year, self._sex, self._country, self._weights) if not first_name else first_name
+        # self._last_name: str = randname.last_name(self._year, self._sex, self._country, self._weights) if not last_name else last_name
+        self._first_name: str = self.generate_first_name(self._year, self._sex, self._country, self._weights) if not first_name else first_name
+        self._last_name: str = self.generate_last_name(self._year, self._sex, self._country, self._weights) if not last_name else last_name
         ### characteristics ###
         self._characteristics: Dict[str, int] = {
             "str": 0,
@@ -252,11 +256,6 @@ class Character():
         return self._occupation
 
     @property
-    def characteristics(self) -> dict:
-        return self._characteristics
-    # To Do setter
-
-    @property
     def strength(self) -> int:
         return self._str
 
@@ -378,15 +377,15 @@ class Character():
         return self._first_name
 
     @property
-    def last_name(self, new_last_name: str) -> str:
+    def last_name(self) -> str:
         return self._last_name
 
     @last_name.setter
     def last_name(self, new_last_name: str) -> str:
         if new_last_name == "":
             raise ValueError("Invalid last name. Name cannot be an empty string")
-        self._first_name = str(new_last_name) 
-        return self._first_name
+        self._last_name = str(new_last_name) 
+        return self._last_name
 
     @property
     def characteristics(self) -> Dict[str, int]:
@@ -397,7 +396,7 @@ class Character():
         for item, value in new_characteristics.items():
             if item not in self._characteristics.keys():
                 raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
-            if not isinstance(new_characteristics, int):
+            if not isinstance(value, int):
                 raise ValueError(f"Invalid {item}. {item} must be an integer")
             if value < 0:
                 raise ValueError("{item} cannot be less than 0")
@@ -530,6 +529,7 @@ class Character():
         else:
             return sex.upper()
 
+    # To do; change this to static method
     def set_age(self, age: int = None) -> int:
         """Set age  
 
@@ -834,6 +834,26 @@ class Character():
     def generate_character(cls, *args, **kwargs):
         return cls(*args, **kwargs)
 
+    @staticmethod
+    def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
+        sex = Character._set_valid_sex(sex, country, name='last_names')
+        return randname.last_name(year, sex, country, weights)
+
+    @staticmethod
+    def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
+        sex = Character._set_valid_sex(sex, country, name='first_names')
+        return randname.first_name(year, sex, country, weights)
+
+    @staticmethod
+    def _set_valid_sex(sex: str, country: str, name: str):
+        available_sex = randname.data_lookup()[country][name]
+        if sex not in available_sex:
+            if 'N' in available_sex:
+                sex = 'N'
+            else:
+                sex = random.choice(available_sex)
+        return sex
+        
 
     ######################## DUNDER METHODS #############################
 
