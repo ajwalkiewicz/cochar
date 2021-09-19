@@ -73,7 +73,7 @@ main(){
     # upload changes to pypi.org 
     twine upload $(echo "dist/c*") -u $USER -p $PASS && \
     # create documentation documentation
-    cd docs/
+    cd docs/ && \
     make html
 }
 
