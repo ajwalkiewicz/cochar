@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import unittest
 
+import random
 from randname import randname
 from cochar import Character
 from unittest.mock import patch
@@ -397,6 +398,24 @@ class TestCharacter(unittest.TestCase):
     def test_generate_last_name(self):
         year = 1925
         sex = 'M'
+        weights = True
+        available_sex = ['M', 'F', 'G', None]
+        available_countries = tuple(randname.available_countries())
+        for country in available_countries:
+            for sex in available_sex:
+                name = Character.generate_last_name(year, sex, country, weights)
+                self.assertIsInstance(name, str)
+
+    def test_generate_first_name(self):
+        year = 1925
+        sex = 'M'
+        weights = True
+        available_sex = ['M', 'F', 'G', None]
+        available_countries = tuple(randname.available_countries())
+        for country in available_countries:
+            for sex in available_sex:
+                name = Character.generate_first_name(year, sex, country, weights)
+                self.assertIsInstance(name, str)
 
 
 ########## TEST DUNDER METHODS ####################

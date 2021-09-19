@@ -5,6 +5,7 @@ Example:
 
 >>> Character()
 """
+from hashlib import new
 import random
 import os
 import json
@@ -559,6 +560,24 @@ class Character():
             self._age = age
             return self._age
 
+    @staticmethod
+    def __validate_character_properties(new_variable: int, variable_name: str) -> None:
+        """Private function to validate in setters whether new_variable
+        is a correct one. 
+
+        :param new_variable: variable to check
+        :type new_variable: int
+        :param variable_name: name of that variable
+        :type variable_name: str
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        """
+        variable_name = str(variable_name)
+        if not isinstance(new_variable, int):
+            raise ValueError(f"Invalid {variable_name.lower()} points. {variable_name.capitalize()} points must be an integer")
+        if new_variable < 0:
+            raise ValueError(f"{variable_name.capitalize()} points cannot be less than 0")
+
     ###################### CHARACTERISTICS ########################
 
     def set_characteristics(self) -> Dict[str, int]:
@@ -836,11 +855,43 @@ class Character():
 
     @staticmethod
     def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
+        """Generate Last Name. 
+        Return random last name for the given parameters
+        This method is not recomended as it initialize a Character() class.
+        For faster generation use modeule randname
+
+        :param year: year of the data set with names (if data set not available use a closes available data set)
+        :type year: int
+        :param sex: name gender, available options ['M', 'F', 'N', None]
+        :type sex: str
+        :param country: name country
+        :type country: str
+        :param weights: If true, take under account popularity of names. [default: True]
+        :type weights: bool
+        :return: last name
+        :rtype: str
+        """
         sex = Character._set_valid_sex(sex, country, name='last_names')
         return randname.last_name(year, sex, country, weights)
 
     @staticmethod
     def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
+        """Generate First Name. 
+        Return random first name for the given parameters
+        This method is not recomended as it initialize a Character() class.
+        For faster generation use modeule randname
+
+        :param year: year of the data set with names (if data set not available use a closes available data set)
+        :type year: int
+        :param sex: name gender, available options ['M', 'F', 'N', None]
+        :type sex: str
+        :param country: name country
+        :type country: str
+        :param weights: if true, take under account popularity of names. [default: True]
+        :type weights: bool
+        :return: first name
+        :rtype: str
+        """
         sex = Character._set_valid_sex(sex, country, name='first_names')
         return randname.first_name(year, sex, country, weights)
 
@@ -897,10 +948,10 @@ if __name__ == "__main__":
     c = Character()
 
 # to do
-# [ ]add validation during initialization
+# [ ] fiz isadd validation during initialization
 # [x] types for skills
 # [x] ix issues with creddit rating substruction from occupation points
 # [x] finylly create repr
 # [ ] create function for credit rating
-# [ ] change validation for integer in setters from try: int(x) to isinstance
+# [x] change validation for integer in setters from try: int(x) to isinstance
 # [ ] fix combat values
