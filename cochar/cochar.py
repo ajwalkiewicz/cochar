@@ -186,11 +186,9 @@ class Character():
 
     @year.setter
     def year(self, new_year: int) -> int:
-        try:
-            int(new_year)
-            self._year = new_year
-        except ValueError:
+        if not isinstance(new_year, int):
             raise ValueError("invalid year. year must be integer")
+        self._year = new_year
         return self._year
     
     @property
@@ -262,10 +260,7 @@ class Character():
 
     @strength.setter
     def strength(self, new_strength: int) -> int:
-        if not isinstance(new_strength, int):
-            raise ValueError("Invalid strength. Strength must be an integer")
-        if new_strength < 0:
-            raise ValueError("Strength cannot be less than 0")
+        self.__validate_character_properties(new_strength, "strength")
         self._str = new_strength
         return self._str
 
@@ -275,10 +270,7 @@ class Character():
 
     @condition.setter
     def condition(self, new_condition: int) -> int:
-        if not isinstance(new_condition, int):
-            raise ValueError("Invalid condition. Strength must me an integer")
-        if new_condition < 0:
-            raise ValueError("Strength cannot be less than 0")
+        self.__validate_character_properties(new_condition, "condition")
         self._con = new_condition
         return self._con
 
@@ -288,10 +280,7 @@ class Character():
 
     @size.setter
     def size(self, new_size: int) -> int:
-        if not isinstance(new_size, int):
-            raise ValueError("Invalid size points. Size points must be an integer")
-        if new_size < 0:
-            raise ValueError("Size points cannot be less than 0")
+        self.__validate_character_properties(new_size, "size")
         self._siz = new_size
         return self._siz
 
@@ -301,10 +290,7 @@ class Character():
 
     @dexterity.setter
     def dexterity(self, new_dexterity: int) -> int:
-        if not isinstance(new_dexterity, int):
-            raise ValueError("Invalid dexterity points. Dexterity points must be an integer")
-        if new_dexterity < 0:
-            raise ValueError("Dexterity points cannot be less than 0")
+        self.__validate_character_properties(new_dexterity, "dexterity")
         self._dex = new_dexterity
         return self._dex
 
@@ -314,10 +300,7 @@ class Character():
 
     @apperance.setter
     def apperance(self, new_apperance: int) -> int:
-        if not isinstance(new_apperance, int):
-            raise ValueError("Invalid apperance points. Apperance points must be an integer")
-        if new_apperance < 0:
-            raise ValueError("Apperance points cannot be less than 0")
+        self.__validate_character_properties(new_apperance, "apperance")
         self._app = new_apperance
         return self._app
 
@@ -327,10 +310,7 @@ class Character():
 
     @edducation.setter
     def edducation(self, new_edducation: int) -> int:
-        if not isinstance(new_edducation, int):
-            raise ValueError("Invalid edducation points. Edducation points must be an integer")
-        if new_edducation < 0:
-            raise ValueError("Edducation points cannot be less than 0")
+        self.__validate_character_properties(new_edducation, "edducation")
         self._edu = new_edducation
         return self._edu
 
@@ -339,12 +319,9 @@ class Character():
         return self._int
 
     @intelligence.setter
-    def intelligence(self, new_inteligennce: int) -> int:
-        if not isinstance(new_inteligennce, int):
-            raise ValueError("Invalid intelligence points. Intelligence points must be an integer")
-        if new_inteligennce < 0:
-            raise ValueError("Intelligence points cannot be less than 0")
-        self._int = new_inteligennce
+    def intelligence(self, new_inteligence: int) -> int:
+        self.__validate_character_properties(new_inteligence, "intelligence")
+        self._int = new_inteligence
         return self._int
 
     @property
@@ -353,10 +330,7 @@ class Character():
 
     @power.setter
     def power(self, new_power: int) -> int:
-        if not isinstance(new_power, int):
-            raise ValueError("Invalid power points. Power points must be an integer")
-        if new_power < 0:
-            raise ValueError("Power points cannot be less than 0")
+        self.__validate_character_properties(new_power, "power")
         self._pow = new_power
         return self._pow
 
@@ -397,10 +371,11 @@ class Character():
         for item, value in new_characteristics.items():
             if item not in self._characteristics.keys():
                 raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
-            if not isinstance(value, int):
-                raise ValueError(f"Invalid {item}. {item} must be an integer")
-            if value < 0:
-                raise ValueError("{item} cannot be less than 0")
+            # if not isinstance(value, int):
+            #     raise ValueError(f"Invalid {item}. {item} must be an integer")
+            # if value < 0:
+            #     raise ValueError("{item} cannot be less than 0")
+            self.__validate_character_properties(value, item)
             self._characteristics.update({item: value})
             self.__dict__.update({f"_{item}": value})
         return self._characteristics
@@ -431,10 +406,7 @@ class Character():
 
     @occupation_points.setter
     def occupation_points(self, new_occupation_points: int) -> int:
-        if not isinstance(new_occupation_points, int):
-            raise ValueError("Invalid occupation points. Occupation points must be an integer")
-        if new_occupation_points < 0:
-            raise ValueError("Occupation points cannot be less than 0")
+        self.__validate_character_properties(new_occupation_points, "occupation")
         self._occupation_points = new_occupation_points
         return self._occupation_points
 
@@ -444,10 +416,7 @@ class Character():
 
     @hobby_points.setter
     def hobby_points(self, new_hobby_points: int) -> int:
-        if not isinstance(new_hobby_points, int):
-            raise ValueError("Invalid hobby points. Hobby points must be an integer")
-        if new_hobby_points < 0:
-            raise ValueError("Hobby points cannot be less than 0")
+        self.__validate_character_properties(new_hobby_points, "hobby")
         self._hobby_points = new_hobby_points
         return self._hobby_points
 
@@ -457,10 +426,7 @@ class Character():
 
     @sanity_points.setter
     def sanity_points(self, new_sanity_points: int) -> int:
-        if not isinstance(new_sanity_points, int):
-            raise ValueError("Invalid sanity points. Sanity points must be an integer")
-        if new_sanity_points < 0:
-            raise ValueError("Sanity points cannot be less than 0")
+        self.__validate_character_properties(new_sanity_points, "sanity")
         self._sanity_points = new_sanity_points
         return self._sanity_points
 
@@ -470,10 +436,7 @@ class Character():
 
     @magic_points.setter
     def magic_points(self, new_magic_points: int) -> int:
-        if not isinstance(new_magic_points, int):
-            raise ValueError("Invalid magic points. Magic points must be an integer")
-        if new_magic_points < 0:
-            raise ValueError("Magic points cannot be less than 0")
+        self.__validate_character_properties(new_magic_points, "magic")
         self._magic_points = new_magic_points
         return self._magic_points
 
@@ -483,10 +446,7 @@ class Character():
 
     @hit_points.setter
     def hit_points(self, new_hit_points: int) -> int:
-        if not isinstance(new_hit_points, int):
-            raise ValueError("Invalidluckt points. Hit points must be an integer")
-        if new_hit_points < 0:
-            raise ValueError("Hit points cannot be less than 0")
+        self.__validate_character_properties(new_hit_points, "hit")
         self._hit_points = new_hit_points
         return self._hit_points
 
@@ -496,10 +456,7 @@ class Character():
 
     @luck.setter
     def luck(self, new_luck: int) -> int:
-        if not isinstance(new_luck, int):
-            raise ValueError("Invalid luck points. Luck points must be an integer")
-        if new_luck < 0:
-            raise ValueError("Luck points cannot be less than 0")
+        self.__validate_character_properties(new_luck, "luck")
         self._luck = new_luck
         return self._luck
 
@@ -571,6 +528,11 @@ class Character():
         :type variable_name: str
         :raises ValueError: if variable is not an integer
         :raises ValueError: if varible is below 0
+
+        >>> Character._Character__validate_character_properties("a", 'luck')
+        ValueError: Invalid luck points. Luck points must be an integer
+        >>> Character._Character__validate_character_properties(-1, 'luck')
+        ValueError: Luck points cannot be less than 0
         """
         variable_name = str(variable_name)
         if not isinstance(new_variable, int):

@@ -86,6 +86,13 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(ValueError):
             c.last_name = ""
 
+    def test_year_normal(self):
+        self.global_char.year = 45
+
+    def test_year_not_integer(self):
+        with self.assertRaises(ValueError):
+            self.global_char.year = "a"   
+   
     def test_age_normal(self):
         self.global_char.age = 45
 
