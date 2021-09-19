@@ -8,7 +8,7 @@ with open(f"{THIS_FOLDER}/README_PYPI.md", "r") as fh:
 
 setup(
     name="cochar",
-    version="0.0.7",
+    version="0.0.8",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -28,7 +28,7 @@ setup(
     packages=["cochar"],
     include_package_data=True,
     install_requires=[
-        "rname=0.2.2"
+        "rname"
     ],
     # packages=find_packages("src"),
     # package_dir={'': 'src'},
