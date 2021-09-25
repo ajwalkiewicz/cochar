@@ -9,7 +9,7 @@ from unittest.mock import patch
 class TestCharacter(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.global_char = Character()
+        cls.character = Character()
 
     @classmethod
     def tearDownClass(cls):
@@ -38,7 +38,7 @@ class TestCharacter(unittest.TestCase):
             # hobby_points="milion",
             # characteristics="Nothing",
             # luck="a lot",
-            skills="Chuck Norris",
+            # skills="Chuck Norris",
             # combat_values={"hello": "world"},
             weights=5
         )
@@ -87,158 +87,169 @@ class TestCharacter(unittest.TestCase):
             c.last_name = ""
 
     def test_year_normal(self):
-        self.global_char.year = 45
+        self.character.year = 45
 
     def test_year_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.year = "a"   
+            self.character.year = "a"   
    
     def test_age_normal(self):
-        self.global_char.age = 45
+        self.character.age = 45
 
     def test_age_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.age = 14
+            self.character.age = 14
 
     def test_age_above_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.age = 91
+            self.character.age = 91
 
     def test_age_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.age = "a"    
+            self.character.age = "a"    
 
     def test_strength_normal(self):
-        self.global_char.strength = 0
+        self.character.strength = 0
 
     def test_strength_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.strength = -1
+            self.character.strength = -1
 
     def test_strength_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.strength = "a"
+            self.character.strength = "a"
 
     def test_condition_normal(self):
-        self.global_char.condition = 0
+        self.character.condition = 0
 
     def test_condition_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.condition = -1
+            self.character.condition = -1
 
     def test_condition_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.condition = "a"
+            self.character.condition = "a"
 
     def test_size_normal(self):
-        self.global_char.size = 0
+        self.character.size = 0
 
     def test_size_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.size = -1
+            self.character.size = -1
 
     def test_size_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.size = "a"
+            self.character.size = "a"
 
     def test_dexterity_normal(self):
-        self.global_char.dexterity = 0
+        self.character.dexterity = 0
 
     def test_dexterity_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.dexterity = -1
+            self.character.dexterity = -1
 
     def test_dexterity_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.dexterity = "a"
+            self.character.dexterity = "a"
 
     def test_apperance_normal(self):
-        self.global_char.apperance = 0
+        self.character.apperance = 0
 
     def test_apperance_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.apperance = -1
+            self.character.apperance = -1
 
     def test_apperance_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.apperance = "a"
+            self.character.apperance = "a"
 
     def test_edducation_normal(self):
-        self.global_char.edducation = 0
+        self.character.edducation = 0
 
     def test_edducation_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.edducation = -1
+            self.character.edducation = -1
 
     def test_edducation_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.edducation = "a"
+            self.character.edducation = "a"
 
     def test_intelligence_normal(self):
-        self.global_char.intelligence = 0
+        self.character.intelligence = 0
 
     def test_intelligence_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.intelligence = -1
+            self.character.intelligence = -1
 
     def test_intelligence_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.intelligence = "a"
+            self.character.intelligence = "a"
 
     def test_power_normal(self):
-        self.global_char.power = 0
+        self.character.power = 0
 
     def test_power_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.power = -1
+            self.character.power = -1
 
     def test_power_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.power = "a"
+            self.character.power = "a"
     
     def test_sanity_points_normal(self):
-        self.global_char.sanity_points = 0
+        self.character.sanity_points = 0
 
     def test_sanity_points_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.sanity_points = -1
+            self.character.sanity_points = -1
 
     def test_sanity_points_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.sanity_points = "a"
+            self.character.sanity_points = "a"
 
     def test_magic_points_normal(self):
-        self.global_char.magic_points = 0
+        self.character.magic_points = 0
 
     def test_magic_points_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.magic_points = -1
+            self.character.magic_points = -1
 
     def test_magic_points_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.magic_points = "a"
+            self.character.magic_points = "a"
     
     def test_hit_points_normal(self):
-        self.global_char.hit_points = 0
+        self.character.hit_points = 0
 
     def test_hit_points_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.hit_points = -1
+            self.character.hit_points = -1
 
     def test_hit_points_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.hit_points = "a"
+            self.character.hit_points = "a"
 
     def test_luck_normal(self):
-        self.global_char.luck = 0
+        self.character.luck = 0
 
     def test_luck_below_range(self):
         with self.assertRaises(ValueError):
-            self.global_char.luck = -1
+            self.character.luck = -1
 
     def test_luck_not_integer(self):
         with self.assertRaises(ValueError):
-            self.global_char.luck = "a"
+            self.character.luck = "a"
+
+    def test_move_rate_normal(self):
+        self.character.move_rate = 0
+
+    def test_move_rate_below_range(self):
+        with self.assertRaises(ValueError):
+            self.character.move_rate = -1
+
+    def test_move_rate_not_integer(self):
+        with self.assertRaises(ValueError):
+            self.character.move_rate = "a"
 
     def test_skills_correct(self):
         skills = {"ride": 50, "occult": 50}
@@ -251,17 +262,38 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(ValueError):
             c.skills = skills
 
-    def test_skills_incorrect_key(self):
-        skills = {"ride": 50, "fake skill": 50}
-        c = Character()
-        with self.assertRaises(ValueError):
-            c.skills = skills
+    # def test_skills_incorrect_key(self):
+    #     skills = {"ride": 50, "fake skill": 50}
+    #     c = Character()
+    #     with self.assertRaises(ValueError):
+    #         c.skills = skills
 
     def test_skills_incorrect_value_below_0(self):
         skills = {"ride": 50, "occult": -1}
         c = Character()
         with self.assertRaises(ValueError):
             c.skills = skills
+
+    def test_skills_change_one_skill(self):
+        skill = "testing"
+        self.character.skills[skill] = 70
+
+    def test_damage_bonus_normal(self):
+        self.character.damage_bonus = "+1K4"
+
+    def test_damage_bonus_below_range(self):
+        with self.assertRaises(ValueError):
+            self.character.damage_bonus = -3
+
+    def test_build_normal(self):
+        self.character.build = -2
+        self.character.build = 2
+        self.character.build = 6
+
+    def test_build_below_range(self):
+        with self.assertRaises(ValueError):
+            self.character.build = -3
+            self.character.build = -7
 
 #### OCCUPATIONS ####
 

@@ -12,8 +12,7 @@ import json
 import randname
 from typing import Dict, List, Tuple, Union
 from bisect import bisect_left
-
-from randname.randname import last_name
+from collections import UserDict
 from .utils import OCCUPATIONS_GROUPS, OCCUPATIONS_LIST
 from .utils import OCCUPATIONS_DATA
 from .utils import BASIC_SKILLS
@@ -27,6 +26,32 @@ from .utils import YEAR_RANGE
 
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
+
+class Skills(UserDict):
+    """Dictionary like object to store charcter skills.
+
+    :param UserDict: UserDict from collections
+    :type UserDict: abc.ABCMets
+    """
+    def __setitem__(self, key: any, value: int) -> None:
+        """Add vallidation for skill values
+
+        :param key: skill name
+        :type key: any
+        :param value: skill value
+        :type value: int
+        :raises ValueError: when value is not an integer
+        :raises ValueError: when value is less than 0
+        """
+        key = str(key)
+        # if key not in ALL_SKILLS:
+        #     raise ValueError(f"Skill: {key}, doesn't exist")
+        if not isinstance(value, int):
+            raise ValueError(f"Invalid {key.lower()} points. {key.capitalize()} points must be an integer")
+        if value < 0:
+            raise ValueError(f"{key.capitalize()} points cannot be less than 0")
+        self.data[key] = value
+
 
 class Character():
     MIN_AGE: int = 15
@@ -139,11 +164,10 @@ class Character():
 
         ### Skills ###
         if skills:
-            # To do: Add validatoin
-            self._skills = skills
+            self._skills = Skills(skills)
         else:
             # Order of following instructions is very important!
-            self._skills: dict[str, int] = {}
+            self._skills: Skills[str, int] = Skills()
             # self.occupation_skills_list: list[str] = []
             # self.hobby_skills_list: list[str] = []
 
@@ -155,7 +179,7 @@ class Character():
 
             # self._occupation_points -= credit_rating_points
             occupation_points_to_distribute = self._occupation_points - credit_rating_points
-            self._skills: dict = self.set_skills_dict(occupation_points_to_distribute)
+            self._skills = self.set_skills_dict(occupation_points_to_distribute)
             self._skills.setdefault('credit rating', credit_rating_points)
 
 
@@ -182,12 +206,20 @@ class Character():
 
     @property
     def year(self) -> int:
+        """year
+
+        :return: year
+        :rtype: int
+
+        >>> c = Character()
+        >>> c.year = 1800
+        """
         return self._year
 
     @year.setter
     def year(self, new_year: int) -> int:
         if not isinstance(new_year, int):
-            raise ValueError("invalid year. year must be integer")
+            raise ValueError("Invalid year. year must be integer")
         self._year = new_year
         return self._year
     
@@ -338,7 +370,11 @@ class Character():
     def move_rate(self) -> int:
         return self._move_rate
 
-    # TO do setter fo move_rate
+    @move_rate.setter
+    def move_rate(self, new_move_rate: int) -> int:
+        self.__validate_character_properties(new_move_rate, "move rate")
+        self._move_rate = new_move_rate
+        return self._move_rate
 
     @property
     def first_name(self) -> str:
@@ -386,7 +422,6 @@ class Character():
 
     @skills.setter
     def skills(self, **new_skills: Dict[str, int]) -> Dict[str, int]:
-        # To do: add validation
         self._skills.update(new_skills)
         return self._skills
 
@@ -469,16 +504,66 @@ class Character():
         if not isinstance(new_skills, dict):
             raise ValueError("Invalid skills. Skills must be a dict")
 
-        for key, value in new_skills.items():
-            if key not in ALL_SKILLS:
-                raise ValueError(f"Skill: {value}, doesn't exist")
-            if not isinstance(value, int):
-                raise ValueError(f"Skill value: {value}, must be an integer")
-            if value < 0:
-                raise ValueError(f"Skill value: {value}, cannot be below 0")
+        # for key, value in new_skills.items():
+        #     if key not in ALL_SKILLS:
+        #         raise ValueError(f"Skill: {value}, doesn't exist")
+        #     if not isinstance(value, int):
+        #         raise ValueError(f"Skill value: {value}, must be an integer")
+        #     if value < 0:
+        #         raise ValueError(f"Skill value: {value}, cannot be below 0")
 
-        self._skills = new_skills
+        self._skills = Skills(new_skills)
         return self._skills
+
+    @property
+    def combat_values(self) -> dict:
+        return self._combat_values
+
+    @combat_values.setter
+    def combat_values(self, new_combat_values: dict) -> dict:
+        # To do
+        self._combat_values = new_combat_values
+        return self._combat_values
+
+    @property
+    def damage_bonus(self) -> str:
+        return self._damage_bonus
+    
+    @damage_bonus.setter
+    def damage_bonus(self, new_damage_bonus: str) -> str:
+        # To do: increase range. +1 for each 80 point above STR+SIZ
+        correct_values = ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6']
+        new_damage_bonus = str(new_damage_bonus).upper()
+        if new_damage_bonus in correct_values:
+            self._damage_bonus = new_damage_bonus
+        else:
+            raise ValueError(f"Invalid damage bonus. {new_damage_bonus} not in {correct_values}")
+        return self._damage_bonus
+
+    @property
+    def build(self) -> int:
+        return self._build
+
+    @build.setter
+    def build(self, new_build: int) -> int:
+        # To do: increase range. +1 for each 80 point above STR+SIZ
+        correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]
+        if new_build in correct_values:
+            self._build = new_build
+        else:
+            raise ValueError(f"Invalid build. {new_build} not in {correct_values}")
+        return self._build
+
+    @property
+    def doge(self) -> int:
+        return self._doge
+
+    @doge.setter
+    def doge(self, new_doge: int) -> int:
+        self.__validate_character_properties(new_doge, "doge")
+        self.skills["doge"] = new_doge
+        self._doge = new_doge
+        return self._doge
     
     @staticmethod
     def set_sex(sex: Union[str, None]) -> str:
@@ -684,13 +769,13 @@ class Character():
 
         return max(points)
 
-    def set_skills_dict(self, occupation_points: int):
+    def set_skills_dict(self, occupation_points: int) -> Skills:
         """[summary]
 
         :return: [description]
         :rtype: [type]
         """
-        self._skills = {}
+        self._skills = Skills()
         occupation_input_list = OCCUPATIONS_DATA[
             self._occupation]["skills"].copy()
         occupation_skills_list = self._get_skills_list(
@@ -910,10 +995,12 @@ if __name__ == "__main__":
     c = Character()
 
 # to do
-# [ ] fiz isadd validation during initialization
+# [ ] add skill method to skills to validate skills
+# [ ] add validation during initialization
 # [x] types for skills
-# [x] ix issues with creddit rating substruction from occupation points
-# [x] finylly create repr
+# [x] fix issues with creddit rating substruction from occupation points
+# [x] create repr
 # [ ] create function for credit rating
 # [x] change validation for integer in setters from try: int(x) to isinstance
 # [ ] fix combat values
+# [ ] improve damage setting damage bonus and build. +1 for each 80 point above
