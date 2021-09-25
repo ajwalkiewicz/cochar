@@ -75,7 +75,8 @@ OCCUPATIONS_GROUPS: List[List[str]] = [
     [
         'police detective', 'athlete', 'tribe member', 'farmer',
         'police officer', 'military officer', 'private investigator',
-        'criminal', 'drifter', 'soldier'
+        'criminal', 'drifter', 'soldier',
+        # 'test_occ'
     ]
 ]  # 5
 
@@ -107,6 +108,7 @@ OCCUPATIONS_LIST: List[str] = [
     'soldier',
     'tribe member',
     'zealot',
+    # 'test_occ'
 ]
 
 OCCUPATIONS_DATA: Dict[str, Dict[str, List[Union[int, str]]]] = {

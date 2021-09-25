@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 import unittest
+from deepdiff import DeepDiff
 
-import random
 from randname import randname
 from cochar import Character
-from unittest.mock import patch
+from cochar import ALL_SKILLS
+
 
 class TestCharacter(unittest.TestCase):
     @classmethod
@@ -40,7 +41,7 @@ class TestCharacter(unittest.TestCase):
             # luck="a lot",
             # skills="Chuck Norris",
             # combat_values={"hello": "world"},
-            weights=5
+            # weights=5
         )
 
         with self.assertRaises(ValueError):
@@ -278,6 +279,42 @@ class TestCharacter(unittest.TestCase):
         skill = "testing"
         self.character.skills[skill] = 70
 
+    def test_skills_correct_distribution(self):
+        c = Character(hobby_points=50, occupation_points=0)
+        # print(c.__dict__)
+        # print(c)
+        # print(c.occupation_points, c.hobby_points)
+        skills_total_sum = sum(list(c.skills.values()))
+        basic_skills_total_sum = 0
+        for skill, value in c.skills.items():
+            if skill == 'credit rating':
+                continue
+            # assert value == ALL_SKILLS[skill]
+            basic_skills_total_sum += value
+            # print(value, ALL_SKILLS[skill])
+        # basic_skills_total_sum += c.skills['credit rating']
+        assert skills_total_sum - c.skills['credit rating'] == basic_skills_total_sum
+        # print(skills_total_sum, basic_skills_total_sum)
+
+    def test_credit_rating_above_range(self):
+        c = Character(occupation="lawyer", occupation_points=81)
+        #  lawyer - credit rating [30, 80]
+        assert c._occupation_points > c.skills['credit rating']
+        print(c._occupation_points, c.skills['credit rating'])
+
+    def test_credit_rating_below_min_range(self):
+        c = Character(occupation="lawyer", occupation_points=29)
+        #  lawyer - credit rating [30, 80]
+        assert c._occupation_points >= c.skills['credit rating']
+        print(c._occupation_points, c.skills['credit rating'])
+
+
+    def test_credit_rating_below_max_range(self):
+        c = Character(occupation="lawyer", occupation_points=31)
+        #  lawyer - credit rating [30, 80]
+        assert c._occupation_points >= c.skills['credit rating']
+        print(c._occupation_points, c.skills['credit rating'])
+
     def test_damage_bonus_normal(self):
         self.character.damage_bonus = "+1K4"
 
@@ -462,6 +499,7 @@ class TestCharacter(unittest.TestCase):
     def test_repr_true(self):
         c = Character()
         d = eval(c.__repr__())
+        print(DeepDiff(c, d), end="")
         assert c == d
 
     def test_repr_false(self):
