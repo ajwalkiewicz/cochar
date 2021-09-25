@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>cochar.cochar module &#8212; cochar 0.0.8 documentation</title>
+    <title>cochar.cochar module &#8212; cochar 0.0.9 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to cochar’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.0.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.0.9 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">cochar.cochar module</a></li> 
       </ul>
     </div>  
@@ -52,7 +52,7 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="cochar.cochar.Character">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">Character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1925</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'US'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'optimal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hobby_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">characteristics</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luck</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combat_values</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">Character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1925</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'US'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'optimal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hobby_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">characteristics</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luck</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cochar.cochar.Character.MAX_AGE">
@@ -85,13 +85,18 @@
 <dd></dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.build">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">build</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#cochar.cochar.Character.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="cochar.cochar.Character.characteristics">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">characteristics</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict[str,</span> <span class="pre">int]</span></em><a class="headerlink" href="#cochar.cochar.Character.characteristics" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="cochar.cochar.Character.combat_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">combat_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict[str,</span> <span class="pre">int]</span></em><a class="headerlink" href="#cochar.cochar.Character.combat_values" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">combat_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">dict</span></em><a class="headerlink" href="#cochar.cochar.Character.combat_values" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -105,8 +110,18 @@
 <dd></dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.damage_bonus">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">damage_bonus</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#cochar.cochar.Character.damage_bonus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="cochar.cochar.Character.dexterity">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dexterity</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#cochar.cochar.Character.dexterity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.cochar.Character.doge">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">doge</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#cochar.cochar.Character.doge" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -184,6 +199,11 @@ For faster generation use modeule randname</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.get_credit_rating_points">
+<span class="sig-name descname"><span class="pre">get_credit_rating_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#cochar.cochar.Character.get_credit_rating_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cochar.cochar.Character.get_skill_points">
@@ -280,6 +300,11 @@ For faster generation use modeule randname</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_build">
+<span class="sig-name descname"><span class="pre">set_build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#cochar.cochar.Character.set_build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="cochar.cochar.Character.set_characteristics">
 <span class="sig-name descname"><span class="pre">set_characteristics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#cochar.cochar.Character.set_characteristics" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
@@ -294,8 +319,13 @@ For faster generation use modeule randname</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cochar.cochar.Character.set_combat_values">
-<span class="sig-name descname"><span class="pre">set_combat_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#cochar.cochar.Character.set_combat_values" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_damage_bonus">
+<span class="sig-name descname"><span class="pre">set_damage_bonus</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#cochar.cochar.Character.set_damage_bonus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.cochar.Character.set_doge">
+<span class="sig-name descname"><span class="pre">set_doge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#cochar.cochar.Character.set_doge" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -322,7 +352,7 @@ For faster generation use modeule randname</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cochar.cochar.Character.set_skills_dict">
-<span class="sig-name descname"><span class="pre">set_skills_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Character.set_skills_dict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_skills_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#cochar.cochar.Skills" title="cochar.cochar.Skills"><span class="pre">cochar.cochar.Skills</span></a><a class="headerlink" href="#cochar.cochar.Character.set_skills_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -346,7 +376,7 @@ For faster generation use modeule randname</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="cochar.cochar.Character.skills">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">skills</span></span><em class="property"><span class="pre">:</span> <span class="pre">dict</span></em><a class="headerlink" href="#cochar.cochar.Character.skills" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">skills</span></span><em class="property"><span class="pre">:</span> <span class="pre">cochar.cochar.Skills</span></em><a class="headerlink" href="#cochar.cochar.Character.skills" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -372,11 +402,22 @@ For faster generation use modeule randname</p>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Character</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">1800</span>
-<span class="go">1800</span>
 </pre></div>
 </div>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cochar.cochar.Skills">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">Skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.cochar.Skills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.UserDict</span></code></p>
+<p>Dictionary like object to store charcter skills.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>UserDict</strong> (<em>abc.ABCMets</em>) – UserDict from collections</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -457,7 +498,7 @@ p - professor</p>
         <li class="right" >
           <a href="index.html" title="Welcome to cochar’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.0.8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.0.9 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">cochar.cochar module</a></li> 
       </ul>
     </div>
