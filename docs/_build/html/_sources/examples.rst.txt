@@ -1,0 +1,4 @@
+Examples
+========
+
+Just an example of hot to use Cochar module.

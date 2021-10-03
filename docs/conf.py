@@ -22,7 +22,7 @@ copyright = '2021, Adam Walkiewicz'
 author = 'Adam Walkiewicz'
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.0"
+release = "0.1.1"
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,7 +31,9 @@ release = "0.1.0"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.todo',
+    'myst_parser'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -54,3 +56,13 @@ html_theme = 'classic'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# for to do list?
+todo_include_todos = True
+
+# For other markdown languages
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}

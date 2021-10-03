@@ -1,5 +1,4 @@
 cochar package
-
 ==============
 
 cochar.cochar module
