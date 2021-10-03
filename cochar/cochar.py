@@ -1,9 +1,29 @@
 #!/usr/bin/python3
-"""Call of Cthulhu character generator
+"""
+**Call of Cthulhu character generator**
+
 Generate random character with characteristics for the Call of Cthulhu RPG game.
 It support's CoC 7th eddition.
 
-Example:
+See module ``randname`` for a mechanism to generate random names.
+
+**Classes:**
+
+:class Skills: dictionary like obcject to stroe character skills
+:class Character: main character class to represent character
+
+**Misc. variables:**
+
+:param POP_PIRAMID_PATH: path to file with population piramid
+:param OCCUPATIONS_GROUPS: occupations deviced on 5 groups
+:param OCCUPATION_LIST: list of all occupatoins
+:param MIN_AGE: min age for character
+:param MAX_AGE: max age for character
+:param MAX_SKILL_LEVEL: max skill lever for a skill
+:param _THIS_FOLDER: path to this module folder
+:param _BASE_CHARACTERISTICS: basic character characteristics
+
+**Example:**
 
 >>> c= Character()
 >>> c
@@ -43,7 +63,10 @@ _BASE_CHARACTERISTICS = (
     "edducation",
     "intelligence",
     "power",
-    "move_rate")
+    "move_rate",
+    "sanity_points",
+    "magic_points",
+    "hit_points")
 
 # __SEX_OPTIONS: list = ['M', 'F', None]
 
@@ -77,12 +100,72 @@ class Skills(UserDict):
 
 
 class Character():
-    # MIN_AGE: int = 15
-    # MAX_AGE: int = 90
+    """Class to represent character.
+
+    :param year: year when character born, defaults to 1925
+    :type year: int, optional
+    :param age: character age, defaults to None
+    :type age: str, optional
+    :param sex: character sex, defaults to None
+    :type sex: str, optional
+    :param first_name: character name, random if not set, defaults to None
+    :type first_name: str, optional
+    :param last_name: character last name, random if not set, defaults to None
+    :type last_name: str, optional
+    :param country: country to generate name and last name, defaults to "US"
+    :type country: str, optional
+    :param occupation: character occupation, optimal occupation (base on max skill points) if not set, defaults to "optimal"
+    :type occupation: str, optional
+    :param occupation_points: occupation point, max if not set, defaults to None
+    :type occupation_points: int, optional
+    :param hobby_points: hobby points, 2*intelligence if not set, defaults to None
+    :type hobby_points: int, optional
+    :param skills: character skills, random if not set, defaults to None
+    :type skills: dict, optional
+    :param strength: character strength, random if not set, defaults to 0
+    :type strength: int, optional
+    :param condition: character condition, random if not set, defaults to 0
+    :type condition: int, optional
+    :param size: character size, random if not set,  defaults to 0
+    :type size: int, optional
+    :param dexterity: character dexterity, random if not set,  defaults to 0
+    :type dexterity: int, optional
+    :param apperance: character apperance, random if not set,  defaults to 0
+    :type apperance: int, optional
+    :param edducation: character edducation, random if not set,  defaults to 0
+    :type edducation: int, optional
+    :param intelligence: character intelligence, random if not set,  defaults to 0
+    :type intelligence: int, optional
+    :param power: character power, random if not set,  defaults to 0
+    :type power: int, optional
+    :param move_rate: character move_rate, random if not set,  defaults to 0
+    :type move_rate: int, optional
+    :param sanity_points: character sanity_points, random if not set,  defaults to 0
+    :type sanity_points: int, optional
+    :param magic_points: character magic_points, random if not set,  defaults to 0
+    :type magic_points: int, optional
+    :param hit_points: character hit_points, random if not set,  defaults to 0
+    :type hit_points: int, optional
+    :param luck: character luck, random if not set,  default to 0
+    :type luck: int, optional
+
+    **Characteristics**::
+
+    - strength       = random.randint(15, 90)
+    - condition      = random.randint(15, 90)
+    - size           = random.randint(40, 90)
+    - dexterity      = random.randint(15, 90)
+    - apperance      = random.randint(15, 90)
+    - edducation     = random.randint(40, 90)
+    - intelligence   = random.randint(40, 90)
+    - power          = random.randint(15, 90)
+    - move_rate      = [0, 0, 1, 2, 3, 4, 5]
+    - sanity_points  = power
+    - magic_points   = power // 5
+    - hit_points     = (size + condition) // 10
+    - luck           = random.randint(15, 90)
+    """
     __SEX_OPTIONS: list = ['M', 'F', None]
-    # OCCUPATIONS_GROUPS: list = OCCUPATIONS_GROUPS.copy()
-    # OCCUPATIONS_LIST: list = OCCUPATIONS_LIST.copy()
-    # MAX_SKILL_LEVEL: int = 90
 
     def __init__(
             self,
@@ -96,10 +179,10 @@ class Character():
             occupation_points: int = None,
             hobby_points: int = None,
             # occupation_mode: str = "optimal",
-            luck: int = None,
             skills: dict = None, # Highly not recomended
             weights: bool = True,
             **kwargs) -> None:
+        """Constructs all the necessary attributes for the character object"""
         ### basics ###
         self.year: int = year
         if sex in self.__SEX_OPTIONS:
@@ -127,21 +210,10 @@ class Character():
         for char in _BASE_CHARACTERISTICS:
             if char in kwargs:
                 setattr(self, char, kwargs[char])
-
-        ### Luck - it's unique as it is always total random skill, not related with anything
-        if luck:
-            self.luck = luck
-        else:
-            self.luck = random.randint(15, 90)
-
-        ### derived atributes ###
-        self.sanity_points: int = 0
-        self.magic_points: int = 0
-        self.hit_points: int = 0
-        self._set_derived_attributes()
+        
+        self.set_derived_attributes()
 
         ### occupation ###
-
         if occupation in OCCUPATIONS_LIST + ["optimal", "random", None]:
             self._occupation = occupation
         else:
@@ -211,12 +283,19 @@ class Character():
         else:
             self.set_doge()
 
+        ### luck ###
+        if "luck" in kwargs:
+            self.luck = kwargs["luck"]
+        else:
+            self._set_luck()
+
     ###################### PROPERTIES ########################
 
     @property
     def year(self) -> int:
-        """year
+        """**Year of born**
 
+        :raises ValueError: Invalid year. year must be integer
         :return: year
         :rtype: int
 
@@ -234,6 +313,24 @@ class Character():
     
     @property
     def sex(self) -> Union[str, None]:
+        """Character sex
+
+        **legend**
+
+        - M: male
+        - F: female
+        - None: for non binary
+
+        As there is not data for non biary names. When ``None`` is selected sex will be randomly drawn from [M, F]
+
+        :raises ValueError: Incorrect sex falue: sex -> ['M', 'F', None']
+        :return: sex
+        :rtype: Union[str, None]
+
+        >>> c = Character()
+        >>> c.sex
+        'F'
+        """
         return self._sex
 
     @sex.setter
@@ -241,11 +338,20 @@ class Character():
         if new_sex in ['M', 'F', None]:
             self._sex = self.set_sex(new_sex)
         else:
-            raise ValueError("incorrect sex falue: sex -> ['M', 'F', None']")
+            raise ValueError("Incorrect sex falue: sex -> ['M', 'F', None']")
         return self._sex
     
     @property
     def age(self) -> int:
+        """**Character age**
+
+        Age has to be between MIN_AGE and MAX_AGE.
+
+        :raises ValueError: Invalid age. Age must be an integer
+        :raises ValueError: Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]
+        :return: Character age
+        :rtype: int
+        """
         return self._age
 
     @age.setter
@@ -256,11 +362,21 @@ class Character():
         if MIN_AGE <= new_age <= MAX_AGE:
             self._age = new_age
         else:
-            raise ValueError(f"age not in range: [{MIN_AGE}, {MAX_AGE}]")
+            raise ValueError(f"Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]")
         return self._age
 
     @property
     def country(self) -> str:
+        """**Character country**
+
+        Country must bu in availables countries.
+        
+        See ``randname.availavle_countries()``
+
+        :raises ValueError: "Country not available: {new_country} -> {randname.available_countries()}
+        :return: character country
+        :rtype: str
+        """
         return self._country
 
     @country.setter
@@ -273,6 +389,17 @@ class Character():
     
     @property
     def weights(self) -> bool:
+        """weights
+
+        Required for random.choices()
+
+        - **True**: use weights when generating names
+        - **False**: every name in a given year has same chance to be drawn.
+
+        :raises ValueError: Weights must be a bool type
+        :return: weights
+        :rtype: bool
+        """
         return self._weights
 
     @weights.setter
@@ -280,11 +407,19 @@ class Character():
         if isinstance(new_weights, bool):
             self._weights = new_weights
         else:
-            raise ValueError("Weights must be bool type")
+            raise ValueError("Weights must be a bool type")
         return self._weights
 
     @property
     def occupation(self) -> str:
+        """Character occupation.
+
+        Occupation must be in ``OCCUPATION_LIST``
+
+        :raises ValueError: Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}
+        :return: [description]
+        :rtype: str
+        """
         return self._occupation
 
     @occupation.setter
@@ -297,6 +432,13 @@ class Character():
 
     @property
     def strength(self) -> int:
+        """Character strength
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character strength
+        :rtype: int
+        """
         return self._str
 
     @strength.setter
@@ -307,6 +449,13 @@ class Character():
 
     @property
     def condition(self) -> int:
+        """Charater condition.
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character condition
+        :rtype: int
+        """
         return self._con
 
     @condition.setter
@@ -317,6 +466,13 @@ class Character():
 
     @property
     def size(self) -> int:
+        """Character size
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character size
+        :rtype: int
+        """
         return self._siz
 
     @size.setter
@@ -327,6 +483,13 @@ class Character():
 
     @property
     def dexterity(self) -> int:
+        """Character dexterity
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character dexterity
+        :rtype: int
+        """
         return self._dex
 
     @dexterity.setter
@@ -337,6 +500,13 @@ class Character():
 
     @property
     def apperance(self) -> int:
+        """Character apperance
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character apperance
+        :rtype: int
+        """
         return self._app
 
     @apperance.setter
@@ -347,6 +517,13 @@ class Character():
 
     @property
     def edducation(self) -> int:
+        """Character edducation
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character edducation
+        :rtype: int
+        """
         return self._edu
 
     @edducation.setter
@@ -357,6 +534,13 @@ class Character():
 
     @property
     def intelligence(self) -> int:
+        """Character intelligence
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character intelligence
+        :rtype: int
+        """
         return self._int
 
     @intelligence.setter
@@ -367,6 +551,13 @@ class Character():
 
     @property
     def power(self) -> int:
+        """Character power
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character power
+        :rtype: int
+        """
         return self._pow
 
     @power.setter
@@ -377,6 +568,13 @@ class Character():
 
     @property
     def move_rate(self) -> int:
+        """Character move rate
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: character move rate
+        :rtype: int
+        """
         return self._move_rate
 
     @move_rate.setter
@@ -387,6 +585,12 @@ class Character():
 
     @property
     def first_name(self) -> str:
+        """Character first name
+
+        :raises ValueError: Invalid first name. Name cannot be an empty string
+        :return: first name
+        :rtype: str
+        """
         return self._first_name
 
     @first_name.setter
@@ -398,6 +602,12 @@ class Character():
 
     @property
     def last_name(self) -> str:
+        """Character last name
+
+        :raises ValueError: Invalid last name. Name cannot be an empty string
+        :return: last name
+        :rtype: str
+        """
         return self._last_name
 
     @last_name.setter
@@ -407,28 +617,35 @@ class Character():
         self._last_name = str(new_last_name) 
         return self._last_name
 
-    @property
-    def characteristics(self) -> Dict[str, int]:
-        return self._characteristics
+    # @property
+    # def characteristics(self) -> Dict[str, int]:
+    #     return self._characteristics
 
-    @characteristics.setter
-    def characteristics(self, new_characteristics: Dict[str, int]) -> Dict[str, int]:
-        for item, value in new_characteristics.items():
-            if item not in self._characteristics.keys():
-                raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
-            # if not isinstance(value, int):
-            #     raise ValueError(f"Invalid {item}. {item} must be an integer")
-            # if value < 0:
-            #     raise ValueError("{item} cannot be less than 0")
-            self.__validate_character_properties(value, item)
-            self._characteristics.update({item: value})
-            # print(getattr(self, f"_{item}"))
-            self.__dict__.update({f"_{item}": value})
-            # setattr(self, f"_{item}", value)
-        return self._characteristics
+    # @characteristics.setter
+    # def characteristics(self, new_characteristics: Dict[str, int]) -> Dict[str, int]:
+    #     for item, value in new_characteristics.items():
+    #         if item not in self._characteristics.keys():
+    #             raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
+    #         # if not isinstance(value, int):
+    #         #     raise ValueError(f"Invalid {item}. {item} must be an integer")
+    #         # if value < 0:
+    #         #     raise ValueError("{item} cannot be less than 0")
+    #         self.__validate_character_properties(value, item)
+    #         self._characteristics.update({item: value})
+    #         # print(getattr(self, f"_{item}"))
+    #         self.__dict__.update({f"_{item}": value})
+    #         # setattr(self, f"_{item}", value)
+    #     return self._characteristics
 
     @property
     def occupation_points(self) -> int:
+        """Character occupation points
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: occupation points
+        :rtype: int
+        """
         return self._occupation_points
 
     @occupation_points.setter
@@ -439,6 +656,13 @@ class Character():
 
     @property
     def hobby_points(self) -> int:
+        """Character hobby points
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: hobby points
+        :rtype: int
+        """
         return self._hobby_points
 
     @hobby_points.setter
@@ -449,6 +673,13 @@ class Character():
 
     @property
     def sanity_points(self) -> int:
+        """Character sanity points
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: sanity points
+        :rtype: int
+        """
         return self._sanity_points
 
     @sanity_points.setter
@@ -459,6 +690,13 @@ class Character():
 
     @property
     def magic_points(self) -> int:
+        """Character magic points
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: magic points
+        :rtype: int
+        """
         return self._magic_points
 
     @magic_points.setter
@@ -469,6 +707,13 @@ class Character():
 
     @property
     def hit_points(self) -> int:
+        """Character hit points
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: hit points
+        :rtype: int
+        """
         return self._hit_points
 
     @hit_points.setter
@@ -479,6 +724,13 @@ class Character():
 
     @property
     def luck(self) -> int:
+        """Character luck
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: luck
+        :rtype: int
+        """
         return self._luck
 
     @luck.setter
@@ -509,6 +761,14 @@ class Character():
 
     @property
     def damage_bonus(self) -> str:
+        """Character damage bonus
+
+        ``correct_values = ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6']``
+
+        :raises ValueError: Invalid damage bonus. {new_damage_bonus} not in {correct_values}
+        :return: damage bonus
+        :rtype: str
+        """
         return self._damage_bonus
     
     @damage_bonus.setter
@@ -524,6 +784,16 @@ class Character():
 
     @property
     def build(self) -> int:
+        """Character build
+
+        ``correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]``
+
+        To do: increse range. +1 for each 80 point above STR+SIZ
+
+        :raises ValueError: Invalid build. {new_build} not in {correct_values}
+        :return: build
+        :rtype: int
+        """
         return self._build
 
     @build.setter
@@ -538,6 +808,17 @@ class Character():
 
     @property
     def doge(self) -> int:
+        """Charcter doge
+
+        Doge is also one of the character skills. 
+        Changing this value changes also ``skills['doge']``.
+        But it doesn't work vice versa.
+
+        :raises ValueError: if variable is not an integer
+        :raises ValueError: if varible is below 0
+        :return: doge
+        :rtype: int
+        """
         return self._doge
 
     @doge.setter
@@ -652,12 +933,16 @@ class Character():
         self._characteristic_test('_edu', mod_edu)
         self._correct_move_rate(mod_move_rate)
 
-    def _set_derived_attributes(self) -> None:
-        # Warning! First use add_characteristics method
-        self._sanity_points = self._pow
-        self._magic_points = self._pow // 5
-        self._hit_points = (self._siz + self._con) // 10
+    def set_derived_attributes(self) -> None:
+        if self._sanity_points == 0:
+            self._sanity_points = self._pow
+        if self._magic_points == 0:
+            self._magic_points = self._pow // 5
+        if self._hit_points == 0:
+            self._hit_points = (self._siz + self._con) // 10
 
+    def _set_luck(self) -> None:
+        self._luck = random.randint(15, 90)
         if self.age <= 19:
             self._luck = max(self._luck, random.randint(15, 90))
 
@@ -701,7 +986,14 @@ class Character():
 
     ########################## OCCUPATION ###########################
 
-    def set_occupation(self, occupation: str) -> str:
+    def set_occupation(self, occupation: str = "dupa") -> str:
+        """[summary]
+
+        :param occupation: [description], defaults to "dupa"
+        :type occupation: str, optional
+        :return: [description]
+        :rtype: str
+        """
         if occupation == 'random':
             self._occupation = random.choice(self.occupations_list)
             return self._occupation
@@ -830,6 +1122,13 @@ class Character():
     ######################## COMBAT VALUES #############################
 
     def set_damage_bonus(self) -> str:
+        """Set character damage bonus.
+
+        Use current Character object state to set its damage bonus.
+
+        :return: damage bonus
+        :rtype: str
+        """
         VALUE_MATRIX = {
             'combat_range': [64, 84, 124, 164, 204, 283, 364, 444, 524],
             'damage_bonus':
@@ -841,10 +1140,15 @@ class Character():
         return self._damage_bonus
 
     def set_build(self) -> int:
+        """Set character buils
+
+        Use current character object state to set its build.
+
+        :return: build
+        :rtype: int
+        """
         VALUE_MATRIX = {
             'combat_range': [64, 84, 124, 164, 204, 283, 364, 444, 524],
-            'damage_bonus':
-            ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6'],
             'build': [-2, -1, 0, 1, 2, 3, 4, 5, 6]
         }
         sum_str_siz = self._str + self._siz
@@ -853,6 +1157,23 @@ class Character():
         return self._build
 
     def set_doge(self) -> int:
+        """Set character doge.
+
+        Use current character object state to set its doge value.
+        
+        .. warning::
+
+            When used outside ``__init__`` may require to set first
+            ``self.skills['doge']``. Use ``self.doge`` to manually set doge insted of 
+            this function.
+
+        .. note::
+
+            Just a note.
+
+        :return: doge
+        :rtype: int
+        """
         if "doge" in self._skills:
             self.doge = self._skills["doge"]
         else:
@@ -909,6 +1230,7 @@ class Character():
 
     @staticmethod
     def _set_valid_sex(sex: str, country: str, name: str):
+
         available_sex = randname.data_lookup()[country][name]
         if sex not in available_sex:
             if 'N' in available_sex:
@@ -930,14 +1252,22 @@ if __name__ == "__main__":
     print(Character(first_name="Adam"))
     print(Character(strength=20))
 
-# to do
-# [ ] fix for 2 way characteristics change  c.characteristics['pow'] and c.power
-# [ ] add skill method to skills to validate skills
-# [x] add validation during initialization
-# [x] types for skills
-# [x] fix issues with creddit rating substruction from occupation points
-# [x] create repr
-# [x] create function for credit rating
-# [x] change validation for integer in setters from try: int(x) to isinstance
-# [x] fix combat values
-# [ ] improve damage setting damage bonus and build. +1 for each 80 point above
+
+"""
+.. todolist::
+
+    [x] P1: Fix luck!
+    [ ] P2: document attributes/properties
+    [ ] P2: document public methods
+    [ ] P2: document private methods
+    [x] fix for 2 way characteristics change  c.characteristics['pow'] and c.power
+    [ ] P3: add skill method to skills to validate skills
+    [x] add validation during initialization
+    [x] types for skills
+    [x] fix issues with creddit rating substruction from occupation points
+    [x] create repr
+    [x] create function for credit rating
+    [x] change validation for integer in setters from try: int(x) to isinstance
+    [x] fix combat values
+    [ ] P3: improve damage setting damage bonus and build. +1 for each 80 point above
+"""

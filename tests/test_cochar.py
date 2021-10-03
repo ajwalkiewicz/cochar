@@ -497,10 +497,11 @@ class TestCharacter(unittest.TestCase):
 ########## TEST DUNDER METHODS ####################
 
     def test_repr_true(self):
-        c = Character()
-        d = eval(c.__repr__())
-        print(DeepDiff(c, d), end="")
-        assert c == d
+        for _ in range(20):
+            c = Character()
+            d = eval(c.__repr__())
+            print(DeepDiff(c, d), end="")
+            assert c == d
 
     def test_repr_false(self):
         c = Character(occupation="artist")

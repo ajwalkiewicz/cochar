@@ -1,21 +1,40 @@
 """
-Utilities
+**Utilities for cochar module**
 
-    legend:
-    a - art/craft
-    s -science
-    f - fighting
-    g - firearms
-    i - interpersonal
-    l - language
-    * - any
-    p - professor
+:param TRANSLATION_DICT: dictionary with translations for skills
+:param CATEGORY_SKILLS_LIST: 
+:param AGE_RANGE: tuple[int, int], contains ranges of possible ages.
+:param YEAR_RANGE: tupel[int], available years for last names
+:param OCCUPATIONS_GROUPS: list[list[str]], list of 5 occupation groups.
+:param OCCUPATIONS_LIST: list of all occupations
+:param OCCUPATIONS_DATA: dictionary with occupation details
+:param BASIC_SKILLS: dictionary with basic skills data
+:param CATEGORY_SKILLS: dictionary with skills divided on cathegories
+:param ALL_SKILLS: dict with all skills
 
-    {
-        "name": "",
-        "credit_rating": [9, 50],
-        "skills": []
+**legend**:
+
+- a: art/craft
+- s: science
+- f: fighting
+- g: firearms
+- i: interpersonal
+- l: language
+- \*: any
+- p: professor
+
+**Occupation template**
+
+.. code-block:: python
+    :linenos:
+
+     OCCUPATION_DATA = {
+        "occupation name": {
+            "credit_rating": [9, 50],
+            "skills": []
+        }
     }
+
 """
 from typing import Dict, List, Tuple, Union
 

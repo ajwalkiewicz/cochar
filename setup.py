@@ -3,21 +3,22 @@ from setuptools import setup
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
-with open(f"{THIS_FOLDER}/README_PYPI.md", "r") as fh:
+with open(f"{THIS_FOLDER}/docs/readme.md", "r") as fh:
     long_description = fh.read()
 
 setup(
     name="cochar",
-    version="0.1.0",
+    version="0.1.1",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    # long_description_content_type="text/x-rst",
     url="https://github.com/ajwalkiewicz/cochar",
     project_urls={
         "Documentation": "https://ajwalkiewicz.github.io/cochar/_build/html/index.html"
         },
     author="Adam Walkiewicz",
-    license="MIT",
+    license="GPL 3.0",
     classifiers=[
         "License :: OSI Approved :: MIT License",
         'Operating System :: OS Independent',

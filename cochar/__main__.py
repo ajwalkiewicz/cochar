@@ -1,8 +1,8 @@
 # __main__.py
-from cochar import cochar
+from cochar import Character
 
 def main():
-    return cochar.Character
+    return Character
 
 if __name__ == "__main__":
     print(main())
