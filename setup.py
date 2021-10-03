@@ -8,7 +8,7 @@ with open(f"{THIS_FOLDER}/docs/readme.md", "r") as fh:
 
 setup(
     name="cochar",
-    version="0.1.1",
+    version="0.1.2",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,7 +20,7 @@ setup(
     author="Adam Walkiewicz",
     license="GPL 3.0",
     classifiers=[
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU Affero General Public License v3",
         'Operating System :: OS Independent',
         # "Programming Language :: Python :: 3.6",
         # "Programming Language :: Python :: 3.7",
