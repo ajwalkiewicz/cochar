@@ -38,9 +38,18 @@ from typing import Dict, List, Tuple, Union
 
 import randname
 
-from .utils import (AGE_RANGE, ALL_SKILLS, BASIC_SKILLS, CATEGORY_SKILLS,
-                    CATEGORY_SKILLS_LIST, OCCUPATIONS_DATA, OCCUPATIONS_GROUPS,
-                    OCCUPATIONS_LIST, TRANSLATION_DICT, YEAR_RANGE)
+from .utils import (
+    AGE_RANGE,
+    ALL_SKILLS,
+    BASIC_SKILLS,
+    CATEGORY_SKILLS,
+    CATEGORY_SKILLS_LIST,
+    # OCCUPATIONS_DATA,
+    OCCUPATIONS_GROUPS,
+    OCCUPATIONS_LIST,
+    TRANSLATION_DICT,
+    YEAR_RANGE
+    )
 
 # from .utils import *
 
@@ -49,6 +58,8 @@ POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPirami
 
 OCCUPATIONS_GROUPS: list = OCCUPATIONS_GROUPS.copy()
 OCCUPATIONS_LIST: list = OCCUPATIONS_LIST.copy()
+with open(os.path.join(_THIS_FOLDER, "data", "occupations.json")) as json_file:
+    OCCUPATIONS_DATA = json.load(json_file)
 
 MIN_AGE: int = 15
 MAX_AGE: int = 90
