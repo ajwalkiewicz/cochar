@@ -135,6 +135,7 @@ dmypy.json
 
 # vim
 .swp
+*.vim
 
 # Others
 miscelenious
