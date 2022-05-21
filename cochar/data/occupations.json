@@ -1,18 +1,22 @@
 {
     "antiquarian": {
+        "groups": ["edu"],
         "credit_rating": [30, 70],
         "skills": ["appraise", "history", "library use", "spot hidden"]
     },
     "artist": {
+        "groups": ["edupow", "edudex"],
         "credit_rating": [9, 50],
         "skills":
         ["psychology", "spot hidden", [1, "history", "natural world"]]
     },
     "athlete": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [9, 70],
         "skills": ["climb", "jump", "brawl", "ride", "swim", "throw", "1i"]
     },
     "author": {
+        "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
             "art/craft [literature]", "language [own]",
@@ -21,10 +25,12 @@
         ]
     },
     "entertainer": {
+        "groups": ["eduapp"],
         "credit_rating": [9, 30],
         "skills": ["acting", "disguise", "listen", "psychology", "2i", "2*"]
     },
     "soldier": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
             "doge", "stealth", "survival", [1, "climb", "swim"],
@@ -32,15 +38,18 @@
         ]
     },
     "lawyer": {
+        "groups": ["edu"],
         "credit_rating": [30, 80],
         "skills":
         ["accounting", "law", "library use", "psychology", "2i", "2*"]
     },
     "librarian": {
+        "groups": ["edu"],
         "credit_rating": [9, 35],
         "skills": ["accounting", "library use", "language [own]", "1l", "4*"]
     },
     "military officer": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [20, 70],
         "skills": [
             "accounting", "firearms", "navigate", "psychology", "survival",
@@ -48,6 +57,7 @@
         ]
     },
     "missionary": {
+        "groups": ["edu"],
         "credit_rating": [0, 30],
         "skills": [
             "first aid", "mechanical repair", "medicine", "natural world",
@@ -55,11 +65,13 @@
         ]
     },
     "musician": {
+        "groups": ["edudex", "edupow"],
         "credit_rating": [9, 30],
         "skills":
         ["art/craft [instrument]", "listen", "psychology", "1a", "1i", "4*"]
     },
     "parapsychologist": {
+        "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
             "art/craft [photography]", "anthropology", "history",
@@ -67,6 +79,7 @@
         ]
     },
     "pilot": {
+        "groups": ["edudex"],
         "credit_rating": [20, 70],
         "skills": [
             "electrical repair", "mechanical repair", "navigate",
@@ -75,6 +88,7 @@
         ]
     },
     "clergy": {
+        "groups": ["edu"],
         "credit_rating": [9, 60],
         "skills": [
             "accounting", "history", "library use", "listen", "psychology",
@@ -82,6 +96,7 @@
         ]
     },
     "criminal": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [5, 65],
         "skills": [
             "psychology", "spot hidden", "stealth",
@@ -90,10 +105,12 @@
         ]
     },
     "dilettante": {
+        "groups": ["eduapp"],
         "credit_rating": [50, 99],
         "skills": ["ride", "firearms", "1a", "1i", "1l", "3*"]
     },
     "doctor of medicine": {
+        "groups": ["edu"],
         "credit_rating": [30, 80],
         "skills": [
             "first aid", "language [latin]", "medicine", "psychology",
@@ -101,10 +118,12 @@
         ]
     },
     "drifter": {
+        "groups": ["eduapp", "edudex", "edustr"],
         "credit_rating": [0, 5],
         "skills": ["climb", "jump", "navigate", "1i", "2*"]
     },
     "engineer": {
+        "groups": ["edu"],
         "credit_rating": [30, 60],
         "skills": [
             "art/craft [technical drawing]", "electrical repair",
@@ -113,6 +132,7 @@
         ]
     },
     "farmer": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
             "art/craft [farming]", "drive auto", "1i", "mechanical repair",
@@ -120,6 +140,7 @@
         ]
     },
     "hacker": {
+        "groups": ["edu"],
         "credit_rating": [10, 70],
         "skills": [
             "computer use", "electrical repair", "electronics", "library use",
@@ -127,6 +148,7 @@
         ]
     },
     "journalist": {
+        "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
             "art/craft [photography]", "history", "library use",
@@ -134,6 +156,7 @@
         ]
     },
     "police detective": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [20, 50],
         "skills": [
             "firearms", "law", "listen", "psychology", "spot hidden",
@@ -141,6 +164,7 @@
         ]
     },
     "police officer": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
             "fighting [brawl]", "firearms", "first aid", "law", "psychology", "spot hidden",
@@ -148,6 +172,7 @@
         ]
     },
     "private investigator": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
             "art/craft [photography]", "disguise", "law", "library use", "1i",
@@ -155,10 +180,12 @@
         ]
     },
     "professor": {
+        "groups": ["edu"],
         "credit_rating": [20, 70],
         "skills": ["library use", "1l", "language [own]", "psychology", "4p"]
     },
     "tribe member": {
+        "groups": ["edudex", "edustr"],
         "credit_rating": [0, 15],
         "skills": [
             "climb", "fighting", "throw", "natural world", "listen", "occult",
@@ -166,10 +193,12 @@
         ]
     },
     "zealot": {
+        "groups": ["eduapp", "edupow"],
         "credit_rating": [0, 30],
         "skills": ["history", "psychology", "stealth", "2i", "3*"]
     },
     "test_occ": {
+        "groups": ["edu", "edudex", "edustr", "eduapp", "edupow"],
         "credit_rating": [1, 99],
         "skills": [
             "history",

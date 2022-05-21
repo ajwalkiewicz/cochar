@@ -44,22 +44,26 @@ from .utils import (
     BASIC_SKILLS,
     CATEGORY_SKILLS,
     CATEGORY_SKILLS_LIST,
-    # OCCUPATIONS_DATA,
-    OCCUPATIONS_GROUPS,
-    OCCUPATIONS_LIST,
     TRANSLATION_DICT,
     YEAR_RANGE
     )
 
-# from .utils import *
-
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
 
-OCCUPATIONS_GROUPS: list = OCCUPATIONS_GROUPS.copy()
-OCCUPATIONS_LIST: list = OCCUPATIONS_LIST.copy()
 with open(os.path.join(_THIS_FOLDER, "data", "occupations.json")) as json_file:
-    OCCUPATIONS_DATA = json.load(json_file)
+    # Full data of occupations
+    OCCUPATIONS_DATA: dict = dict(json.load(json_file))
+    # Just occupations names in the list
+    OCCUPATIONS_LIST: list = list(OCCUPATIONS_DATA.keys())
+    # Occupations divided on 5 cathegories depends on skill point calculation method 
+    OCCUPATIONS_GROUPS: List[List[str]] = [
+        [key for key, value in OCCUPATIONS_DATA.items() if "edu" in value["groups"]],
+        [key for key, value in OCCUPATIONS_DATA.items() if "edupow" in value["groups"]],
+        [key for key, value in OCCUPATIONS_DATA.items() if "edudex" in value["groups"]],
+        [key for key, value in OCCUPATIONS_DATA.items() if "eduapp" in value["groups"]],
+        [key for key, value in OCCUPATIONS_DATA.items() if "edustr" in value["groups"]]
+    ]
 
 MIN_AGE: int = 15
 MAX_AGE: int = 90
