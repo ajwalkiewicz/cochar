@@ -1316,7 +1316,7 @@ if __name__ == "__main__":
 .. todolist::
 
     [x] P1: Fix luck!
-    [ ] P1: Upgrade READMe for github
+    [ ] P1: Upgrade README for github
     [ ] P2: Document attributes/properties
     [ ] P2: Document public methods
     [ ] P2: Document private methods

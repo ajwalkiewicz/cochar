@@ -10,6 +10,6 @@
     "country": "US",
     "occupation": "optimal",
     "weights": true,
-    "database": "/home/walu/Git/randname/full_database",
+    "database": "",
     "show_warnings": true
 }
