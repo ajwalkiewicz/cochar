@@ -8,7 +8,7 @@ with open(f"{THIS_FOLDER}/docs/readme.md", "r") as fh:
 
 setup(
     name="cochar",
-    version="0.1.2",
+    version="0.2.3",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -35,8 +35,6 @@ setup(
     ],
     # packages=find_packages("src"),
     # package_dir={'': 'src'},
-    # package_data={'': ['data/USA/fisrs_names/*']},
-    # data_file=[('data', ['USA/fisrs_names/*'])],
     entry_points={
         "console_scripts": [
             "cochar=cochar.__main__:main"

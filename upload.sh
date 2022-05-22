@@ -60,18 +60,18 @@ main(){
     # install changes locally that to run tests
     pip3 install -e . && \
     # run tests, check packages, uploadd packages
-    python3 -m unittest $(echo tests/test_*) && \
+    python3 -m unittest "$(echo tests/test_*)" && \
     # change version in all files that contains info about it
     change_version && \
     # clean dist directory
-    rm -rv build  && \
-    rm -rv -i $(echo dist/*) && \
+    rm -rvf -i build && \
+    rm -rvf -i $(echo dist/*) && \
     # create package, tar and wheel package
     python3 setup.py sdist bdist_wheel && \
     # check whether packages are good
     twine check $(echo dist/*) && \
     # upload changes to pypi.org 
-    twine upload $(echo "dist/c*") -u "$USER" -p "$PASS" && \
+    twine upload $(echo dist/c*) -u "$USER" -p "$PASS" && \
     # create documentation documentation
     cd docs/ && \
     make html
