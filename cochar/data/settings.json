@@ -1,0 +1,15 @@
+{
+    "min_age": 15,
+    "max_age": 90,
+    "max_skill_level": 90,
+    "year": 1925,
+    "age": false,
+    "sex": false,
+    "first_name": false,
+    "last_name": false,
+    "country": "US",
+    "occupation": "optimal",
+    "weights": true,
+    "database": "/home/walu/Git/randname/full_database",
+    "show_warnings": true
+}

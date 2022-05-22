@@ -6,6 +6,20 @@ from randname import randname
 from cochar import Character
 from cochar import ALL_SKILLS
 
+TEST_OCC = {
+    "test_occ": {
+        "groups": ["edu", "edudex", "edustr", "eduapp", "edupow"],
+        "credit_rating": [1, 99],
+        "skills": [
+            "history",
+            "psychology",
+            "stealth",
+            "listen", "psychology",
+            [2, "first aid", "mechanical repair", "1l"], "2a", "2s", "2f",
+            "2g", "2i", "2l", "2*"
+        ]
+    }
+}
 
 class TestCharacter(unittest.TestCase):
     @classmethod

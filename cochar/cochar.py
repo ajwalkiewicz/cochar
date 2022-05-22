@@ -32,6 +32,7 @@ Character(age=30, sex='M', first_name='Kelvin', last_name='Burlingame', country=
 import json
 import os
 import random
+from pprint import pprint
 from bisect import bisect_left
 from collections import UserDict
 from typing import Dict, List, Tuple, Union
@@ -48,10 +49,12 @@ from .utils import (
     YEAR_RANGE
     )
 
+# randname.WARNINGS = False # Upgrade randname
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PIRAMID_PATH = os.path.abspath(os.path.join(_THIS_FOLDER, 'data', 'popPiramid.json'))
 
-with open(os.path.join(_THIS_FOLDER, "data", "occupations.json")) as json_file:
+# Load default settiings
+with open(os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r") as json_file:
     # Full data of occupations
     OCCUPATIONS_DATA: dict = dict(json.load(json_file))
     # Just occupations names in the list
@@ -65,9 +68,24 @@ with open(os.path.join(_THIS_FOLDER, "data", "occupations.json")) as json_file:
         [key for key, value in OCCUPATIONS_DATA.items() if "edustr" in value["groups"]]
     ]
 
-MIN_AGE: int = 15
-MAX_AGE: int = 90
-MAX_SKILL_LEVEL: int = 90
+with open(os.path.join(_THIS_FOLDER, "data", "settings.json"), "r") as json_file:
+    settings: dict = json.load(json_file)
+    MIN_AGE: int = settings["min_age"]
+    MAX_AGE: int = settings["max_age"]
+    MAX_SKILL_LEVEL: int = settings["max_skill_level"]
+    YEAR: int = settings["year"]
+    AGE: int = settings["age"]
+    SEX: str = settings["sex"]
+    FIRST_NAME: str = settings["first_name"]
+    LAST_NAME: str = settings["last_name"]
+    COUNTRY: str = settings["country"]
+    OCCUPATION: str = settings["occupation"]
+    WEIGHTS: bool = settings["weights"]
+    SHOW_WARNINGS: bool = settings["show_warnings"]
+
+    DATABASE: str = settings["database"]
+    if not DATABASE:
+        DATABASE = randname.DATABASE
 
 _BASE_CHARACTERISTICS = (
     "strength",
@@ -180,22 +198,22 @@ class Character():
     - hit_points     = (size + condition) // 10
     - luck           = random.randint(15, 90)
     """
-    __SEX_OPTIONS: list = ['M', 'F', None]
+    __SEX_OPTIONS: list = ['M', 'F', False]
 
     def __init__(
             self,
-            year: int = 1925,
-            age: str = None,
-            sex: str = None,
-            first_name: str = None,
-            last_name: str = None,
-            country: str = "US",
-            occupation: str = "optimal",
+            year: int = YEAR,
+            age: str = AGE,
+            sex: str = SEX,
+            first_name: str = FIRST_NAME,
+            last_name: str = LAST_NAME,
+            country: str = COUNTRY,
+            occupation: str = OCCUPATION,
             occupation_points: int = None,
             hobby_points: int = None,
             # occupation_mode: str = "optimal",
             skills: dict = None, # Highly not recomended
-            weights: bool = True,
+            weights: bool = WEIGHTS,
             **kwargs) -> None:
         """Constructs all the necessary attributes for the character object"""
         ### basics ###
@@ -203,7 +221,7 @@ class Character():
         if sex in self.__SEX_OPTIONS:
             self._sex = self.set_sex(sex)
         else:
-            raise ValueError("incorrect sex falue: sex -> ['M', 'F', None']") 
+            raise ValueError(f"incorrect sex falue: {sex} -> ['M', 'F', None']") 
         self.age: int = self.set_age(age)
         self.country: str = country
         self.weights: bool = weights
@@ -350,7 +368,7 @@ class Character():
 
     @sex.setter
     def sex(self, new_sex: Union[str, None]) -> Union[str, None]:
-        if new_sex in ['M', 'F', None]:
+        if new_sex in self.__SEX_OPTIONS:
             self._sex = self.set_sex(new_sex)
         else:
             raise ValueError("Incorrect sex falue: sex -> ['M', 'F', None']")
@@ -844,14 +862,14 @@ class Character():
         return self._doge
     
     @staticmethod
-    def set_sex(sex: Union[str, None]) -> str:
-        if sex is None:
+    def set_sex(sex: Union[str, bool]) -> str:
+        if sex is False:
             return random.choice(['M', 'F'])
         else:
             return sex.upper()
 
     # To do; change this to static method
-    def set_age(self, age: int = None) -> int:
+    def set_age(self, age: int = False) -> int:
         """Set age  
 
         :param age: new age, defaults to None
@@ -859,7 +877,7 @@ class Character():
         :return: new age
         :rtype: int
         """
-        if age is None:
+        if age is False:
             variable_year = self._year
             if variable_year < 1950:
                 variable_year = 1950
@@ -1220,7 +1238,7 @@ class Character():
         :rtype: str
         """
         sex = Character._set_valid_sex(sex, country, name='last_names')
-        return randname.last_name(year, sex, country, weights)
+        return randname.last_name(year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS)
 
     @staticmethod
     def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
@@ -1241,7 +1259,7 @@ class Character():
         :rtype: str
         """
         sex = Character._set_valid_sex(sex, country, name='first_names')
-        return randname.first_name(year, sex, country, weights)
+        return randname.first_name(year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS)
 
     @staticmethod
     def _set_valid_sex(sex: str, country: str, name: str):
@@ -1254,6 +1272,8 @@ class Character():
                 sex = random.choice(available_sex)
         return sex
         
+    def print(self) -> None:
+        return pprint(self.__dict__)
 
     ######################## DUNDER METHODS #############################
 
@@ -1263,6 +1283,30 @@ class Character():
     def __repr__(self) -> str:
         return f"Character(first_name='{self._first_name}', last_name='{self._last_name}', age={self._age}, sex='{self._sex}', country='{self._country}', occupation='{self._occupation}', strength={self._str}, condition={self._con}, size={self._siz}, dexterity={self._dex}, apperance={self._app}, edducation={self._edu}, intelligence={self._int}, power={self._pow}, move_rate={self._move_rate}, luck={self._luck}, skills={self._skills}, weights={self._weights}, damage_bonus='{self._damage_bonus}', build={self._build}, doge={self._doge})"
 
+    def __str__(self) -> str:
+        skills = ""
+        max_items_in_row = 3
+        current_number_of_items_in_row = 0
+        for skill, value in self._skills.items():
+            if current_number_of_items_in_row == max_items_in_row:
+                skills += "\n"
+                current_number_of_items_in_row = 0
+            skills += f"| {skill.capitalize()}: {value} |"
+            current_number_of_items_in_row += 1
+        return f"""Character
+Name: {self._first_name} {self._last_name} 
+Sex: {self._sex}, Age: {self._age}, Country: {self._country} 
+Occupation: {self._occupation.capitalize()} 
+STR: {self._str} CON: {self._con} SIZ: {self._siz} 
+DEX: {self._dex} APP: {self._app} EDU: {self._edu}
+INT: {self._int} POW: {self._pow} Luck: {self._luck}
+Damage bonus: {self._damage_bonus}
+Build: {self._build}
+Doge: {self._doge}
+Move rate: {self._move_rate}
+Skills:
+{skills}
+"""
 if __name__ == "__main__":
     print(Character(first_name="Adam"))
     print(Character(strength=20))
@@ -1272,10 +1316,16 @@ if __name__ == "__main__":
 .. todolist::
 
     [x] P1: Fix luck!
-    [ ] P2: document attributes/properties
-    [ ] P2: document public methods
-    [ ] P2: document private methods
-    [x] fix for 2 way characteristics change  c.characteristics['pow'] and c.power
+    [ ] P1: Upgrade READMe for github
+    [ ] P2: Document attributes/properties
+    [ ] P2: Document public methods
+    [ ] P2: Document private methods
+    [ ] P2: More unit tests
+    [ ] P2: Improve __str__ method
+    [ ] P2: Improve CLI
+    [ ] P2: Format with black
+    [x] P1: fix for 2 way characteristics change  c.characteristics['pow'] and c.power
+    [ ] P3: improve damage setting damage bonus and build. +1 for each 80 point above
     [ ] P3: add skill method to skills to validate skills
     [x] add validation during initialization
     [x] types for skills
@@ -1284,5 +1334,4 @@ if __name__ == "__main__":
     [x] create function for credit rating
     [x] change validation for integer in setters from try: int(x) to isinstance
     [x] fix combat values
-    [ ] P3: improve damage setting damage bonus and build. +1 for each 80 point above
 """
