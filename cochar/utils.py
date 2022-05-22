@@ -50,8 +50,12 @@ TRANSLATION_DICT: Dict[str, str] = {
     # just for professor occ. (i ingored doctor, and give him 2*)
 }
 
-CATEGORY_SKILLS_LIST: List [str] = [
-    "language", "art/craft", "science", "fighting", "firearms"
+CATEGORY_SKILLS_LIST: List[str] = [
+    "language",
+    "art/craft",
+    "science",
+    "fighting",
+    "firearms",
 ]
 
 AGE_RANGE: Tuple[int, int] = (
@@ -74,8 +78,23 @@ AGE_RANGE: Tuple[int, int] = (
     (95, 99),
 )
 
-YEAR_RANGE: Tuple[int] = (1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000,
-              2005, 2010, 2015, 2020)
+YEAR_RANGE: Tuple[int] = (
+    1950,
+    1955,
+    1960,
+    1965,
+    1970,
+    1975,
+    1980,
+    1985,
+    1990,
+    1995,
+    2000,
+    2005,
+    2010,
+    2015,
+    2020,
+)
 
 # Credit raiting is not in a default basic skills
 BASIC_SKILLS: Dict[str, int] = {
@@ -125,7 +144,7 @@ BASIC_SKILLS: Dict[str, int] = {
     "survival": 10,
     "swim": 20,
     "throw": 20,
-    "track": 10
+    "track": 10,
 }
 
 CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
@@ -146,7 +165,7 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "art/craft (potter)": 5,
         "art/craft (sculptor)": 5,
         "art/craft (vacume tube blower)": 5,
-        "art/craft (instrument)": 5
+        "art/craft (instrument)": 5,
     },
     "science": {
         "science (astronomy)": 1,
@@ -160,7 +179,7 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "science (meteorology)": 1,
         "science (pharmacy)": 1,
         "science (physics)": 1,
-        "science (zoology)": 1
+        "science (zoology)": 1,
     },
     "fighting": {
         "fighting (axe)": 15,
@@ -169,7 +188,7 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "fighting (flail)": 10,
         "fighting (garrote)": 15,
         "fighting (sword)": 20,
-        "fighting (whip)": 5
+        "fighting (whip)": 5,
     },
     "firearms": {
         "firearms (bow)": 15,
@@ -179,13 +198,13 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "firearms (rifle)": 25,
         "firearms (shotgun)": 25,
         "firearms (spear)": 20,
-        "firearms (submachine gun)": 15
+        "firearms (submachine gun)": 15,
     },
     "interpersonal": {
         "fast talk": 5,
         "intimidate": 15,
         "persuade": 10,
-        "psychology": 10
+        "psychology": 10,
     },
     "language": {
         "language (own)": 0,
@@ -229,8 +248,8 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "psychoanalysis": 1,
         "medicine": 1,
         "occult": 5,
-        "anthropology": 1
-    }
+        "anthropology": 1,
+    },
 }
 
 # Creating ALL_SKILLS dictionary

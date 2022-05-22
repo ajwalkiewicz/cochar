@@ -14,12 +14,20 @@ TEST_OCC = {
             "history",
             "psychology",
             "stealth",
-            "listen", "psychology",
-            [2, "first aid", "mechanical repair", "1l"], "2a", "2s", "2f",
-            "2g", "2i", "2l", "2*"
-        ]
+            "listen",
+            "psychology",
+            [2, "first aid", "mechanical repair", "1l"],
+            "2a",
+            "2s",
+            "2f",
+            "2g",
+            "2i",
+            "2l",
+            "2*",
+        ],
     }
 }
+
 
 class TestCharacter(unittest.TestCase):
     @classmethod
@@ -59,7 +67,9 @@ class TestCharacter(unittest.TestCase):
         )
 
         with self.assertRaises(ValueError):
-            c = Character(sex="Ass",)
+            c = Character(
+                sex="Ass",
+            )
 
     def test_first_name(self):
         c = Character(first_name="")
@@ -106,8 +116,8 @@ class TestCharacter(unittest.TestCase):
 
     def test_year_not_integer(self):
         with self.assertRaises(ValueError):
-            self.character.year = "a"   
-   
+            self.character.year = "a"
+
     def test_age_normal(self):
         self.character.age = 45
 
@@ -121,7 +131,7 @@ class TestCharacter(unittest.TestCase):
 
     def test_age_not_integer(self):
         with self.assertRaises(ValueError):
-            self.character.age = "a"    
+            self.character.age = "a"
 
     def test_strength_normal(self):
         self.character.strength = 0
@@ -210,7 +220,7 @@ class TestCharacter(unittest.TestCase):
     def test_power_not_integer(self):
         with self.assertRaises(ValueError):
             self.character.power = "a"
-    
+
     def test_sanity_points_normal(self):
         self.character.sanity_points = 0
 
@@ -232,7 +242,7 @@ class TestCharacter(unittest.TestCase):
     def test_magic_points_not_integer(self):
         with self.assertRaises(ValueError):
             self.character.magic_points = "a"
-    
+
     def test_hit_points_normal(self):
         self.character.hit_points = 0
 
@@ -301,33 +311,32 @@ class TestCharacter(unittest.TestCase):
         skills_total_sum = sum(list(c.skills.values()))
         basic_skills_total_sum = 0
         for skill, value in c.skills.items():
-            if skill == 'credit rating':
+            if skill == "credit rating":
                 continue
             # assert value == ALL_SKILLS[skill]
             basic_skills_total_sum += value
             # print(value, ALL_SKILLS[skill])
         # basic_skills_total_sum += c.skills['credit rating']
-        assert skills_total_sum - c.skills['credit rating'] == basic_skills_total_sum
+        assert skills_total_sum - c.skills["credit rating"] == basic_skills_total_sum
         # print(skills_total_sum, basic_skills_total_sum)
 
     def test_credit_rating_above_range(self):
         c = Character(occupation="lawyer", occupation_points=81)
         #  lawyer - credit rating [30, 80]
-        assert c._occupation_points > c.skills['credit rating']
-        print(c._occupation_points, c.skills['credit rating'])
+        assert c._occupation_points > c.skills["credit rating"]
+        print(c._occupation_points, c.skills["credit rating"])
 
     def test_credit_rating_below_min_range(self):
         c = Character(occupation="lawyer", occupation_points=29)
         #  lawyer - credit rating [30, 80]
-        assert c._occupation_points >= c.skills['credit rating']
-        print(c._occupation_points, c.skills['credit rating'])
-
+        assert c._occupation_points >= c.skills["credit rating"]
+        print(c._occupation_points, c.skills["credit rating"])
 
     def test_credit_rating_below_max_range(self):
         c = Character(occupation="lawyer", occupation_points=31)
         #  lawyer - credit rating [30, 80]
-        assert c._occupation_points >= c.skills['credit rating']
-        print(c._occupation_points, c.skills['credit rating'])
+        assert c._occupation_points >= c.skills["credit rating"]
+        print(c._occupation_points, c.skills["credit rating"])
 
     def test_damage_bonus_normal(self):
         self.character.damage_bonus = "+1K4"
@@ -346,7 +355,7 @@ class TestCharacter(unittest.TestCase):
             self.character.build = -3
             self.character.build = -7
 
-#### OCCUPATIONS ####
+    #### OCCUPATIONS ####
 
     def test_occupation_antiquarian(self):
         occupation = "antiquarian"
@@ -480,16 +489,16 @@ class TestCharacter(unittest.TestCase):
 
     def test_occupation_zealot(self):
         occupation = "zealot"
-        c = Character(occupation=occupation) 
+        c = Character(occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
-########## TEST GENERAL FUNCTIONS ####################
+    ########## TEST GENERAL FUNCTIONS ####################
 
     def test_generate_last_name(self):
         year = 1925
-        sex = 'M'
+        sex = "M"
         weights = True
-        available_sex = ['M', 'F', 'G', None]
+        available_sex = ["M", "F", "G", None]
         available_countries = tuple(randname.available_countries())
         for country in available_countries:
             for sex in available_sex:
@@ -498,17 +507,16 @@ class TestCharacter(unittest.TestCase):
 
     def test_generate_first_name(self):
         year = 1925
-        sex = 'M'
+        sex = "M"
         weights = True
-        available_sex = ['M', 'F', 'G', None]
+        available_sex = ["M", "F", "G", None]
         available_countries = tuple(randname.available_countries())
         for country in available_countries:
             for sex in available_sex:
                 name = Character.generate_first_name(year, sex, country, weights)
                 self.assertIsInstance(name, str)
 
-
-########## TEST DUNDER METHODS ####################
+    ########## TEST DUNDER METHODS ####################
 
     def test_repr_true(self):
         for _ in range(20):
