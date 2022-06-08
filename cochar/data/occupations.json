@@ -196,5 +196,14 @@
         "groups": ["eduapp", "edupow"],
         "credit_rating": [0, 30],
         "skills": ["history", "psychology", "stealth", "2i", "3*"]
+    },
+    "sailor, naval": {
+        "groups": ["edudex", "edustr"],
+        "credit_rating": [9, 30],
+        "skills": [
+            [1, "electrical repair", "mechanical repair"],
+            "fighting", "firearms", "first aid", "navigate",
+            "pilot [boat]", "survival [sea]", "swim"
+        ]
     }
 }
