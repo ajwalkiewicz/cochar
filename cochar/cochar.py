@@ -140,7 +140,7 @@ class Skills(UserDict):
 
 
 class Character:
-    """Class to represent character.
+    """Character class
 
     :param year: year when character born, defaults to 1925
     :type year: int, optional
@@ -343,7 +343,7 @@ class Character:
         else:
             self._set_luck()
 
-    ###################### PROPERTIES ########################
+    # PROPERTIES 
 
     @property
     def year(self) -> int:
@@ -359,11 +359,10 @@ class Character:
         return self._year
 
     @year.setter
-    def year(self, new_year: int) -> int:
+    def year(self, new_year: int) -> None:
         if not isinstance(new_year, int):
             raise ValueError("Invalid year. year must be integer")
         self._year = new_year
-        return self._year
 
     @property
     def sex(self) -> Union[str, None]:
@@ -388,12 +387,11 @@ class Character:
         return self._sex
 
     @sex.setter
-    def sex(self, new_sex: Union[str, None]) -> Union[str, None]:
+    def sex(self, new_sex: Union[str, None]) -> None:
         if new_sex in self.__SEX_OPTIONS:
             self._sex = self.set_sex(new_sex)
         else:
             raise ValueError("Incorrect sex falue: sex -> ['M', 'F', None']")
-        return self._sex
 
     @property
     def age(self) -> int:
@@ -409,7 +407,7 @@ class Character:
         return self._age
 
     @age.setter
-    def age(self, new_age: int) -> int:
+    def age(self, new_age: int) -> None:
         if not isinstance(new_age, int):
             raise ValueError("Invalid age. Age must be an integer")
 
@@ -417,7 +415,6 @@ class Character:
             self._age = new_age
         else:
             raise ValueError(f"Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]")
-        return self._age
 
     @property
     def country(self) -> str:
@@ -434,14 +431,13 @@ class Character:
         return self._country
 
     @country.setter
-    def country(self, new_country: str) -> str:
+    def country(self, new_country: str) -> None:
         if new_country in randname.available_countries():
             self._country = new_country
         else:
             raise ValueError(
                 f"Country not available: {new_country} -> {randname.available_countries()}"
             )
-        return self._country
 
     @property
     def weights(self) -> bool:
@@ -459,12 +455,11 @@ class Character:
         return self._weights
 
     @weights.setter
-    def weights(self, new_weights: bool) -> bool:
+    def weights(self, new_weights: bool) -> None:
         if isinstance(new_weights, bool):
             self._weights = new_weights
         else:
             raise ValueError("Weights must be a bool type")
-        return self._weights
 
     @property
     def occupation(self) -> str:
@@ -479,14 +474,13 @@ class Character:
         return self._occupation
 
     @occupation.setter
-    def occupation(self, new_occupation: str) -> str:
+    def occupation(self, new_occupation: str) -> None:
         if new_occupation in OCCUPATIONS_LIST:
             self._occupation = new_occupation
         else:
             raise ValueError(
                 f"Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}"
             )
-        return self._occupation
 
     @property
     def strength(self) -> int:
@@ -500,10 +494,9 @@ class Character:
         return self._str
 
     @strength.setter
-    def strength(self, new_strength: int) -> int:
+    def strength(self, new_strength: int) -> None:
         self.__validate_character_properties(new_strength, "strength")
         self._str = new_strength
-        return self._str
 
     @property
     def condition(self) -> int:
@@ -517,10 +510,9 @@ class Character:
         return self._con
 
     @condition.setter
-    def condition(self, new_condition: int) -> int:
+    def condition(self, new_condition: int) -> None:
         self.__validate_character_properties(new_condition, "condition")
         self._con = new_condition
-        return self._con
 
     @property
     def size(self) -> int:
@@ -534,10 +526,9 @@ class Character:
         return self._siz
 
     @size.setter
-    def size(self, new_size: int) -> int:
+    def size(self, new_size: int) -> None:
         self.__validate_character_properties(new_size, "size")
         self._siz = new_size
-        return self._siz
 
     @property
     def dexterity(self) -> int:
@@ -551,10 +542,9 @@ class Character:
         return self._dex
 
     @dexterity.setter
-    def dexterity(self, new_dexterity: int) -> int:
+    def dexterity(self, new_dexterity: int) -> None:
         self.__validate_character_properties(new_dexterity, "dexterity")
         self._dex = new_dexterity
-        return self._dex
 
     @property
     def apperance(self) -> int:
@@ -568,10 +558,9 @@ class Character:
         return self._app
 
     @apperance.setter
-    def apperance(self, new_apperance: int) -> int:
+    def apperance(self, new_apperance: int) -> None:
         self.__validate_character_properties(new_apperance, "apperance")
         self._app = new_apperance
-        return self._app
 
     @property
     def edducation(self) -> int:
@@ -585,10 +574,9 @@ class Character:
         return self._edu
 
     @edducation.setter
-    def edducation(self, new_edducation: int) -> int:
+    def edducation(self, new_edducation: int) -> None:
         self.__validate_character_properties(new_edducation, "edducation")
         self._edu = new_edducation
-        return self._edu
 
     @property
     def intelligence(self) -> int:
@@ -602,10 +590,9 @@ class Character:
         return self._int
 
     @intelligence.setter
-    def intelligence(self, new_inteligence: int) -> int:
+    def intelligence(self, new_inteligence: int) -> None:
         self.__validate_character_properties(new_inteligence, "intelligence")
         self._int = new_inteligence
-        return self._int
 
     @property
     def power(self) -> int:
@@ -619,10 +606,9 @@ class Character:
         return self._pow
 
     @power.setter
-    def power(self, new_power: int) -> int:
+    def power(self, new_power: int) -> None:
         self.__validate_character_properties(new_power, "power")
         self._pow = new_power
-        return self._pow
 
     @property
     def move_rate(self) -> int:
@@ -636,10 +622,9 @@ class Character:
         return self._move_rate
 
     @move_rate.setter
-    def move_rate(self, new_move_rate: int) -> int:
+    def move_rate(self, new_move_rate: int) -> None:
         self.__validate_character_properties(new_move_rate, "move rate")
         self._move_rate = new_move_rate
-        return self._move_rate
 
     @property
     def first_name(self) -> str:
@@ -652,11 +637,10 @@ class Character:
         return self._first_name
 
     @first_name.setter
-    def first_name(self, new_first_name: str) -> str:
+    def first_name(self, new_first_name: str) -> None:
         if new_first_name == "":
             raise ValueError("Invalid first name. Name cannot be an empty string")
         self._first_name = str(new_first_name)
-        return self._first_name
 
     @property
     def last_name(self) -> str:
@@ -669,11 +653,10 @@ class Character:
         return self._last_name
 
     @last_name.setter
-    def last_name(self, new_last_name: str) -> str:
+    def last_name(self, new_last_name: str) -> None:
         if new_last_name == "":
             raise ValueError("Invalid last name. Name cannot be an empty string")
         self._last_name = str(new_last_name)
-        return self._last_name
 
     # @property
     # def characteristics(self) -> Dict[str, int]:
@@ -693,7 +676,6 @@ class Character:
     #         # print(getattr(self, f"_{item}"))
     #         self.__dict__.update({f"_{item}": value})
     #         # setattr(self, f"_{item}", value)
-    #     return self._characteristics
 
     @property
     def occupation_points(self) -> int:
@@ -707,10 +689,9 @@ class Character:
         return self._occupation_points
 
     @occupation_points.setter
-    def occupation_points(self, new_occupation_points: int) -> int:
+    def occupation_points(self, new_occupation_points: int) -> None:
         self.__validate_character_properties(new_occupation_points, "occupation")
         self._occupation_points = new_occupation_points
-        return self._occupation_points
 
     @property
     def hobby_points(self) -> int:
@@ -724,10 +705,9 @@ class Character:
         return self._hobby_points
 
     @hobby_points.setter
-    def hobby_points(self, new_hobby_points: int) -> int:
+    def hobby_points(self, new_hobby_points: int) -> None:
         self.__validate_character_properties(new_hobby_points, "hobby")
         self._hobby_points = new_hobby_points
-        return self._hobby_points
 
     @property
     def sanity_points(self) -> int:
@@ -741,10 +721,9 @@ class Character:
         return self._sanity_points
 
     @sanity_points.setter
-    def sanity_points(self, new_sanity_points: int) -> int:
+    def sanity_points(self, new_sanity_points: int) -> None:
         self.__validate_character_properties(new_sanity_points, "sanity")
         self._sanity_points = new_sanity_points
-        return self._sanity_points
 
     @property
     def magic_points(self) -> int:
@@ -758,10 +737,9 @@ class Character:
         return self._magic_points
 
     @magic_points.setter
-    def magic_points(self, new_magic_points: int) -> int:
+    def magic_points(self, new_magic_points: int) -> None:
         self.__validate_character_properties(new_magic_points, "magic")
         self._magic_points = new_magic_points
-        return self._magic_points
 
     @property
     def hit_points(self) -> int:
@@ -775,10 +753,9 @@ class Character:
         return self._hit_points
 
     @hit_points.setter
-    def hit_points(self, new_hit_points: int) -> int:
+    def hit_points(self, new_hit_points: int) -> None:
         self.__validate_character_properties(new_hit_points, "hit")
         self._hit_points = new_hit_points
-        return self._hit_points
 
     @property
     def luck(self) -> int:
@@ -792,17 +769,16 @@ class Character:
         return self._luck
 
     @luck.setter
-    def luck(self, new_luck: int) -> int:
+    def luck(self, new_luck: int) -> None:
         self.__validate_character_properties(new_luck, "luck")
         self._luck = new_luck
-        return self._luck
 
     @property
     def skills(self) -> Skills:
         return self._skills
 
     @skills.setter
-    def skills(self, new_skills: dict) -> Skills:
+    def skills(self, new_skills: dict) -> None:
         if not isinstance(new_skills, dict):
             raise ValueError("Invalid skills. Skills must be a dict")
 
@@ -815,7 +791,6 @@ class Character:
         #         raise ValueError(f"Skill value: {value}, cannot be below 0")
 
         self._skills = Skills(new_skills)
-        return self._skills
 
     @property
     def damage_bonus(self) -> str:
@@ -830,8 +805,8 @@ class Character:
         return self._damage_bonus
 
     @damage_bonus.setter
-    def damage_bonus(self, new_damage_bonus: str) -> str:
-        # To do: increase range. +1 for each 80 point above STR+SIZ
+    def damage_bonus(self, new_damage_bonus: str) -> None:
+        # Todo: increase range. +1 for each 80 point above STR+SIZ
         correct_values = [
             "-2",
             "-1",
@@ -850,7 +825,6 @@ class Character:
             raise ValueError(
                 f"Invalid damage bonus. {new_damage_bonus} not in {correct_values}"
             )
-        return self._damage_bonus
 
     @property
     def build(self) -> int:
@@ -867,14 +841,13 @@ class Character:
         return self._build
 
     @build.setter
-    def build(self, new_build: int) -> int:
+    def build(self, new_build: int) -> None:
         # To do: increase range. +1 for each 80 point above STR+SIZ
         correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]
         if new_build in correct_values:
             self._build = new_build
         else:
             raise ValueError(f"Invalid build. {new_build} not in {correct_values}")
-        return self._build
 
     @property
     def doge(self) -> int:
@@ -892,11 +865,10 @@ class Character:
         return self._doge
 
     @doge.setter
-    def doge(self, new_doge: int) -> int:
+    def doge(self, new_doge: int) -> None:
         self.__validate_character_properties(new_doge, "doge")
         self.skills["doge"] = new_doge
         self._doge = new_doge
-        return self._doge
 
     @staticmethod
     def set_sex(sex: Union[str, bool]) -> str:
@@ -905,7 +877,7 @@ class Character:
         else:
             return sex.upper()
 
-    # To do; change this to static method
+    # Todo: Change this to static method
     def set_age(self, age: int = False) -> int:
         """Set age
 
@@ -960,7 +932,7 @@ class Character:
                 f"{variable_name.capitalize()} points cannot be less than 0"
             )
 
-    ###################### CHARACTERISTICS ########################
+    # CHARACTERISTICS
 
     def set_characteristics(self) -> None:
         # Main characteristics
@@ -1058,9 +1030,9 @@ class Character:
 
         self._move_rate -= count
 
-    ########################## OCCUPATION ###########################
+    # OCCUPATION
 
-    def set_occupation(self, occupation: str = "dupa") -> str:
+    def set_occupation(self, occupation: str = "optimal") -> str:
         """[summary]
 
         :param occupation: [description], defaults to "dupa"
@@ -1086,7 +1058,7 @@ class Character:
             self._occupation = occupation
             return self._occupation
 
-    ########################### SKILLS ##############################
+    # SKILLS
 
     def get_credit_rating_points(self) -> int:
         credit_rating_range = OCCUPATIONS_DATA[self._occupation]["credit_rating"].copy()
@@ -1203,7 +1175,7 @@ class Character:
             )
         )
 
-    ######################## COMBAT VALUES #############################
+    # COMBAT VALUES
 
     def set_damage_bonus(self) -> str:
         """Set character damage bonus.
@@ -1273,7 +1245,7 @@ class Character:
             self.doge = self._dex // 2
         return self.doge
 
-    ######################## GENERAL FUNCTIONS #############################
+    # GENERAL FUNCTIONS
 
     @classmethod
     def generate_character(cls, *args, **kwargs):
@@ -1339,7 +1311,7 @@ class Character:
     def print(self) -> None:
         return pprint(self.__dict__)
 
-    ######################## DUNDER METHODS #############################
+    # DUNDER METHODS
 
     def __eq__(self, o: object) -> bool:
         return True if self.__dict__ == o.__dict__ else False

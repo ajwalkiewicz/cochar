@@ -8,7 +8,7 @@ with open(f"{THIS_FOLDER}/docs/readme.md", "r") as fh:
 
 setup(
     name="cochar",
-    version="0.2.3",
+    version="0.2.4",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
