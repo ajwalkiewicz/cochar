@@ -5,6 +5,7 @@ from deepdiff import DeepDiff
 from randname import randname
 from cochar import Character
 from cochar import ALL_SKILLS
+from cochar.errors import *
 
 TEST_OCC = {
     "test_occ": {
@@ -130,7 +131,7 @@ class TestCharacter(unittest.TestCase):
             self.character.age = 91
 
     def test_age_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.age = "a"
 
     def test_strength_normal(self):
@@ -141,7 +142,7 @@ class TestCharacter(unittest.TestCase):
             self.character.strength = -1
 
     def test_strength_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.strength = "a"
 
     def test_condition_normal(self):
@@ -152,7 +153,7 @@ class TestCharacter(unittest.TestCase):
             self.character.condition = -1
 
     def test_condition_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.condition = "a"
 
     def test_size_normal(self):
@@ -163,7 +164,7 @@ class TestCharacter(unittest.TestCase):
             self.character.size = -1
 
     def test_size_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.size = "a"
 
     def test_dexterity_normal(self):
@@ -174,7 +175,7 @@ class TestCharacter(unittest.TestCase):
             self.character.dexterity = -1
 
     def test_dexterity_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.dexterity = "a"
 
     def test_apperance_normal(self):
@@ -185,7 +186,7 @@ class TestCharacter(unittest.TestCase):
             self.character.apperance = -1
 
     def test_apperance_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.apperance = "a"
 
     def test_edducation_normal(self):
@@ -196,7 +197,7 @@ class TestCharacter(unittest.TestCase):
             self.character.edducation = -1
 
     def test_edducation_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.edducation = "a"
 
     def test_intelligence_normal(self):
@@ -207,7 +208,7 @@ class TestCharacter(unittest.TestCase):
             self.character.intelligence = -1
 
     def test_intelligence_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.intelligence = "a"
 
     def test_power_normal(self):
@@ -218,7 +219,7 @@ class TestCharacter(unittest.TestCase):
             self.character.power = -1
 
     def test_power_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.power = "a"
 
     def test_sanity_points_normal(self):
@@ -229,7 +230,7 @@ class TestCharacter(unittest.TestCase):
             self.character.sanity_points = -1
 
     def test_sanity_points_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.sanity_points = "a"
 
     def test_magic_points_normal(self):
@@ -240,7 +241,7 @@ class TestCharacter(unittest.TestCase):
             self.character.magic_points = -1
 
     def test_magic_points_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.magic_points = "a"
 
     def test_hit_points_normal(self):
@@ -251,7 +252,7 @@ class TestCharacter(unittest.TestCase):
             self.character.hit_points = -1
 
     def test_hit_points_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.hit_points = "a"
 
     def test_luck_normal(self):
@@ -262,7 +263,7 @@ class TestCharacter(unittest.TestCase):
             self.character.luck = -1
 
     def test_luck_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.luck = "a"
 
     def test_move_rate_normal(self):
@@ -273,7 +274,7 @@ class TestCharacter(unittest.TestCase):
             self.character.move_rate = -1
 
     def test_move_rate_not_integer(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillValueNotAnInt):
             self.character.move_rate = "a"
 
     def test_skills_correct(self):
@@ -284,9 +285,14 @@ class TestCharacter(unittest.TestCase):
     def test_skills_incorrect_type(self):
         skills = "ride"
         c = Character()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillsNotADict):
             c.skills = skills
 
+    def test_skills_value_not_an_int(self):
+        skills = {"ride": "a"}
+        c = Character()
+        with self.assertRaises(SkillValueNotAnInt):
+            c.skills = skills
     # def test_skills_incorrect_key(self):
     #     skills = {"ride": 50, "fake skill": 50}
     #     c = Character()
@@ -296,7 +302,7 @@ class TestCharacter(unittest.TestCase):
     def test_skills_incorrect_value_below_0(self):
         skills = {"ride": 50, "occult": -1}
         c = Character()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(SkillPointsBelowZero):
             c.skills = skills
 
     def test_skills_change_one_skill(self):
@@ -324,19 +330,19 @@ class TestCharacter(unittest.TestCase):
         c = Character(occupation="lawyer", occupation_points=81)
         #  lawyer - credit rating [30, 80]
         assert c._occupation_points > c.skills["credit rating"]
-        print(c._occupation_points, c.skills["credit rating"])
+        # print(c._occupation_points, c.skills["credit rating"])
 
     def test_credit_rating_below_min_range(self):
         c = Character(occupation="lawyer", occupation_points=29)
         #  lawyer - credit rating [30, 80]
         assert c._occupation_points >= c.skills["credit rating"]
-        print(c._occupation_points, c.skills["credit rating"])
+        # print(c._occupation_points, c.skills["credit rating"])
 
     def test_credit_rating_below_max_range(self):
         c = Character(occupation="lawyer", occupation_points=31)
         #  lawyer - credit rating [30, 80]
         assert c._occupation_points >= c.skills["credit rating"]
-        print(c._occupation_points, c.skills["credit rating"])
+        # print(c._occupation_points, c.skills["credit rating"])
 
     def test_damage_bonus_normal(self):
         self.character.damage_bonus = "+1K4"
@@ -522,7 +528,7 @@ class TestCharacter(unittest.TestCase):
         for _ in range(20):
             c = Character()
             d = eval(c.__repr__())
-            print(DeepDiff(c, d), end="")
+            # print(DeepDiff(c, d), end="")
             assert c == d
 
     def test_repr_false(self):
