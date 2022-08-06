@@ -48,6 +48,7 @@ from .utils import (
     TRANSLATION_DICT,
     YEAR_RANGE,
 )
+from .errors import *
 
 # randname.WARNINGS = False # Upgrade randname
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -123,18 +124,20 @@ class Skills(UserDict):
         :type key: any
         :param value: skill value
         :type value: int
-        :raises ValueError: when value is not an integer
-        :raises ValueError: when value is less than 0
+        :raises SkillValueNotAnInt: when value is not an integer
+        :raises SkillPointsBelowZero: when value is less than 0
         """
         key = str(key)
         # if key not in ALL_SKILLS:
         #     raise ValueError(f"Skill: {key}, doesn't exist")
         if not isinstance(value, int):
-            raise ValueError(
+            raise SkillValueNotAnInt(
                 f"Invalid {key.lower()} points. {key.capitalize()} points must be an integer"
             )
         if value < 0:
-            raise ValueError(f"{key.capitalize()} points cannot be less than 0")
+            raise SkillPointsBelowZero(
+                f"{key.capitalize()} points cannot be less than 0"
+            )
         # self.all_skills.setdefault()
         self.data[key] = value
 
@@ -343,7 +346,7 @@ class Character:
         else:
             self._set_luck()
 
-    # PROPERTIES 
+    # PROPERTIES
 
     @property
     def year(self) -> int:
@@ -409,7 +412,7 @@ class Character:
     @age.setter
     def age(self, new_age: int) -> None:
         if not isinstance(new_age, int):
-            raise ValueError("Invalid age. Age must be an integer")
+            raise SkillValueNotAnInt("Invalid age. Age must be an integer")
 
         if MIN_AGE <= new_age <= MAX_AGE:
             self._age = new_age
@@ -780,7 +783,7 @@ class Character:
     @skills.setter
     def skills(self, new_skills: dict) -> None:
         if not isinstance(new_skills, dict):
-            raise ValueError("Invalid skills. Skills must be a dict")
+            raise SkillsNotADict("Invalid skills. Skills must be a dict")
 
         # for key, value in new_skills.items():
         #     if key not in ALL_SKILLS:
@@ -806,7 +809,7 @@ class Character:
 
     @damage_bonus.setter
     def damage_bonus(self, new_damage_bonus: str) -> None:
-        # Todo: increase range. +1 for each 80 point above STR+SIZ
+        # TODO: Increase range. +1 for each 80 point above STR+SIZ
         correct_values = [
             "-2",
             "-1",
@@ -877,7 +880,7 @@ class Character:
         else:
             return sex.upper()
 
-    # Todo: Change this to static method
+    # TODO: Change this to static method
     def set_age(self, age: int = False) -> int:
         """Set age
 
@@ -914,17 +917,17 @@ class Character:
         :type new_variable: int
         :param variable_name: name of that variable
         :type variable_name: str
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
+        :raises SkillValueNotAnInt: if variable is not an integer
+        :raises SkillValueNotAnInt: if varible is below 0
 
         >>> Character._Character__validate_character_properties("a", 'luck')
-        ValueError: Invalid luck points. Luck points must be an integer
+        SkillValueNotAnInt: Invalid luck points. Luck points must be an integer
         >>> Character._Character__validate_character_properties(-1, 'luck')
-        ValueError: Luck points cannot be less than 0
+        SkillValueNotAnInt: Luck points cannot be less than 0
         """
         variable_name = str(variable_name)
         if not isinstance(new_variable, int):
-            raise ValueError(
+            raise SkillValueNotAnInt(
                 f"Invalid {variable_name.lower()} points. {variable_name.capitalize()} points must be an integer"
             )
         if new_variable < 0:
@@ -938,7 +941,7 @@ class Character:
         # Main characteristics
         if self._str == 0:
             self._str = random.randint(15, 90)
-        if self._siz == 0:
+        if self._con == 0:
             self._con = random.randint(15, 90)
         if self._siz == 0:
             self._siz = random.randint(40, 90)
@@ -1351,25 +1354,23 @@ if __name__ == "__main__":
 
 
 """
-.. todolist::
-
-    [x] P1: Fix luck!
-    [ ] P1: Upgrade README for github
-    [ ] P2: Document attributes/properties
-    [ ] P2: Document public methods
-    [ ] P2: Document private methods
-    [ ] P2: More unit tests
-    [ ] P2: Improve __str__ method
-    [ ] P2: Improve CLI
-    [ ] P2: Format with black
-    [x] P1: fix for 2 way characteristics change  c.characteristics['pow'] and c.power
-    [ ] P3: improve damage setting damage bonus and build. +1 for each 80 point above
-    [ ] P3: add skill method to skills to validate skills
-    [x] add validation during initialization
-    [x] types for skills
-    [x] fix issues with creddit rating substruction from occupation points
-    [x] create repr
-    [x] create function for credit rating
-    [x] change validation for integer in setters from try: int(x) to isinstance
-    [x] fix combat values
+TODO: [x] P1: Fix luck!
+TODO: [ ] P1: Upgrade README for github
+TODO: [ ] P2: Document attributes/properties
+TODO: [ ] P2: Document public methods
+TODO: [ ] P2: Document private methods
+TODO: [ ] P2: More unit tests
+TODO: [ ] P2: Improve __str__ method
+TODO: [ ] P2: Improve CLI
+TODO: [ ] P2: Format with black
+TODO: [x] P1: fix for 2 way characteristics change  c.characteristics['pow'] and c.power
+TODO: [ ] P3: improve damage setting damage bonus and build. +1 for each 80 point above
+TODO: [ ] P3: add skill method to skills to validate skills
+TODO: [x] add validation during initialization
+TODO: [x] types for skills
+TODO: [x] fix issues with creddit rating substruction from occupation points
+TODO: [x] create repr
+TODO: [x] create function for credit rating
+TODO: [x] change validation for integer in setters from try: int(x) to isinstance
+TODO: [x] fix combat values
 """
