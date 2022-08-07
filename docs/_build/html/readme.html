@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>README &#8212; cochar 0.1.2 documentation</title>
+    <title>Call Of Cthulhu Character Generator &#8212; cochar 1.0.0-alpha.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
@@ -35,8 +36,8 @@
         <li class="right" >
           <a href="index.html" title="Welcome to cochar’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.1.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">README</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 1.0.0-alpha.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator</a></li> 
       </ul>
     </div>  
 
@@ -45,23 +46,96 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section class="tex2jax_ignore mathjax_ignore" id="readme">
-<h1>README<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h1>
+  <section id="call-of-cthulhu-character-generator">
+<h1><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator<a class="headerlink" href="#call-of-cthulhu-character-generator" title="Permalink to this heading">¶</a></h1>
+<p>Fast way of creating a random character for Call of Cthulhu RPG 7th ed.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cochar</span></code> stands fo <code class="docutils literal notranslate"><span class="pre">Call</span> <span class="pre">of</span> <span class="pre">Cthulhu</span> <span class="pre">Character</span></code>. It’s a python module design to create a full characters for Call of Cthulhu RPG 7th ed.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="xref myst">Project Title</span></p></li>
+<li><p><span class="xref myst">Summary</span></p></li>
+<li><p><span class="xref myst">Table of Contents</span></p></li>
+<li><p><span class="xref myst">Installation</span></p></li>
+<li><p><span class="xref myst">Usage</span></p></li>
+<li><p><span class="xref myst">Dependencies</span></p></li>
+<li><p><span class="xref myst">Documentation</span></p></li>
+<li><p><span class="xref myst">Contribution</span></p></li>
+<li><p><span class="xref myst">Authors &amp; Contributors</span></p></li>
+<li><p><span class="xref myst">To Do</span></p></li>
+<li><p><span class="xref myst">License</span></p></li>
+</ul>
+</section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">cochar</span>
 </pre></div>
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<section id="basic">
+<h3>Basic<a class="headerlink" href="#basic" title="Permalink to this heading">¶</a></h3>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cochar</span> <span class="kn">import</span> <span class="n">Character</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">Character</span><span class="p">()</span>
-<span class="n">Character</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">sex</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s1">&#39;Kelvin&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s1">&#39;Burlingame&#39;</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">occupation</span><span class="o">=</span><span class="s1">&#39;antiquarian&#39;</span><span class="p">,</span> <span class="n">characteristics</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;str&#39;</span><span class="p">:</span> <span class="mi">57</span><span class="p">,</span> <span class="s1">&#39;con&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;siz&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="s1">&#39;dex&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;app&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;edu&#39;</span><span class="p">:</span> <span class="mi">87</span><span class="p">,</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span> <span class="s1">&#39;pow&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;move_rate&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span> <span class="n">luck</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">skills</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;appraise&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">&#39;history&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;library use&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;spot hidden&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;listen&#39;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;persuade&#39;</span><span class="p">:</span> <span class="mi">89</span><span class="p">,</span> <span class="s1">&#39;pilot&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;sleight of hand&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;credit rating&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;doge&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">},</span> <span class="n">weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">damage_bonus</span><span class="o">=</span><span class="s1">&#39;+1K4&#39;</span><span class="p">,</span> <span class="n">build</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">doge</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">cochar</span> <span class="kn">import</span> <span class="n">create_character</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">person</span> <span class="o">=</span> <span class="n">create_character</span><span class="p">(</span><span class="mi">1925</span><span class="p">,</span> <span class="s2">&quot;US&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">person</span>
+<span class="n">Character</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">1925</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s1">&#39;Anthem&#39;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s1">&#39;Pharr&#39;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">sex</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="n">occupation</span><span class="o">=</span><span class="s1">&#39;doctor of medicine&#39;</span><span class="p">,</span> <span class="n">strength</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">78</span><span class="p">,</span> <span class="n">dexterity</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">appearance</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">education</span><span class="o">=</span><span class="mi">87</span><span class="p">,</span> <span class="n">intelligence</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">move_rate</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">luck</span><span class="o">=</span><span class="mi">38</span><span class="p">,</span> <span class="n">skills</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;first aid&#39;</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span> <span class="s1">&#39;language [latin]&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;medicine&#39;</span><span class="p">:</span> <span class="mi">73</span><span class="p">,</span> <span class="s1">&#39;science [biology]&#39;</span><span class="p">:</span> <span class="mi">48</span><span class="p">,</span> <span class="s1">&#39;ride&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span> <span class="s1">&#39;anthropology&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;charm&#39;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span> <span class="s1">&#39;intimidate&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;art/craft (sculptor)&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;credit rating&#39;</span><span class="p">:</span> <span class="mi">74</span><span class="p">,</span> <span class="s1">&#39;doge&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span> <span class="n">damage_bonus</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">build</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">doge</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sanity_points</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">magic_points</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">hit_points</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cochar</span></code> depends on <span class="xref myst">randname</span> module for generating random names.</p>
+<p>For more details please see:</p>
+<ul class="simple">
+<li><p><span class="xref myst">randname github</span></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/rname/">randname pypi</a></p></li>
+</ul>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h2>
+<p>Detailed documentation of module can by found here:
+<a class="reference external" href="https://ajwalkiewicz.github.io/cochar/_build/html/index.html#">cochar documentation</a></p>
+</section>
+<section id="contribution">
+<h2>Contribution<a class="headerlink" href="#contribution" title="Permalink to this heading">¶</a></h2>
+<p>If you want to contribute to <code class="docutils literal notranslate"><span class="pre">cochar</span></code> projcet read <span class="xref myst">contribution</span> for more information.</p>
+</section>
+<section id="authors-contributors">
+<h2>Authors &amp; Contributors<a class="headerlink" href="#authors-contributors" title="Permalink to this heading">¶</a></h2>
+<p><strong>Author</strong>: Adam Walkiewicz</p>
+<p><strong>Contributors</strong>: Be first!</p>
+</section>
+<section id="to-do">
+<h2>To do<a class="headerlink" href="#to-do" title="Permalink to this heading">¶</a></h2>
+<section id="basic-improvements">
+<h3>Basic improvements<a class="headerlink" href="#basic-improvements" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>[ ] Move occupation to external files</p></li>
+<li><p>[ ] Write more thorough unit tests</p></li>
+<li><p>[ ] Save characters feature</p></li>
+<li><p>[ ] Simple GUI</p></li>
+<li><p>[ ] Add custom Errors</p></li>
+<li><p>[ ] Add more suited occupations for NPC’s</p></li>
+</ol>
+</section>
+<section id="dream-improvements">
+<h3>Dream improvements<a class="headerlink" href="#dream-improvements" title="Permalink to this heading">¶</a></h3>
+<p>Realistically those improvement probably will never be introduced.</p>
+<ol class="arabic simple">
+<li><p>[ ] Generating PDF’s</p></li>
+<li><p>[ ] Interactive and advance graphical GUI</p></li>
+</ol>
+</section>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading">¶</a></h2>
+<p>Cochar is licensed under the terms of the <span class="xref myst">GNU GPLv3</span></p>
 </section>
 </section>
 
@@ -72,21 +146,42 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">README</a><ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#basic">Basic</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#contribution">Contribution</a></li>
+<li><a class="reference internal" href="#authors-contributors">Authors &amp; Contributors</a></li>
+<li><a class="reference internal" href="#to-do">To do</a><ul>
+<li><a class="reference internal" href="#basic-improvements">Basic improvements</a></li>
+<li><a class="reference internal" href="#dream-improvements">Dream improvements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#license">License</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="index.html"
-                        title="previous chapter">Welcome to cochar’s documentation!</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="cochar.html"
-                        title="next chapter">cochar package</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Welcome to cochar’s documentation!</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="cochar.html"
+                          title="next chapter">cochar package</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -98,12 +193,12 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -123,13 +218,13 @@
         <li class="right" >
           <a href="index.html" title="Welcome to cochar’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cochar 0.1.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">README</a></li> 
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 1.0.0-alpha.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Adam Walkiewicz.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>
