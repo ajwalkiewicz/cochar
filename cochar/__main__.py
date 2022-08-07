@@ -1,6 +1,7 @@
 # __main__.py
 import argparse
-import cochar
+
+from . import cochar
 
 
 def pars_arguments():
@@ -67,7 +68,7 @@ def pars_arguments():
 def main():
     args = pars_arguments()
     print(
-        cochar.Character(
+        cochar.create_character(
             year=args.year,
             first_name=args.first_name,
             last_name=args.last_name,

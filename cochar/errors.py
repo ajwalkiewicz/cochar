@@ -21,4 +21,3 @@ class SkillsNotADict(Exception):
     """Skills must be a dictionary"""
 
     pass
-

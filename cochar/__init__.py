@@ -2,6 +2,6 @@
 from cochar.cochar import *
 
 __title__ = "cochar"
-__version__ = "0.2.4"
+__version__ = "1.0.0-alpha.1"
 __author__ = "Adam Walkiewicz"
 __license__ = "GPL 3.0"
