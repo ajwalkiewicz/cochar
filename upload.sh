@@ -44,7 +44,7 @@ echo_help() {
 
 change_version(){
     if $SOFTWARE_VERSION_FLAG; then
-        rx='^[^a-zA-Z]*[0-9]+\.[^a-zA-Z]*[0-9]+\.[^a-zA-Z]*[0-9]+[^a-zA-Z]*$'
+        rx="^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
         if [[ ! "$SOFTWARE_VERSION" =~ $rx ]]; then
             echo -e "\033[31m\e[1minvalid version format: $SOFTWARE_VERSION\e[0m"
             echo_help
@@ -62,7 +62,7 @@ main(){
     # run tests, check packages, uploadd packages
     python3 -m unittest "$(echo tests/test_*)" && \
     # change version in all files that contains info about it
-    change_version && \
+    # change_version && \
     # clean dist directory
     rm -rvf -i build && \
     rm -rvf -i $(echo dist/*) && \

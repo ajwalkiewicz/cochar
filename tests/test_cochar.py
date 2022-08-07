@@ -3,8 +3,9 @@ import unittest
 from deepdiff import DeepDiff
 
 from randname import randname
-from cochar import Character
-from cochar import ALL_SKILLS
+from cochar import create_character, get_first_name, get_last_name
+from cochar.character import Character
+from cochar.utils import ALL_SKILLS
 from cochar.errors import *
 
 TEST_OCC = {
@@ -33,7 +34,9 @@ TEST_OCC = {
 class TestCharacter(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.character = Character()
+        cls.year = 1925
+        cls.country = "US"
+        cls.character = create_character(cls.year, cls.country)
 
     @classmethod
     def tearDownClass(cls):
@@ -46,71 +49,49 @@ class TestCharacter(unittest.TestCase):
         pass
 
     def test_dummy(self):
-        char = Character()
-        char.age = 21
-        self.assertEqual(char.age, 21)
+        self.character.age = 21
+        self.assertEqual(self.character.age, 21)
 
     def test_general_wrong_things(self):
-        c = Character(
-            # year="first",
-            # age="1",
-            first_name="",
-            last_name="",
-            # country="San Escobar",
-            # occupation="not optima",
-            # occupation_points="twelfe",
-            # hobby_points="milion",
-            # characteristics="Nothing",
-            # luck="a lot",
-            # skills="Chuck Norris",
-            # combat_values={"hello": "world"},
-            # weights=5
-        )
-
         with self.assertRaises(ValueError):
-            c = Character(
-                sex="Ass",
-            )
+            self.character.sex = "Alien"
 
     def test_first_name(self):
-        c = Character(first_name="")
-        self.assertIsInstance(c.first_name, str)
+        self.assertIsInstance(self.character.first_name, str)
 
     def test_first_name_manually_set(self):
         name = "John"
-        c = Character(first_name=name)
+        c = create_character(self.year, self.country, first_name=name)
         self.assertEqual(c.first_name, name)
 
     def test_first_name_setter(self):
         name = "@#$%^&*()_+=`~0"
-        c = Character()
+        c = create_character(self.year, self.country, first_name=name)
         c.first_name = name
         self.assertEqual(c.first_name, name)
 
     def test_first_name_setter_invalid(self):
-        c = Character()
         with self.assertRaises(ValueError):
-            c.first_name = ""
+            self.character.first_name = ""
 
     def test_last_name(self):
-        c = Character(last_name="")
+        c = create_character(self.year, self.country, last_name="")
         self.assertIsInstance(c.last_name, str)
 
     def test_last_name_manually_set(self):
         name = "John"
-        c = Character(last_name=name)
+        c = create_character(self.year, self.country, last_name=name)
         self.assertEqual(c.last_name, name)
 
     def test_last_name_setter(self):
         name = "@#$%^&*()_+=`~0\n|[]{};':\",.<>?"
-        c = Character()
+        c = create_character(self.year, self.country, first_name=name)
         c.last_name = name
         self.assertEqual(c.last_name, name)
 
     def test_last_name_setter_invalid(self):
-        c = Character()
         with self.assertRaises(ValueError):
-            c.last_name = ""
+            self.character.last_name = ""
 
     def test_year_normal(self):
         self.character.year = 45
@@ -178,27 +159,27 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(SkillValueNotAnInt):
             self.character.dexterity = "a"
 
-    def test_apperance_normal(self):
-        self.character.apperance = 0
+    def test_appearance_normal(self):
+        self.character.appearance = 0
 
-    def test_apperance_below_range(self):
+    def test_appearance_below_range(self):
         with self.assertRaises(ValueError):
-            self.character.apperance = -1
+            self.character.appearance = -1
 
-    def test_apperance_not_integer(self):
+    def test_appearance_not_integer(self):
         with self.assertRaises(SkillValueNotAnInt):
-            self.character.apperance = "a"
+            self.character.appearance = "a"
 
-    def test_edducation_normal(self):
-        self.character.edducation = 0
+    def test_education_normal(self):
+        self.character.education = 0
 
-    def test_edducation_below_range(self):
+    def test_education_below_range(self):
         with self.assertRaises(ValueError):
-            self.character.edducation = -1
+            self.character.education = -1
 
-    def test_edducation_not_integer(self):
+    def test_education_not_integer(self):
         with self.assertRaises(SkillValueNotAnInt):
-            self.character.edducation = "a"
+            self.character.education = "a"
 
     def test_intelligence_normal(self):
         self.character.intelligence = 0
@@ -279,20 +260,17 @@ class TestCharacter(unittest.TestCase):
 
     def test_skills_correct(self):
         skills = {"ride": 50, "occult": 50}
-        c = Character()
-        c.skills = skills
+        self.character.skills = skills
 
     def test_skills_incorrect_type(self):
         skills = "ride"
-        c = Character()
         with self.assertRaises(SkillsNotADict):
-            c.skills = skills
+            self.character.skills = skills
 
     def test_skills_value_not_an_int(self):
         skills = {"ride": "a"}
-        c = Character()
         with self.assertRaises(SkillValueNotAnInt):
-            c.skills = skills
+            self.character.skills = skills
     # def test_skills_incorrect_key(self):
     #     skills = {"ride": 50, "fake skill": 50}
     #     c = Character()
@@ -301,48 +279,48 @@ class TestCharacter(unittest.TestCase):
 
     def test_skills_incorrect_value_below_0(self):
         skills = {"ride": 50, "occult": -1}
-        c = Character()
         with self.assertRaises(SkillPointsBelowZero):
-            c.skills = skills
+            self.character.skills = skills
 
     def test_skills_change_one_skill(self):
         skill = "testing"
         self.character.skills[skill] = 70
 
-    def test_skills_correct_distribution(self):
-        c = Character(hobby_points=50, occupation_points=0)
-        # print(c.__dict__)
-        # print(c)
-        # print(c.occupation_points, c.hobby_points)
-        skills_total_sum = sum(list(c.skills.values()))
-        basic_skills_total_sum = 0
-        for skill, value in c.skills.items():
-            if skill == "credit rating":
-                continue
-            # assert value == ALL_SKILLS[skill]
-            basic_skills_total_sum += value
-            # print(value, ALL_SKILLS[skill])
-        # basic_skills_total_sum += c.skills['credit rating']
-        assert skills_total_sum - c.skills["credit rating"] == basic_skills_total_sum
-        # print(skills_total_sum, basic_skills_total_sum)
+    # TODO: Add option of manually setting occupation and hobby points
+    # def test_skills_correct_distribution(self):
+    #     c = Character(hobby_points=50, occupation_points=0)
+    #     # print(c.__dict__)
+    #     # print(c)
+    #     # print(c.occupation_points, c.hobby_points)
+    #     skills_total_sum = sum(list(c.skills.values()))
+    #     basic_skills_total_sum = 0
+    #     for skill, value in c.skills.items():
+    #         if skill == "credit rating":
+    #             continue
+    #         # assert value == ALL_SKILLS[skill]
+    #         basic_skills_total_sum += value
+    #         # print(value, ALL_SKILLS[skill])
+    #     # basic_skills_total_sum += c.skills['credit rating']
+    #     assert skills_total_sum - c.skills["credit rating"] == basic_skills_total_sum
+    #     # print(skills_total_sum, basic_skills_total_sum)
 
-    def test_credit_rating_above_range(self):
-        c = Character(occupation="lawyer", occupation_points=81)
-        #  lawyer - credit rating [30, 80]
-        assert c._occupation_points > c.skills["credit rating"]
-        # print(c._occupation_points, c.skills["credit rating"])
+    # def test_credit_rating_above_range(self):
+    #     c = Character(occupation="lawyer", occupation_points=81)
+    #     #  lawyer - credit rating [30, 80]
+    #     assert c._occupation_points > c.skills["credit rating"]
+    #     # print(c._occupation_points, c.skills["credit rating"])
 
-    def test_credit_rating_below_min_range(self):
-        c = Character(occupation="lawyer", occupation_points=29)
-        #  lawyer - credit rating [30, 80]
-        assert c._occupation_points >= c.skills["credit rating"]
-        # print(c._occupation_points, c.skills["credit rating"])
+    # def test_credit_rating_below_min_range(self):
+    #     c = Character(occupation="lawyer", occupation_points=29)
+    #     #  lawyer - credit rating [30, 80]
+    #     assert c._occupation_points >= c.skills["credit rating"]
+    #     # print(c._occupation_points, c.skills["credit rating"])
 
-    def test_credit_rating_below_max_range(self):
-        c = Character(occupation="lawyer", occupation_points=31)
-        #  lawyer - credit rating [30, 80]
-        assert c._occupation_points >= c.skills["credit rating"]
-        # print(c._occupation_points, c.skills["credit rating"])
+    # def test_credit_rating_below_max_range(self):
+    #     c = Character(occupation="lawyer", occupation_points=31)
+    #     #  lawyer - credit rating [30, 80]
+    #     assert c._occupation_points >= c.skills["credit rating"]
+    #     # print(c._occupation_points, c.skills["credit rating"])
 
     def test_damage_bonus_normal(self):
         self.character.damage_bonus = "+1K4"
@@ -365,137 +343,137 @@ class TestCharacter(unittest.TestCase):
 
     def test_occupation_antiquarian(self):
         occupation = "antiquarian"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_artist(self):
         occupation = "artist"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_athlete(self):
         occupation = "athlete"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_author(self):
         occupation = "author"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_clergy(self):
         occupation = "clergy"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_criminal(self):
         occupation = "criminal"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_dilettante(self):
         occupation = "dilettante"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_doctor_of_medicine(self):
         occupation = "doctor of medicine"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_drifter(self):
         occupation = "drifter"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_engineer(self):
         occupation = "engineer"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_entertainer(self):
         occupation = "entertainer"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_farmer(self):
         occupation = "farmer"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_journalist(self):
         occupation = "journalist"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_lawyer(self):
         occupation = "lawyer"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_librarian(self):
         occupation = "librarian"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_military_officer(self):
         occupation = "military officer"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_missionary(self):
         occupation = "missionary"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_musician(self):
         occupation = "musician"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_parapsychologist(self):
         occupation = "parapsychologist"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_pilot(self):
         occupation = "pilot"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_police_detective(self):
         occupation = "police detective"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_police_officer(self):
         occupation = "police officer"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_private_investigator(self):
         occupation = "private investigator"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_professor(self):
         occupation = "professor"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_soldier(self):
         occupation = "soldier"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_tribe_member(self):
         occupation = "tribe member"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     def test_occupation_zealot(self):
         occupation = "zealot"
-        c = Character(occupation=occupation)
+        c = create_character(self.year, self.country, occupation=occupation)
         self.assertEqual(c.occupation, occupation)
 
     ########## TEST GENERAL FUNCTIONS ####################
@@ -508,7 +486,7 @@ class TestCharacter(unittest.TestCase):
         available_countries = tuple(randname.available_countries())
         for country in available_countries:
             for sex in available_sex:
-                name = Character.generate_last_name(year, sex, country, weights)
+                name = get_last_name(year, sex, country, weights)
                 self.assertIsInstance(name, str)
 
     def test_generate_first_name(self):
@@ -519,20 +497,20 @@ class TestCharacter(unittest.TestCase):
         available_countries = tuple(randname.available_countries())
         for country in available_countries:
             for sex in available_sex:
-                name = Character.generate_first_name(year, sex, country, weights)
+                name = get_first_name(year, sex, country, weights)
                 self.assertIsInstance(name, str)
 
-    ########## TEST DUNDER METHODS ####################
+    # TEST DUNDER METHODS
 
     def test_repr_true(self):
         for _ in range(20):
-            c = Character()
+            c = self.character
             d = eval(c.__repr__())
-            # print(DeepDiff(c, d), end="")
+            print(DeepDiff(c.__dict__, d.__dict__), end="")
             assert c == d
 
     def test_repr_false(self):
-        c = Character(occupation="artist")
+        c = self.character
         d = eval(c.__repr__())
         c.occupation = "criminal"
         assert c != d
