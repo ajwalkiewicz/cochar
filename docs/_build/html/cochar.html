@@ -46,30 +46,58 @@
 <h1>cochar package<a class="headerlink" href="#cochar-package" title="Permalink to this heading">¶</a></h1>
 <section id="module-cochar.cochar">
 <span id="cochar-cochar-module"></span><h2>cochar.cochar module<a class="headerlink" href="#module-cochar.cochar" title="Permalink to this heading">¶</a></h2>
-<p>Characters</p>
+<p>Cochar - main module</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.cochar.characteristic_test">
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">characteristic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tested_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.characteristic_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform characteristic test.</p>
+<p>Works like improvement test. Roll number between 1 to 100,
+If that number is higher than tested value or higher or equal
+than 96m than increase tested value with random number,
+between 1 to 10.</p>
+<p>Repeat repetition times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tested_value</strong> (<em>int</em>) – tested value</p></li>
+<li><p><strong>repetition</strong> (<em>int</em>) – how many test to perform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>unchanged or increased tested value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.create_character">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">create_character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'optimal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Skills</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Character</span></span></span><a class="headerlink" href="#cochar.cochar.create_character" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create character
-Use this function instead of instantiating Character class</p>
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">create_character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'optimal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><span class="pre">Skills</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cochar.character.Character" title="cochar.character.Character"><span class="pre">Character</span></a></span></span><a class="headerlink" href="#cochar.cochar.create_character" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function for creating Character.
+Use this function instead of instantiating Character class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>year</strong> (<em>int</em>) – year of the game</p></li>
-<li><p><strong>country</strong> (<em>str</em>) – country where character lives</p></li>
-<li><p><strong>first_name</strong> (<em>str</em>) – character first name</p></li>
-<li><p><strong>last_name</strong> (<em>str</em>) – character last name</p></li>
-<li><p><strong>age</strong> (<em>int</em>) – character  age</p></li>
-<li><p><strong>sex</strong> (<em>int</em>) – character sex</p></li>
-<li><p><strong>occupation</strong> (<em>str</em>) – character occupation</p></li>
-<li><p><strong>skills</strong> (<em>Skills</em>) – character skills</p></li>
+<li><p><strong>country</strong> (<em>str</em>) – country of character’s origin</p></li>
+<li><p><strong>first_name</strong> (<em>str</em><em>, </em><em>optional</em>) – character’s first name, defaults to “”</p></li>
+<li><p><strong>last_name</strong> (<em>str</em><em>, </em><em>optional</em>) – character’s last name, defaults to “”</p></li>
+<li><p><strong>age</strong> (<em>int</em><em>, </em><em>optional</em>) – character’s age, defaults to False</p></li>
+<li><p><strong>sex</strong> (<em>str</em><em>, </em><em>optional</em>) – character’s sex, defaults to False</p></li>
+<li><p><strong>occupation</strong> (<em>str</em><em>, </em><em>optional</em>) – character’s occupation, defaults to “optimal”</p></li>
+<li><p><strong>skills</strong> (<a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><em>Skills</em></a><em>, </em><em>optional</em>) – character’s skills, defaults to {}</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>character object</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – raise if sex is incorrect</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Character</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cochar.character.Character" title="cochar.character.Character">Character</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -99,29 +127,39 @@ Use this function instead of instantiating Character class</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_build">
 <span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.get_build" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set character build</p>
-<p>Use current character object state to set its build.</p>
+<dd><p>Return build based on sum od strength and size.</p>
+<p>f: X -&gt; Y</p>
+<p>X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
+Y: {-2, -1, 0, 1, 2, 3, 4, 5, 6}</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>build</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strength</strong> (<em>int</em>) – character’s strength</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – character’s size</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character’s build</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_combat_characteristics">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_combat_characteristics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Skills</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cochar.cochar.get_combat_characteristics" title="Permalink to this definition">¶</a></dt>
-<dd><p>_summary_</p>
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_combat_characteristics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><span class="pre">Skills</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cochar.cochar.get_combat_characteristics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on strength, size, dexterity and Skills,
+return combat characteristics such as:
+dame bonus, build, doge</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>strength</strong> (<em>int</em>) – strength points</p></li>
 <li><p><strong>size</strong> (<em>int</em>) – size points</p></li>
 <li><p><strong>dexterity</strong> (<em>int</em>) – dexterity points</p></li>
-<li><p><strong>skills</strong> (<em>Skills</em><em>, </em><em>optional</em>) – Skills dictionary, defaults to None</p></li>
+<li><p><strong>skills</strong> (<a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><em>Skills</em></a><em>, </em><em>optional</em>) – Skills dictionary, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -139,14 +177,23 @@ Use this function instead of instantiating Character class</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_damage_bonus">
 <span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_damage_bonus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cochar.cochar.get_damage_bonus" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set character damage bonus.</p>
-<p>Use current Character object state to set its damage bonus.</p>
+<dd><p>Return damage bonus, based on sum of strength and size.</p>
+<p>f: X -&gt; Y</p>
+<p>X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
+Y: {“-2”, “-1”, “0”, “+1K4”, “+1K6”, “+2K6”, “+3K6”, “+4K6”, “+5K6”,}</p>
+<p>TODO: Increase bonus damage for +1K6 for every 80 points above 524</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>damage bonus</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strength</strong> (<em>int</em>) – character’s strength</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – character’s size</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character’s damage bonus</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -178,25 +225,29 @@ return sanity, magic and hit points</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_doge">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_doge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Skills</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.get_doge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set character doge.</p>
-<p>Use current character object state to set its doge value.</p>
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_doge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><span class="pre">Skills</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.get_doge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return doge based on dexterity:</p>
+<p>doge = dexterity // 2</p>
+<p>Unless, there is already doge skill in Skills,
+then return value from Skills</p>
+<p>It’s because function get_skills(), also set doge to
+dexterity // 2</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>When used outside <code class="docutils literal notranslate"><span class="pre">__init__</span></code> may require to set first
-<code class="docutils literal notranslate"><span class="pre">self.skills['doge']</span></code>. Use <code class="docutils literal notranslate"><span class="pre">self.doge</span></code> to manually set doge instead of
-this function.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Just a note.</p>
+<p>Better to use it before running get_skills()</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>doge</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dexterity</strong> (<em>int</em>) – character’s dexterity</p></li>
+<li><p><strong>skills</strong> (<a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><em>Skills</em></a><em>, </em><em>optional</em>) – character’s skills, defaults to None</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character’s doge</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -204,10 +255,7 @@ this function.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_first_name">
 <span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_first_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cochar.cochar.get_first_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate First Name.
-Return random first name for the given parameters
-This method is not recommended as it initialize a Character() class.
-For faster generation use module randname</p>
+<dd><p>Return random first name based on given parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -229,10 +277,7 @@ For faster generation use module randname</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_last_name">
 <span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_last_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cochar.cochar.get_last_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate Last Name.
-Return random last name for the given parameters
-This method is not recommended as it initialize a Character() class.
-For faster generation use module randname</p>
+<dd><p>Return random last name based on the given parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -253,50 +298,783 @@ For faster generation use module randname</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.get_move_rate">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_move_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#cochar.cochar.get_move_rate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_move_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.get_move_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return move rate base on relations between
+strength, dexterity and size</p>
+<p>if both dexterity and strength are smaller than size,
+return 7
+if both strength and size are higher or equal than size,
+return 9
+else return 8</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strength</strong> (<em>int</em>) – character’s strength</p></li>
+<li><p><strong>dexterity</strong> (<em>int</em>) – characters dexterity</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – character’s size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>move rate</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cochar.cochar.get_valid_sex">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">get_valid_sex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cochar.cochar.get_valid_sex" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="cochar.cochar.is_sex_valid">
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">is_sex_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cochar.cochar.is_sex_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if sex is valid, else False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sex</strong> (<em>str</em>) – character’s sex</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True|False</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.is_skill_valid">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">is_skill_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skill_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cochar.cochar.is_skill_valid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">is_skill_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#cochar.cochar.is_skill_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if skill value is int type and it is not
 below 0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>new_variable</strong> (<em>int</em>) – variable to check</p></li>
-<li><p><strong>variable_name</strong> (<em>str</em>) – name of that variable</p></li>
-</ul>
+<dd class="field-odd"><p><strong>skill_value</strong> (<em>int</em>) – skill value to test</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="#cochar.errors.SkillValueNotAnInt" title="cochar.errors.SkillValueNotAnInt"><strong>SkillValueNotAnInt</strong></a> – if variable is not an integer</p></li>
-<li><p><a class="reference internal" href="#cochar.errors.SkillValueNotAnInt" title="cochar.errors.SkillValueNotAnInt"><strong>SkillValueNotAnInt</strong></a> – if variable is below 0</p></li>
-</ul>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if value is valid, else False</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Character</span><span class="o">.</span><span class="n">_Character__validate_character_properties</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s1">&#39;luck&#39;</span><span class="p">)</span>
-<span class="go">errors.SkillValueNotAnInt: Invalid luck points. Luck points must be an integer</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Character</span><span class="o">.</span><span class="n">_Character__validate_character_properties</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;luck&#39;</span><span class="p">)</span>
-<span class="go">errors.SkillValueNotAnInt: Luck points cannot be less than 0</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cochar.cochar.subtract_points_from_characteristic">
 <span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">subtract_points_from_characteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">characteristic_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtract_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.subtract_points_from_characteristic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract points from characteristic points,
+but if result would be zero or below, than return 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characteristic_points</strong> (<em>int</em>) – _description_</p></li>
+<li><p><strong>subtract_points</strong> (<em>int</em>) – _description_</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">education</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points_to_subtract</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subtract_points_from_characteristic</span><span class="p">(</span><span class="n">education</span><span class="p">,</span> <span class="n">points_to_subtract</span><span class="p">)</span>
+<span class="go">40</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points_to_subtract</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subtract_points_from_characteristic</span><span class="p">(</span><span class="n">education</span><span class="p">,</span> <span class="n">points_to_subtract</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.cochar.subtract_points_from_str_con_dex">
+<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">subtract_points_from_str_con_dex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtract_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cochar.cochar.subtract_points_from_str_con_dex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract certain amount of points from strength, condition and
+dexterity, but but prevent each of the characteristics to be 
+lower than 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strength</strong> (<em>int</em>) – character’s strength</p></li>
+<li><p><strong>condition</strong> (<em>int</em>) – character’s condition</p></li>
+<li><p><strong>dexterity</strong> (<em>int</em>) – character’s dexterity</p></li>
+<li><p><strong>subtract_points</strong> (<em>int</em>) – amount of points to subtract</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(strength, condition, dexterity)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cochar.character">
+<span id="cochar-character-module"></span><h2>cochar.character module<a class="headerlink" href="#module-cochar.character" title="Permalink to this heading">¶</a></h2>
+<p>Characters
+Contains:
+- Character class
+- get_sex function</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cochar.character.Character">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cochar.character.</span></span><span class="sig-name descname"><span class="pre">Character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appearance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">education</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intelligence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">luck</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">move_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damage_bonus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">build</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">{}</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanity_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magic_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hit_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.character.Character" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Character class works as a container for character</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.age">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">age</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.age" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Character age</strong></p>
+<p>Age has to be between MIN_AGE and MAX_AGE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – Invalid age. Age must be an integer</p></li>
+<li><p><strong>ValueError</strong> – Age not in range: {new_age} -&gt; [{MIN_AGE}, {MAX_AGE}]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Character age</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.appearance">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">appearance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.appearance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character appearance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character appearance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.build">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character build</p>
+<p><code class="docutils literal notranslate"><span class="pre">correct_values</span> <span class="pre">=</span> <span class="pre">[-2,</span> <span class="pre">-1,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6]</span></code></p>
+<p>TODO: increase range. +1 for each 80 point above STR+SIZ</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Invalid build. {new_build} not in {correct_values}</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>build</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.condition">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">condition</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character condition</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.country">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">country</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cochar.character.Character.country" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Character country</strong></p>
+<p>Country must bu in available countries.</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">randname.available_countries()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – “Country not available: {new_country} -&gt; {randname.available_countries()}</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character country</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.damage_bonus">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">damage_bonus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cochar.character.Character.damage_bonus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character damage bonus</p>
+<p><code class="docutils literal notranslate"><span class="pre">correct_values</span> <span class="pre">=</span> <span class="pre">['-2',</span> <span class="pre">'-1',</span> <span class="pre">'0',</span> <span class="pre">'+1K4',</span> <span class="pre">'+1K6',</span> <span class="pre">'+2K6',</span> <span class="pre">'+3K6',</span> <span class="pre">'+4K6',</span> <span class="pre">'+5K6']</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Invalid damage bonus. {new_damage_bonus} not in {correct_values}</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>damage bonus</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.dexterity">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dexterity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.dexterity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character dexterity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character dexterity</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.doge">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doge</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.doge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character doge</p>
+<p>Doge is also one of the character skills.
+Changing this value changes also <code class="docutils literal notranslate"><span class="pre">skills['doge']</span></code>.
+But it doesn’t work vice versa.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>doge</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.education">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">education</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.education" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character education</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character education</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.first_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">first_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cochar.character.Character.first_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character first name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Invalid first name. Name cannot be an empty string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>first name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.character.Character.get_csv_format">
+<span class="sig-name descname"><span class="pre">get_csv_format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cochar.character.Character.get_csv_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.character.Character.get_full_characteristics">
+<span class="sig-name descname"><span class="pre">get_full_characteristics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#cochar.character.Character.get_full_characteristics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.character.Character.get_json_format">
+<span class="sig-name descname"><span class="pre">get_json_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'full'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#cochar.character.Character.get_json_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.character.Character.get_main_characteristics">
+<span class="sig-name descname"><span class="pre">get_main_characteristics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#cochar.character.Character.get_main_characteristics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cochar.character.Character.get_personal_info">
+<span class="sig-name descname"><span class="pre">get_personal_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#cochar.character.Character.get_personal_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.hit_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hit_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.hit_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character hit points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>hit points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.hobby_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hobby_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.hobby_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character hobby points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>hobby points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.intelligence">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">intelligence</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.intelligence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character intelligence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character intelligence</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.last_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">last_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cochar.character.Character.last_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character last name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Invalid last name. Name cannot be an empty string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>last name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.luck">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">luck</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.luck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character luck</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>luck</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.magic_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magic_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.magic_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character magic points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>magic points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.move_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">move_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.move_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character move rate</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character move rate</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.occupation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">occupation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#cochar.character.Character.occupation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character occupation.</p>
+<p>Occupation must be in <code class="docutils literal notranslate"><span class="pre">OCCUPATION_LIST</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Occupation: {new_occupation} not in -&gt; {OCCUPATIONS_LIST}</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.occupation_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">occupation_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.occupation_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character occupation points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>occupation points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.power">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">power</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character power</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character power</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.sanity_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sanity_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.sanity_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character sanity points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sanity points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.sex">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cochar.character.Character.sex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character sex</p>
+<p><strong>legend</strong></p>
+<ul class="simple">
+<li><p>M: male</p></li>
+<li><p>F: female</p></li>
+<li><p>None: for non binary</p></li>
+</ul>
+<p>As there is not data for non binary names. When <code class="docutils literal notranslate"><span class="pre">None</span></code> is selected sex will be randomly drawn from [M, F]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Incorrect sex value: sex -&gt; [‘M’, ‘F’, None’]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sex</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[str, None]</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Character</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">sex</span>
+<span class="go">&#39;F&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character size</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.skills">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">skills</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><span class="pre">Skills</span></a></em><a class="headerlink" href="#cochar.character.Character.skills" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.strength">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strength</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.strength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character strength</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – if variable is not an integer</p></li>
+<li><p><strong>ValueError</strong> – if variable is below 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>character strength</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="cochar.character.Character.year">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#cochar.character.Character.year" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Year of born</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Invalid year. year must be integer</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>year</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">character</span> <span class="o">=</span> <span class="n">create_character</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">character</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="mi">1800</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.character.get_sex">
+<span class="sig-prename descclassname"><span class="pre">cochar.character.</span></span><span class="sig-name descname"><span class="pre">get_sex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cochar.character.get_sex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sex</p>
+<p># TODO: investigate sex workflow. Why there is no sex verification here
+# TODO: add unit tests for sex</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sex</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>bool</em><em>]</em>) – character’s sex</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sex</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cochar.occupations">
+<span id="cochar-occupations-module"></span><h2>cochar.occupations module<a class="headerlink" href="#module-cochar.occupations" title="Permalink to this heading">¶</a></h2>
+<p>Errors</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.occupations.get_hobby_points">
+<span class="sig-prename descclassname"><span class="pre">cochar.occupations.</span></span><span class="sig-name descname"><span class="pre">get_hobby_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intelligence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hobby_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.occupations.get_hobby_points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cochar.cochar.test_characteristic">
-<span class="sig-prename descclassname"><span class="pre">cochar.cochar.</span></span><span class="sig-name descname"><span class="pre">test_characteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.cochar.test_characteristic" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cochar.occupations.get_occupation">
+<span class="sig-prename descclassname"><span class="pre">cochar.occupations.</span></span><span class="sig-name descname"><span class="pre">get_occupation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">education</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appearance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'optimal'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#cochar.occupations.get_occupation" title="Permalink to this definition">¶</a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>occupation</strong> (<em>str</em><em>, </em><em>optional</em>) – [description], defaults to “optimal”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.occupations.get_occupation_points">
+<span class="sig-prename descclassname"><span class="pre">cochar.occupations.</span></span><span class="sig-name descname"><span class="pre">get_occupation_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">education</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appearance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.occupations.get_occupation_points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</section>
+<section id="module-cochar.skills">
+<span id="cochar-skills-module"></span><h2>cochar.skills module<a class="headerlink" href="#module-cochar.skills" title="Permalink to this heading">¶</a></h2>
+<p>Skills</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cochar.skills.Skills">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cochar.skills.</span></span><span class="sig-name descname"><span class="pre">Skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cochar.skills.Skills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserDict</span></code></p>
+<p>Dictionary like object to store character’s skills.
+Override __setitem__ to validate skills data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>UserDict</strong> (<em>abc.ABCMets</em>) – UserDict from collections</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.skills.filter_skills">
+<span class="sig-prename descclassname"><span class="pre">cochar.skills.</span></span><span class="sig-name descname"><span class="pre">filter_skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#cochar.skills.filter_skills" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter out all skills with basic value form given dict.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">example_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;psychoanalysis&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;language (spanish)&#39;</span><span class="p">:</span> <span class="mi">66</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filter_skills</span><span class="p">(</span><span class="n">example_dict</span><span class="p">)</span>
+<span class="go">{&#39;language (spanish)&#39;: 66}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.skills.get_credit_rating_points">
+<span class="sig-prename descclassname"><span class="pre">cochar.skills.</span></span><span class="sig-name descname"><span class="pre">get_credit_rating_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.skills.get_credit_rating_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.skills.get_skill_points">
+<span class="sig-prename descclassname"><span class="pre">cochar.skills.</span></span><span class="sig-name descname"><span class="pre">get_skill_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">education</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appearance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.skills.get_skill_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.skills.get_skills">
+<span class="sig-prename descclassname"><span class="pre">cochar.skills.</span></span><span class="sig-name descname"><span class="pre">get_skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">occupation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupation_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hobby_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dexterity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">education</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skills</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><span class="pre">Skills</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cochar.skills.Skills" title="cochar.skills.Skills"><span class="pre">Skills</span></a></span></span><a class="headerlink" href="#cochar.skills.get_skills" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cochar.skills.skill_test">
+<span class="sig-prename descclassname"><span class="pre">cochar.skills.</span></span><span class="sig-name descname"><span class="pre">skill_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tested_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#cochar.skills.skill_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform characteristic test.</p>
+<p>Works like improvement test. Roll number between 1 to 100,
+If that number is higher than tested value or higher,
+than 95, then increase tested value with random number,
+between 1 to 10.</p>
+<p>Repeat repetition times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tested_value</strong> (<em>int</em>) – tested value</p></li>
+<li><p><strong>repetition</strong> (<em>int</em>) – how many test to perform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>unchanged, or increased tested value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-cochar.utils">
@@ -357,7 +1135,7 @@ below 0.</p>
 <section id="module-cochar.errors">
 <span id="cochar-errors-module"></span><h2>cochar.errors module<a class="headerlink" href="#module-cochar.errors" title="Permalink to this heading">¶</a></h2>
 <p><strong>Errors for cochar module</strong></p>
-<p>So far there is no plan to add custom errors for cochar module.</p>
+<p>TODO: Add more custom errors</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="cochar.errors.SkillPointsBelowZero">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cochar.errors.</span></span><span class="sig-name descname"><span class="pre">SkillPointsBelowZero</span></span><a class="headerlink" href="#cochar.errors.SkillPointsBelowZero" title="Permalink to this definition">¶</a></dt>
@@ -394,6 +1172,9 @@ below 0.</p>
     <ul>
 <li><a class="reference internal" href="#">cochar package</a><ul>
 <li><a class="reference internal" href="#module-cochar.cochar">cochar.cochar module</a></li>
+<li><a class="reference internal" href="#module-cochar.character">cochar.character module</a></li>
+<li><a class="reference internal" href="#module-cochar.occupations">cochar.occupations module</a></li>
+<li><a class="reference internal" href="#module-cochar.skills">cochar.skills module</a></li>
 <li><a class="reference internal" href="#module-cochar.utils">cochar.utils module</a></li>
 <li><a class="reference internal" href="#module-cochar.errors">cochar.errors module</a></li>
 </ul>
