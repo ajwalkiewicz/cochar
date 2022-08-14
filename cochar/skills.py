@@ -1,3 +1,4 @@
+"""Skills"""
 import random
 import os
 import json
@@ -16,9 +17,9 @@ from .settings import *
 
 Skill = Dict[str, int]
 
-
+# TODO: write unit test
 class Skills(UserDict):
-    """Dictionary like object to store character skills.
+    """Dictionary like object to store character's skills.
     Override __setitem__ to validate skills data.
 
     :param UserDict: UserDict from collections
@@ -50,7 +51,7 @@ class Skills(UserDict):
         # self.all_skills.setdefault()
         self.data[key] = value
 
-
+# TODO: write unit test
 def get_skills(
     occupation: str,
     occupation_points: int,
@@ -64,6 +65,7 @@ def get_skills(
     else:
         # Order of following instructions is very important!
         skills: Skills[str, int] = Skills()
+        
         # self.occupation_skills_list: list[str] = []
         # self.hobby_skills_list: list[str] = []
 
@@ -77,13 +79,13 @@ def get_skills(
         if occupation_points_to_distribute < 0:
             occupation_points_to_distribute = 0
 
-        occupation_input_list = OCCUPATIONS_DATA[occupation]["skills"].copy()
-        occupation_skills_list = _get_skills_list(occupation_input_list)
+        default_occupations_skills: list = OCCUPATIONS_DATA[occupation]["skills"].copy()
+        occupation_skills_list = _get_skills_list(default_occupations_skills)
 
         # categories = [f"1{cat}" for cat in TRANSLATION_DICT.keys()]
         # hobby_input_list = list(BASIC_SKILLS.keys()) + categories
-        hobby_input_list = list(BASIC_SKILLS.keys())
-        hobby_skills_list = _get_skills_list(hobby_input_list)
+        default_hobby_skills: list = list(BASIC_SKILLS.keys())
+        hobby_skills_list = _get_skills_list(default_hobby_skills)
 
         skills = _assign_skill_points(occupation_points, occupation_skills_list, skills)
         skills = _assign_skill_points(hobby_points, hobby_skills_list, skills)
@@ -93,7 +95,7 @@ def get_skills(
 
     return skills
 
-
+# TODO: write unit test
 def get_credit_rating_points(occupation: str, occupation_points: int) -> int:
     credit_rating_range = OCCUPATIONS_DATA[occupation]["credit_rating"].copy()
     if occupation_points < min(credit_rating_range):
@@ -102,7 +104,7 @@ def get_credit_rating_points(occupation: str, occupation_points: int) -> int:
         credit_rating_range[1] = occupation_points
     return random.randint(*credit_rating_range)
 
-
+# TODO: write unit test
 def get_skill_points(
     occupation: str,
     education: int,
@@ -125,7 +127,7 @@ def get_skill_points(
 
     return max(points)
 
-
+# TODO: write unit test
 def _get_skills_list(input_list: list) -> List[str]:
     skills_list = []
     skills_list += list(
@@ -140,7 +142,7 @@ def _get_skills_list(input_list: list) -> List[str]:
     skills_list += _get_category_skills(input_list)
     return skills_list
 
-
+# TODO: write unit test
 def _get_choice_skills(skills_list: list) -> List[str]:
     result = []
     for item in skills_list:
@@ -152,7 +154,7 @@ def _get_choice_skills(skills_list: list) -> List[str]:
             result = list(filter(lambda x: len(x) > 2, result))
     return result
 
-
+# TODO: write unit test
 def _get_category_skills(skills_list: list) -> List[str]:
     result = []
     for item in skills_list:
@@ -170,7 +172,7 @@ def _get_category_skills(skills_list: list) -> List[str]:
 
     return result
 
-
+# TODO: write unit test
 def _assign_skill_points(points: int, skills_list: list, skills: Skills) -> None:
     for skill in skills_list:
         if skill in ALL_SKILLS:
@@ -193,7 +195,7 @@ def _assign_skill_points(points: int, skills_list: list, skills: Skills) -> None
 
     return skills
 
-
+# TODO: write unit test
 def filter_skills(skills: Dict) -> Dict[str, int]:
     """Filter out all skills with basic value form given dict.
 
@@ -208,3 +210,29 @@ def filter_skills(skills: Dict) -> Dict[str, int]:
             skills.items(),
         )
     )
+# TODO: write unit test
+def skill_test(tested_value: int, repetition: int = 1) -> int:
+    """Perform characteristic test.
+    
+    Works like improvement test. Roll number between 1 to 100,
+    If that number is higher than tested value or higher,
+    than 95, then increase tested value with random number,
+    between 1 to 10.
+    
+    Repeat repetition times.
+    
+    .. note:
+        for skills use test_skill()
+
+    :param tested_value: tested value
+    :type tested_value: int
+    :param repetition: how many test to perform
+    :type repetition: int
+    :return: unchanged, or increased tested value
+    :rtype: int
+    """
+    for _ in range(repetition):
+        test = random.randint(1, 100)
+        if tested_value < test:
+            tested_value += random.randint(1, 10)
+    return tested_value

@@ -1,3 +1,4 @@
+"""Settings"""
 import os
 import json
 from typing import List, Union
@@ -23,6 +24,7 @@ MODIFIERS = {
 VALUE_MATRIX = {
     "combat_range": [64, 84, 124, 164, 204, 283, 364, 444, 524],
     "build": [-2, -1, 0, 1, 2, 3, 4, 5, 6],
+    "damage_bonus": ["-2", "-1", "0", "+1K4", "+1K6", "+2K6", "+3K6", "+4K6", "+5K6"]
 }
 
 with open(os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r") as json_file:

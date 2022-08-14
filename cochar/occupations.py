@@ -1,3 +1,4 @@
+"""Errors"""
 import random
 import os
 import json
@@ -6,7 +7,7 @@ from typing import List, Tuple
 from .skills import get_skill_points
 from .settings import OCCUPATIONS_LIST, OCCUPATIONS_GROUPS
 
-
+# TODO: write unit test
 def get_occupation(
     education, power, dexterity, appearance, strength, occupation: str = "optimal"
 ) -> str:
@@ -44,7 +45,7 @@ def get_occupation(
 
     return occupation
 
-
+# TODO: write unit test
 def get_occupation_points(
     occupation: str,
     education: int,
@@ -62,6 +63,6 @@ def get_occupation_points(
         )
     )
 
-
+# TODO: write unit test
 def get_hobby_points(intelligence, hobby_points: int = None) -> int:
     return hobby_points if hobby_points else intelligence * 2

@@ -18,7 +18,7 @@ def pars_arguments():
         "--first_name",
         type=str,
         required=False,
-        default=False,
+        default="",
         # dest="first_name",
         help="Character's first name",
     )
@@ -26,7 +26,7 @@ def pars_arguments():
         "--last_name",
         type=str,
         required=False,
-        default=False,
+        default="",
         # dest="last_name",
         help="Character's last name",
     )
