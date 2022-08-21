@@ -15,11 +15,13 @@ from .settings import *
 
 class Character:
     """Character class works as a container for character
-    
+
     .. warning:
         Instead of instantiating Character class use
-        create_character() function 
+        create_character() function
+
     """
+
     def __init__(
         self,
         year: int = 0,
@@ -72,7 +74,6 @@ class Character:
         self.magic_points = magic_points
         self.hit_points = hit_points
 
-
     @property
     def year(self) -> int:
         """**Year of born**
@@ -89,7 +90,7 @@ class Character:
     @year.setter
     def year(self, new_year: int) -> None:
         if not isinstance(new_year, int):
-        # TODO: custom error for invalid year
+            # TODO: custom error for invalid year
             raise ValueError(f"Invalid year: {new_year}. year must be integer")
         self._year = new_year
 
@@ -120,7 +121,7 @@ class Character:
         if new_sex in SEX_OPTIONS:
             self._sex = get_sex(new_sex)
         else:
-        # TODO: custom error for invalid sex
+            # TODO: custom error for invalid sex
             raise ValueError("Incorrect sex value: sex -> ['M', 'F', None']")
 
     @property
@@ -144,7 +145,7 @@ class Character:
         if MIN_AGE <= new_age <= MAX_AGE:
             self._age = new_age
         else:
-        # TODO: custom error for invalid age
+            # TODO: custom error for invalid age
             raise ValueError(f"Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]")
 
     @property
@@ -166,7 +167,7 @@ class Character:
         if new_country in randname.available_countries():
             self._country = new_country
         else:
-        # TODO: custom error for invalid country
+            # TODO: custom error for invalid country
             raise ValueError(
                 f"Country not available: {new_country} -> {randname.available_countries()}"
             )
@@ -188,7 +189,7 @@ class Character:
         if new_occupation in OCCUPATIONS_LIST:
             self._occupation = new_occupation
         else:
-        # TODO; custom error for invalid occupation
+            # TODO; custom error for invalid occupation
             raise ValueError(
                 f"Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}"
             )
@@ -350,7 +351,7 @@ class Character:
     @first_name.setter
     def first_name(self, new_first_name: str) -> None:
         if new_first_name == "":
-        # TODO: custom error for invalid first name
+            # TODO: custom error for invalid first name
             raise ValueError("Invalid first name. Name cannot be an empty string")
         self._first_name = str(new_first_name)
 
@@ -367,7 +368,7 @@ class Character:
     @last_name.setter
     def last_name(self, new_last_name: str) -> None:
         if new_last_name == "":
-        # TODO: custom error for invalid last name
+            # TODO: custom error for invalid last name
             raise ValueError("Invalid last name. Name cannot be an empty string")
         self._last_name = str(new_last_name)
 
@@ -474,12 +475,11 @@ class Character:
     @skills.setter
     def skills(self, new_skills: Union[dict, Skills]) -> None:
         if isinstance(new_skills, Skills):
-            self._skills = new_skills    
+            self._skills = new_skills
         elif isinstance(new_skills, dict):
             self._skills = Skills(new_skills)
-        else: 
+        else:
             raise errors.SkillsNotADict("Invalid skills. Skills must be a dict")
-        
 
     @property
     def damage_bonus(self) -> str:
@@ -511,7 +511,7 @@ class Character:
         if new_damage_bonus in correct_values:
             self._damage_bonus = new_damage_bonus
         else:
-        # TODO: custom error for invalid damage bonus
+            # TODO: custom error for invalid damage bonus
             raise ValueError(
                 f"Invalid damage bonus. {new_damage_bonus} not in {correct_values}"
             )
@@ -536,7 +536,7 @@ class Character:
         if new_build in correct_values:
             self._build = new_build
         else:
-        # TODO: Custom error for invalid build value
+            # TODO: Custom error for invalid build value
             raise ValueError(f"Invalid build. {new_build} not in {correct_values}")
 
     @property
@@ -586,9 +586,42 @@ class Character:
             raise ValueError(
                 f"{variable_name.capitalize()} points cannot be less than 0"
             )
-    
+
     # TODO: write unit test
     def get_full_characteristics(self) -> dict:
+        """Return character's full characteristics as a dictionary
+
+        .. code-block:: python
+            :linenos:
+
+            {
+                "first_name": self.first_name,
+                "last_name": self.last_name,
+                "age": self.age,
+                "country": self.country,
+                "occupation": self.occupation,
+                "strength": self.strength,
+                "condition": self.condition,
+                "size": self.size,
+                "dexterity": self.dexterity,
+                "appearance": self.appearance,
+                "education": self.education,
+                "intelligence": self.intelligence,
+                "power": self.power,
+                "move_rate": self.move_rate,
+                "luck": self.luck,
+                "damage_bonus": self.damage_bonus,
+                "build": self.build,
+                "doge": self.doge,
+                "sanity_points": self.sanity_points,
+                "magic_points": self.magic_points,
+                "hit_points": self.hit_points,
+                "skills": self.skills
+            }
+
+        :return: full characteristics
+        :rtype: dict
+        """
         # TODO: full characteristic
         return {
             "first_name": self.first_name,
@@ -596,54 +629,103 @@ class Character:
             "age": self.age,
             "country": self.country,
             "occupation": self.occupation,
-            "strength": self.strength, 
-            "condition": self.condition, 
+            "strength": self.strength,
+            "condition": self.condition,
             "size": self.size,
-            "dexterity": self.dexterity, 
-            "appearance": self.appearance, 
+            "dexterity": self.dexterity,
+            "appearance": self.appearance,
             "education": self.education,
-            "intelligence": self.intelligence, 
-            "power": self.power, 
-            "move_rate": self.move_rate, 
+            "intelligence": self.intelligence,
+            "power": self.power,
+            "move_rate": self.move_rate,
             "luck": self.luck,
-            "damage_bonus": self.damage_bonus, 
-            "build": self.build, 
-            "doge": self.doge, 
-            "sanity_points": self.sanity_points, 
-            "magic_points": self.magic_points, 
-            "hit_points": self.hit_points, 
-            "skills": self.skills
+            "damage_bonus": self.damage_bonus,
+            "build": self.build,
+            "doge": self.doge,
+            "sanity_points": self.sanity_points,
+            "magic_points": self.magic_points,
+            "hit_points": self.hit_points,
+            "skills": self.skills,
         }
-    
+
     # TODO: write unit test
     def get_main_characteristics(self) -> dict:
+        """Return character's main characteristics:
+
+        .. code-block:: python
+            :linenos:
+
+            {
+                "strength": self.strength,
+                "condition": self.condition,
+                "size": self.size,
+                "dexterity": self.dexterity,
+                "appearance": self.appearance,
+                "education": self.education,
+                "intelligence": self.intelligence,
+                "power": self.power,
+                "move_rate": self.move_rate,
+                "luck": self.luck
+            }
+
+        :return: main characteristics
+        :rtype: dict
+        """
         # TODO: main characteristics
         return {
-            "strength": self.strength, 
-            "condition": self.condition, 
+            "strength": self.strength,
+            "condition": self.condition,
             "size": self.size,
-            "dexterity": self.dexterity, 
-            "appearance": self.appearance, 
+            "dexterity": self.dexterity,
+            "appearance": self.appearance,
             "education": self.education,
-            "intelligence": self.intelligence, 
-            "power": self.power, 
-            "move_rate": self.move_rate, 
-            "luck": self.luck
+            "intelligence": self.intelligence,
+            "power": self.power,
+            "move_rate": self.move_rate,
+            "luck": self.luck,
         }
-    
+
     # TODO: write unit test
     def get_personal_info(self) -> dict:
+        """Return character's personal information:
+
+        .. code-block:: python
+            :linenos:
+
+            {
+                "first_name": self.first_name,
+                "last_name": self.last_name,
+                "age": self.age,
+                "country": self.country,
+                "occupation": self.occupation
+            }
+
+        :return: personal information
+        :rtype: dict
+        """
         # TODO: personal info
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
             "age": self.age,
             "country": self.country,
-            "occupation": self.occupation
+            "occupation": self.occupation,
         }
-    
+
     # TODO: write unit test
     def get_json_format(self, mode="full") -> dict:
+        """Return Character in json format.
+
+        Accept 3 modes:
+        1. full - full characteristics
+        2. main - main characteristics
+        3. personal - personal info
+
+        :param mode: mode, defaults to "full"
+        :type mode: str, optional
+        :return: characteristics in json format
+        :rtype: dict
+        """
         # TODO: character in JSON format
         if mode == "full":
             results = self.get_full_characteristics()
@@ -653,11 +735,35 @@ class Character:
             results = self.get_personal_info()
 
         return json.dumps(results)
-    
+
     # TODO: write unit test
-    def get_csv_format(self):
-        # TODO: implement csv format
-        pass
+    def get_csv_format(self, mode="full"):
+        """Return Character in csv format.
+
+        .. warning
+            Method is not implemented yet
+
+        TODO: implement csv format
+
+        Accept 3 modes:
+        1. full - full characteristics
+        2. main - main characteristics
+        3. personal - personal info
+
+        :param mode: mode, defaults to "full"
+        :type mode: str, optional
+        :return: characteristics in json format
+        :rtype: dict
+        """
+        # TODO: character in JSON format
+        if mode == "full":
+            results = self.get_full_characteristics()
+        if mode == "main":
+            results = self.get_main_characteristics()
+        if mode == "personal":
+            results = self.get_personal_info()
+
+        return results
 
     def __eq__(self, o: object) -> bool:
         return True if self.__dict__ == o.__dict__ else False
@@ -690,14 +796,15 @@ Skills:
 {skills}
 """
 
+
 # TODO: write unit test
 def get_sex(sex: Union[str, bool]) -> str:
     """Get sex
-    
+
     # TODO: investigate sex workflow. Why there is no sex verification here
     # TODO: add unit tests for sex
 
-    :param sex: character's sex 
+    :param sex: character's sex
     :type sex: Union[str, bool]
     :return: sex
     :rtype: str

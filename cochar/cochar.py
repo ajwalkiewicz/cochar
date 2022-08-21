@@ -51,7 +51,7 @@ def create_character(
     :param skills: character's skills, defaults to {}
     :type skills: Skills, optional
     :raises ValueError: raise if sex is incorrect
-    :return: _description_
+    :return: generated character
     :rtype: Character
     """
     weights = WEIGHTS
@@ -67,8 +67,8 @@ def create_character(
         first_name: str = get_first_name(year, sex, country, weights)
     else:
         first_name = first_name
-        
-    if not last_name:    
+
+    if not last_name:
         last_name: str = get_last_name(year, sex, country, weights)
     else:
         last_name = last_name
@@ -137,6 +137,7 @@ def create_character(
         hit_points=hit_points,
     )
 
+
 # TODO: write unit test
 def get_age(year, sex, age: int = False) -> int:
     """Set age
@@ -163,6 +164,7 @@ def get_age(year, sex, age: int = False) -> int:
 
     return age
 
+
 # TODO: write unit test
 def get_base_characteristics(
     age,
@@ -174,9 +176,48 @@ def get_base_characteristics(
     education: int = 0,
     intelligence: int = 0,
     power: int = 0,
-    move_rate: int = 0,
     luck: int = 0,
+    move_rate: int = 0,
 ) -> tuple:
+    """Return base characteristics based on age as a tuple.
+
+    Base characteristics:
+    1. strength
+    2. condition
+    3. size
+    4. dexterity
+    5. appearance
+    6. education
+    7. intelligence
+    8. power
+    9. luck
+    10. move rate
+
+    :param age: character's age
+    :type age: int
+    :param strength: strength, defaults to 0
+    :type strength: int, optional
+    :param condition: condition, defaults to 0
+    :type condition: int, optional
+    :param size: size, defaults to 0
+    :type size: int, optional
+    :param dexterity: dexterity, defaults to 0
+    :type dexterity: int, optional
+    :param appearance: appearance, defaults to 0
+    :type appearance: int, optional
+    :param education: education, defaults to 0
+    :type education: int, optional
+    :param intelligence: intelligence, defaults to 0
+    :type intelligence: int, optional
+    :param power: power, defaults to 0
+    :type power: int, optional
+    :param move_rate: move rate, defaults to 0
+    :type move_rate: int, optional
+    :param luck: luck, defaults to 0
+    :type luck: int, optional
+    :return: (strength, condition, size, dexterity, appearance, education, intelligence, power, luck, move_rate)
+    :rtype: tuple
+    """
     if strength == 0:
         strength = random.randint(15, 90)
     if condition == 0:
@@ -226,6 +267,7 @@ def get_base_characteristics(
         move_rate,
     )
 
+
 # TODO: write unit test
 def get_derived_attributes(
     power: int,
@@ -262,6 +304,7 @@ def get_derived_attributes(
 
     return sanity_points, magic_points, hit_points
 
+
 # TODO: write unit test
 def get_combat_characteristics(
     strength: int, size: int, dexterity: int, skills: Skills = None
@@ -294,17 +337,18 @@ def get_combat_characteristics(
 
     return damage_bonus, build, doge
 
+
 # TODO: write unit test
 def get_damage_bonus(strength: int, size: int) -> str:
     """Return damage bonus, based on sum of strength and size.
 
     f: X -> Y
-    
+
     X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
     Y: {"-2", "-1", "0", "+1K4", "+1K6", "+2K6", "+3K6", "+4K6", "+5K6",}
-    
-    TODO: Increase bonus damage for +1K6 for every 80 points above 524 
-    
+
+    TODO: Increase bonus damage for +1K6 for every 80 points above 524
+
     :param strength: character's strength
     :type strength: int
     :param size: character's size
@@ -317,12 +361,13 @@ def get_damage_bonus(strength: int, size: int) -> str:
     damage_bonus = VALUE_MATRIX["damage_bonus"][combat_range]
     return damage_bonus
 
+
 # TODO: write unit test
 def get_build(strength: int, size: int) -> int:
     """Return build based on sum od strength and size.
-    
+
     f: X -> Y
-    
+
     X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
     Y: {-2, -1, 0, 1, 2, 3, 4, 5, 6}
 
@@ -338,22 +383,23 @@ def get_build(strength: int, size: int) -> int:
     build = VALUE_MATRIX["build"][combat_range]
     return build
 
+
 # TODO: write unit test
 def get_doge(dexterity: int, skills: Skills = None) -> int:
     """Return doge based on dexterity:
-    
+
     doge = dexterity // 2
-    
+
     Unless, there is already doge skill in Skills,
     then return value from Skills
-    
+
     It's because function get_skills(), also set doge to
     dexterity // 2
-    
+
     .. warning::
 
         Better to use it before running get_skills()
-        
+
 
     :param dexterity: character's dexterity
     :type dexterity: int
@@ -368,20 +414,21 @@ def get_doge(dexterity: int, skills: Skills = None) -> int:
         doge = dexterity // 2
     return doge
 
+
 # TODO: write unit test
 def subtract_points_from_characteristic(
     characteristic_points: int, subtract_points: int
 ) -> int:
     """Subtract points from characteristic points,
     but if result would be zero or below, than return 1.
-    
+
     :param characteristic_points: _description_
     :type characteristic_points: int
     :param subtract_points: _description_
     :type subtract_points: int
     :return: _description_
     :rtype: int
-    
+
     >>> education = 50
     >>> points_to_subtract = 10
     >>> subtract_points_from_characteristic(education, points_to_subtract)
@@ -396,12 +443,13 @@ def subtract_points_from_characteristic(
         else 1
     )
 
+
 # TODO: write unit test
 def subtract_points_from_str_con_dex(
     strength: int, condition: int, dexterity: int, subtract_points: int
 ) -> Tuple[int, int, int]:
     """Subtract certain amount of points from strength, condition and
-    dexterity, but but prevent each of the characteristics to be 
+    dexterity, but but prevent each of the characteristics to be
     lower than 1.
 
     :param strength: character's strength
@@ -432,19 +480,21 @@ def subtract_points_from_str_con_dex(
 
     return strength, condition, dexterity
 
+
 # TODO: write unit test
 def characteristic_test(tested_value: int, repetition: int = 1) -> int:
     """Perform characteristic test.
-    
+
+    TODO: Double if that works this way for characteristics.
     Works like improvement test. Roll number between 1 to 100,
-    If that number is higher than tested value or higher or equal
-    than 96m than increase tested value with random number,
+    If that number is higher than tested value or higher
+    then 95, than increase tested value with random number,
     between 1 to 10.
-    
+
     Repeat repetition times.
-    
+
     .. note:
-        for skills use test_skill()
+        for skills use skill_test()
 
     :param tested_value: tested value
     :type tested_value: int
@@ -459,11 +509,12 @@ def characteristic_test(tested_value: int, repetition: int = 1) -> int:
             tested_value += random.randint(1, 10)
     return tested_value
 
+
 # TODO: write unit test
 def get_move_rate(strength: int, dexterity: int, size: int) -> int:
     """Return move rate base on relations between
     strength, dexterity and size
-    
+
     if both dexterity and strength are smaller than size,
     return 7
     if both strength and size are higher or equal than size,
@@ -488,6 +539,7 @@ def get_move_rate(strength: int, dexterity: int, size: int) -> int:
 
     return move_rate
 
+
 # TODO: write unit test
 def is_skill_valid(skill_value: int) -> bool:
     """Check if skill value is int type and it is not
@@ -502,13 +554,14 @@ def is_skill_valid(skill_value: int) -> bool:
         return False
     if skill_value < 0:
         return False
-    
+
     return True
+
 
 # TODO: write unit test
 def get_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random last name based on the given parameters
-    
+
     .. note:
         For generating only last name, use randname module.
 
@@ -528,10 +581,11 @@ def get_last_name(year: int, sex: str, country: str, weights: bool) -> str:
         year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS
     )
 
+
 # TODO: write unit test
 def get_first_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random first name based on given parameters.
-    
+
     .. note:
         For generating only first name, use randname module.
 
@@ -550,6 +604,7 @@ def get_first_name(year: int, sex: str, country: str, weights: bool) -> str:
     return randname.first_name(
         year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS
     )
+
 
 # TODO: write unit test
 # TODO: investigate sex flow
@@ -574,6 +629,8 @@ def _get_valid_sex(sex: str, country: str, name: str) -> str:
         else:
             sex = random.choice(available_sex)
     return sex
+
+
 # TODO: write unit test
 def is_sex_valid(sex: str) -> bool:
     """Return True if sex is valid, else False

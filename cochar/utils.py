@@ -28,7 +28,7 @@
 .. code-block:: python
     :linenos:
 
-     OCCUPATION_DATA = {
+    OCCUPATION_DATA = {
         "occupation name": {
             "credit_rating": [9, 50],
             "skills": []
