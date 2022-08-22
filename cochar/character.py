@@ -1,16 +1,20 @@
-"""Characters
-Contains:
+"""**Characters**
+Character module contain main Character class, that is
+a container for characters. 
+
+Contain:
 - Character class
 - get_sex function
 """
 import json
 import random
-from typing import Union, List
+from typing import List, Union
 
 import randname
-from . import errors
-from .skills import Skills
-from .settings import *
+
+import cochar
+import cochar.error
+import cochar.skill
 
 
 class Character:
@@ -44,7 +48,7 @@ class Character:
         damage_bonus: str = 0,
         build: int = 0,
         doge: int = 0,
-        skills: Skills() = {},
+        skills: cochar.skill.Skills() = {},
         sanity_points: int = 0,
         magic_points: int = 0,
         hit_points: int = 0,
@@ -68,7 +72,7 @@ class Character:
         self.luck = luck
         self.damage_bonus = damage_bonus
         self.build = build
-        self.skills = Skills(skills)
+        self.skills = cochar.skill.Skills(skills)
         self.doge = doge
         self.sanity_points = sanity_points
         self.magic_points = magic_points
@@ -118,7 +122,7 @@ class Character:
 
     @sex.setter
     def sex(self, new_sex: Union[str, None]) -> None:
-        if new_sex in SEX_OPTIONS:
+        if new_sex in cochar.SEX_OPTIONS:
             self._sex = get_sex(new_sex)
         else:
             # TODO: custom error for invalid sex
@@ -140,13 +144,15 @@ class Character:
     @age.setter
     def age(self, new_age: int) -> None:
         if not isinstance(new_age, int):
-            raise errors.SkillValueNotAnInt("Invalid age. Age must be an integer")
+            raise cochar.error.SkillValueNotAnInt("Invalid age. Age must be an integer")
 
-        if MIN_AGE <= new_age <= MAX_AGE:
+        if cochar.MIN_AGE <= new_age <= cochar.MAX_AGE:
             self._age = new_age
         else:
             # TODO: custom error for invalid age
-            raise ValueError(f"Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]")
+            raise ValueError(
+                f"Age not in range: {new_age} -> [{cochar.MIN_AGE}, {cochar.MAX_AGE}]"
+            )
 
     @property
     def country(self) -> str:
@@ -186,12 +192,12 @@ class Character:
 
     @occupation.setter
     def occupation(self, new_occupation: str) -> None:
-        if new_occupation in OCCUPATIONS_LIST:
+        if new_occupation in cochar.OCCUPATIONS_LIST:
             self._occupation = new_occupation
         else:
             # TODO; custom error for invalid occupation
             raise ValueError(
-                f"Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}"
+                f"Occupation: {new_occupation} not in -> {cochar.OCCUPATIONS_LIST}"
             )
 
     @property
@@ -469,17 +475,17 @@ class Character:
         self._luck = new_luck
 
     @property
-    def skills(self) -> Skills:
+    def skills(self) -> cochar.skill.Skills:
         return self._skills
 
     @skills.setter
-    def skills(self, new_skills: Union[dict, Skills]) -> None:
-        if isinstance(new_skills, Skills):
+    def skills(self, new_skills: Union[dict, cochar.skill.Skills]) -> None:
+        if isinstance(new_skills, cochar.skill.Skills):
             self._skills = new_skills
         elif isinstance(new_skills, dict):
-            self._skills = Skills(new_skills)
+            self._skills = cochar.skill.Skills(new_skills)
         else:
-            raise errors.SkillsNotADict("Invalid skills. Skills must be a dict")
+            raise cochar.error.SkillsNotADict("Invalid skills. Skills must be a dict")
 
     @property
     def damage_bonus(self) -> str:
@@ -579,7 +585,7 @@ class Character:
         """
         variable_name = str(variable_name)
         if not isinstance(new_variable, int):
-            raise errors.SkillValueNotAnInt(
+            raise cochar.error.SkillValueNotAnInt(
                 f"Invalid {variable_name.lower()} points. {variable_name.capitalize()} points must be an integer: {new_variable}"
             )
         if new_variable < 0:

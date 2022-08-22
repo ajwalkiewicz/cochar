@@ -1,24 +1,21 @@
-"""Cochar - main module"""
-from distutils.command.build import build
-import random
-import json
-import os
-import logging
+"""**Cochar - main module**"""
 
+import json
+import logging
+import os
+import random
 from bisect import bisect_left
-from typing import List, Union, Tuple
+from distutils.command.build import build
+from typing import List, Tuple, Union
 
 import randname
 
-from .character import Character, get_sex
-from .occupations import get_occupation, get_occupation_points, get_hobby_points
-from .skills import Skills, get_skills
-from . import errors
-from .utils import (
-    AGE_RANGE,
-    YEAR_RANGE,
-)
-from .settings import *
+import cochar
+import cochar.character as character
+import cochar.occup
+import cochar.skill
+import cochar.utils
+
 
 # TODO: write unit test
 def create_character(
@@ -29,8 +26,8 @@ def create_character(
     age: int = False,
     sex: str = False,
     occupation: str = "optimal",
-    skills: Skills = {},
-) -> Character:
+    skills: cochar.skill.Skills = {},
+) -> character.Character:
     """Main function for creating Character.
     Use this function instead of instantiating Character class.
 
@@ -54,10 +51,10 @@ def create_character(
     :return: generated character
     :rtype: Character
     """
-    weights = WEIGHTS
+    weights = cochar.WEIGHTS
 
-    if sex in SEX_OPTIONS:
-        sex = get_sex(sex)
+    if sex in cochar.SEX_OPTIONS:
+        sex = character.get_sex(sex)
     else:
         raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None']")
 
@@ -86,7 +83,7 @@ def create_character(
         move_rate,
     ) = get_base_characteristics(age=age)
 
-    occupation = get_occupation(
+    occupation = cochar.occup.get_occupation(
         education=education,
         power=power,
         dexterity=dexterity,
@@ -102,15 +99,15 @@ def create_character(
     # TODO: analyze doge flow
     damage_bonus, build, doge = get_combat_characteristics(strength, size, dexterity)
 
-    occupation_points = get_occupation_points(
+    occupation_points = cochar.occup.get_occupation_points(
         occupation, education, power, dexterity, appearance, strength
     )
-    hobby_points = get_hobby_points(intelligence)
-    skills = get_skills(
+    hobby_points = cochar.occup.get_hobby_points(intelligence)
+    skills = cochar.skill.get_skills(
         occupation, occupation_points, hobby_points, dexterity, education
     )
 
-    return Character(
+    return character.Character(
         year=year,
         country=country,
         first_name=first_name,
@@ -152,12 +149,12 @@ def get_age(year, sex, age: int = False) -> int:
         if variable_year < 1950:
             variable_year = 1950
         else:
-            year_index = bisect_left(YEAR_RANGE, year)
-            variable_year = YEAR_RANGE[year_index]
+            year_index = bisect_left(cochar.utils.YEAR_RANGE, year)
+            variable_year = cochar.utils.YEAR_RANGE[year_index]
         variable_name = f"pop{variable_year}"
 
-        with open(POP_PYRAMID_PATH) as json_file:
-            age_population = AGE_RANGE
+        with open(cochar.POP_PYRAMID_PATH) as json_file:
+            age_population = cochar.utils.AGE_RANGE
             age_weights = json.load(json_file)[variable_name][sex][3:-1]
             age_range = random.choices(age_population, weights=age_weights)[0]
             age = random.randint(*age_range)
@@ -241,11 +238,11 @@ def get_base_characteristics(
     if age <= 19:
         luck = max(luck, random.randint(15, 90))
 
-    age_range = bisect_left(MODIFIERS["age_range"], age)
-    mod_char_points = MODIFIERS["mod_char_points"][age_range]
-    mod_app = MODIFIERS["mod_app"][age_range]
-    mod_move_rate = MODIFIERS["mod_move_rate"][age_range]
-    mod_edu = MODIFIERS["mod_edu"][age_range]
+    age_range = bisect_left(cochar.MODIFIERS["age_range"], age)
+    mod_char_points = cochar.MODIFIERS["mod_char_points"][age_range]
+    mod_app = cochar.MODIFIERS["mod_app"][age_range]
+    mod_move_rate = cochar.MODIFIERS["mod_move_rate"][age_range]
+    mod_edu = cochar.MODIFIERS["mod_edu"][age_range]
 
     appearance = subtract_points_from_characteristic(appearance, mod_app)
     strength, condition, dexterity = subtract_points_from_str_con_dex(
@@ -307,7 +304,7 @@ def get_derived_attributes(
 
 # TODO: write unit test
 def get_combat_characteristics(
-    strength: int, size: int, dexterity: int, skills: Skills = None
+    strength: int, size: int, dexterity: int, skills: cochar.skill.Skills = None
 ) -> Tuple[str, int, int]:
     """Based on strength, size, dexterity and Skills,
     return combat characteristics such as:
@@ -327,8 +324,8 @@ def get_combat_characteristics(
     """
     # TODO: Investigate: why am I using Skills here?
     if not skills:
-        skills = Skills({})
-    if not isinstance(skills, Skills):
+        skills = cochar.skill.Skills({})
+    if not isinstance(skills, cochar.skill.Skills):
         raise ValueError()
 
     damage_bonus = get_damage_bonus(strength, size)
@@ -357,8 +354,8 @@ def get_damage_bonus(strength: int, size: int) -> str:
     :rtype: str
     """
     sum_str_siz = strength + size
-    combat_range = bisect_left(VALUE_MATRIX["combat_range"], sum_str_siz)
-    damage_bonus = VALUE_MATRIX["damage_bonus"][combat_range]
+    combat_range = bisect_left(cochar.VALUE_MATRIX["combat_range"], sum_str_siz)
+    damage_bonus = cochar.VALUE_MATRIX["damage_bonus"][combat_range]
     return damage_bonus
 
 
@@ -379,13 +376,13 @@ def get_build(strength: int, size: int) -> int:
     :rtype: int
     """
     sum_str_siz = strength + size
-    combat_range = bisect_left(VALUE_MATRIX["combat_range"], sum_str_siz)
-    build = VALUE_MATRIX["build"][combat_range]
+    combat_range = bisect_left(cochar.VALUE_MATRIX["combat_range"], sum_str_siz)
+    build = cochar.VALUE_MATRIX["build"][combat_range]
     return build
 
 
 # TODO: write unit test
-def get_doge(dexterity: int, skills: Skills = None) -> int:
+def get_doge(dexterity: int, skills: cochar.skill.Skills = None) -> int:
     """Return doge based on dexterity:
 
     doge = dexterity // 2
@@ -485,7 +482,7 @@ def subtract_points_from_str_con_dex(
 def characteristic_test(tested_value: int, repetition: int = 1) -> int:
     """Perform characteristic test.
 
-    TODO: Double if that works this way for characteristics.
+    TODO: Double check if that works this way for characteristics.
     Works like improvement test. Roll number between 1 to 100,
     If that number is higher than tested value or higher
     then 95, than increase tested value with random number,
@@ -578,7 +575,12 @@ def get_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     """
     sex = _get_valid_sex(sex, country, name="last_names")
     return randname.last_name(
-        year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS
+        year,
+        sex,
+        country,
+        weights,
+        database=cochar.DATABASE,
+        show_warnings=cochar.SHOW_WARNINGS,
     )
 
 
@@ -602,7 +604,12 @@ def get_first_name(year: int, sex: str, country: str, weights: bool) -> str:
     """
     sex = _get_valid_sex(sex, country, name="first_names")
     return randname.first_name(
-        year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS
+        year,
+        sex,
+        country,
+        weights,
+        database=cochar.DATABASE,
+        show_warnings=cochar.SHOW_WARNINGS,
     )
 
 
@@ -640,4 +647,4 @@ def is_sex_valid(sex: str) -> bool:
     :return: True|False
     :rtype: bool
     """
-    return True if sex in SEX_OPTIONS else False
+    return True if sex in cochar.SEX_OPTIONS else False
