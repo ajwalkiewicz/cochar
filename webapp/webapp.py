@@ -1,5 +1,6 @@
 import cochar
-from flask import Flask, render_template, url_for
+from cochar import error
+from flask import Flask, render_template, url_for, Response, jsonify, abort
 from flask_restful import Api, Resource, reqparse
 
 app = Flask(__name__)
@@ -7,7 +8,7 @@ api = Api(app)
 
 # API
 
-get_args = reqparse.RequestParser()
+get_args = reqparse.RequestParser(bundle_errors=True)
 get_args.add_argument(
     "year", default=1925, type=int, help="Year of the game as integer", location="args"
 )
@@ -29,13 +30,22 @@ get_args.add_argument(
     location="args",
 )
 get_args.add_argument(
-    "age", default=False, type=int, help="Character's age as integer", location="args"
+    "age",
+    default=False,
+    type=int,
+    help="Age must be an integer: {error_msg}",
+    location="args",
 )
 get_args.add_argument(
-    "sex", default=False, type=str, help="Character's sex", location="args"
+    "sex",
+    default=False,
+    type=str,
+    choices=("M", "F"),
+    help="{error_msg}. For random choice omit this parameter",
+    location="args",
 )
 get_args.add_argument(
-    "occupation", default="optimal", type=str, case_sensitive=True, location="args"
+    "occupation", default="optimal", type=str, case_sensitive=False, location="args"
 )
 get_args.add_argument(
     "mode", default="full", type=str, case_sensitive=False, location="args"
@@ -53,11 +63,17 @@ class GenerateCharacter(Resource):
             kwargs = get_args.parse_args()
             character = cochar.create_character(**kwargs)
             return character.get_json_format(kwargs["mode"].lower())
-        except Exception as e:
-            return {"fail": str(e)}
+        except error.CocharError as e:
+            return {"status": "fail", "message": str(e)}
+            # return abort(400, description=str(e))
 
 
 api.add_resource(GenerateCharacter, "/api/get")
+
+# Errors
+# @app.errorhandler(400)
+# def error_400(Exception):
+#     return , 400
 
 # Main Page
 

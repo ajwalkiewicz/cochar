@@ -1,11 +1,11 @@
 'use strict'
-
 // Cards and buttons
 const characterCard = document.getElementById("character-card")
 const generateButton = document.getElementById("generate-btn")
 
 // Character card elements
 const characterName = document.getElementById("character-name")
+const characterInfo = document.getElementById("character-info")
 const strength = document.getElementById("str")
 const condition = document.getElementById("con")
 const size = document.getElementById("siz")
@@ -32,11 +32,23 @@ const yearForm = document.getElementById("validation-year")
 const sexForm = document.getElementById("validation-sex") 
 const occupationForm = document.getElementById("validation-occupation") 
 
+// Cochar variables
+const availableCountries = new Set(["US", "PL", "ES"])
+const availableSex = new Set(["Male", "Female", "Random"])
 
-generateButton.addEventListener("click", generateCharacter)
+// Main Functions
+function loadingSpinnerOn(){
+  generateButton.setAttribute("disabled", "")
+  generateButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...'
+}
+
+function loadingSpinnerOff(){
+  generateButton.removeAttribute("disabled")
+  generateButton.innerHTML = 'Generate Character'
+}
 
 function sendRequest(firstName = "", lastName = "", country = "", age = "", sex = "", year = "", occupation = ""){
-  let url = new URL("http://127.0.0.1:5000/api/get")
+  let url = new URL("https://cochar.loca.lt/api/get")
 
   if (firstName) url.searchParams.append("first_name", firstName)  
   if (lastName) url.searchParams.append("last_name", lastName)
@@ -46,16 +58,19 @@ function sendRequest(firstName = "", lastName = "", country = "", age = "", sex 
   if (sex) url.searchParams.append("sex", sex)
   if (occupation) url.searchParams.append("occupation", occupation)
 
-
+  console.log(url);
   fetch(url)
   .then(response => {
-    if(!response.ok) throw new Error(`Too many tries: ${response.status}`)
+    if(!response.ok) throw new Error(`${response.status}, ${response.statusText}`)
     return response.json()
   })
   .then(data => {
     console.log(data);
+    if (data?.status === "fail") throw new Error(data.message)
     updateForm(data)
   })
+  .catch((e) => console.error(e))
+  .finally(loadingSpinnerOff)
 }
 
 // TODO: Data validation
@@ -65,30 +80,35 @@ function updateForm(data){
   characterCard.classList.remove("hidden")
   
   // Render text
-  characterName.textContent = `${data.sex === "M" ? "Mr." : "Ms."} ${data.first_name} ${data.last_name}, ${data.age} years old ${data.occupation}, ${data.country}`
+  characterName.textContent = `${data.sex === "M" ? "Mr." : "Ms."} ${data.first_name} ${data.last_name}`
+  characterInfo.textContent = `${data.age} yo, ${data.occupation}, ${data.country}`
 
-  strength.textContent = `STR: ${data.strength}`
-  condition.textContent = `CON: ${data.condition}`
-  size.textContent = `SIZ: ${data.size}`
-  dexterity.textContent = `DEX: ${data.dexterity}`
-  appearance.textContent = `APP: ${data.appearance}`
-  education.textContent = `EDU: ${data.education}`
-  intelligence.textContent = `INT: ${data.intelligence}`
-  power.textContent = `POW: ${data.power}`
-  luck.textContent = `Luck: ${data.luck}`
-  damageBonus.textContent = `Damage bonus: ${data.damage_bonus}`
-  build.textContent = `Build: ${data.build}`
-  doge.textContent = `Doge: ${data.doge}`
-  moveRate.textContent = `Move rate: ${data.move_rate}`
-  hitPoints.textContent = `Hit points: ${data.hit_points}`
-  magicPoints.textContent = `Magic points: ${data.magic_points}`
+  strength.innerHTML = `<strong>STR:</strong> ${data.strength}`
+  condition.innerHTML = `<strong>CON:</strong> ${data.condition}`
+  size.innerHTML = `<strong>SIZ:</strong> ${data.size}`
+  dexterity.innerHTML = `<strong>DEX:</strong> ${data.dexterity}`
+  appearance.innerHTML = `<strong>APP:</strong> ${data.appearance}`
+  education.innerHTML = `<strong>EDU:</strong> ${data.education}`
+  intelligence.innerHTML = `<strong>INT:</strong> ${data.intelligence}`
+  power.innerHTML = `<strong>POW:</strong> ${data.power}`
+  luck.innerHTML = `<strong>Luck</strong>: ${data.luck}`
+  damageBonus.innerHTML = `<strong>Damage bonus:</strong> ${data.damage_bonus}`
+  build.innerHTML = `<strong>Build:</strong> ${data.build}`
+  doge.innerHTML = `<strong>Doge:</strong> ${data.doge}`
+  moveRate.innerHTML = `<strong>Move rate:</strong> ${data.move_rate}`
+  hitPoints.innerHTML = `<strong>Hit points:</strong> ${data.hit_points}`
+  magicPoints.innerHTML = `<strong>Magic points:</strong> ${data.magic_points}`
 
-  skills.textContent = ""
+  // skills.innerHTML = ""
   let temp_skills = []
   for (const [skill_name, skill_value] of Object.entries(data.skills)){
-    temp_skills.push(`${skill_name.replace(skill_name[0], skill_name[0].toUpperCase())}: ${skill_value}`)
+    // temp_skills.push(`<strong>${skill_name.replace(skill_name[0], skill_name[0].toUpperCase())}:</strong> ${skill_value}%`)
+    temp_skills.push(`<div class="col-lg-6 col-md-12 col-sm-12"><strong>${skill_name.replace(skill_name[0], skill_name[0].toUpperCase())}</strong> ${skill_value}%</div>`)
   }
-  skills.textContent = temp_skills.join(", ")
+  // skills.textContent = temp_skills.join(", ")
+  // skills.insertAdjacentElement("beforeend", temp_skills.join(""))
+  temp_skills.sort()
+  skills.innerHTML = temp_skills.join("")
 }
 
 function validateForm(){
@@ -99,6 +119,13 @@ function validateForm(){
   } else {
     ageForm.classList.remove("is-invalid")
   }
+  
+  if (!validateYear(yearForm.value)){
+    yearForm.classList.add("is-invalid")
+    return false
+  } else {
+    yearForm.classList.remove("is-invalid")
+  }
 
   if (!validateName(firstNameForm.value)){
     firstNameForm.classList.add("is-invalid")
@@ -106,7 +133,7 @@ function validateForm(){
   } else {
     firstNameForm.classList.remove("is-invalid")
   }
-
+  
   if (!validateName(lastNameForm.value)){
     lastNameForm.classList.add("is-invalid")
     return false
@@ -121,11 +148,11 @@ function validateForm(){
     countryForm.classList.remove("is-invalid")
   }
 
-  if (!validateYear(yearForm.value)){
-    yearForm.classList.add("is-invalid")
+  if (!validateSex(sexForm.value)){
+    sexForm.classList.add("is-invalid")
     return false
   } else {
-    yearForm.classList.remove("is-invalid")
+    sexForm.classList.remove("is-invalid")
   }
  
   // TODO: validate occupation
@@ -155,8 +182,7 @@ function validateName(characterName){
 
 function validateCountry(country){
   // TODO: create available country list based on backend 
-  const availableCountries = ["US", "PL", "ES"]
-  return availableCountries.includes(country)
+  return availableCountries.has(country)
 }
 
 function validateYear(year){
@@ -167,14 +193,17 @@ function validateYear(year){
 }
 
 function validateSex(sex){
-  const availableSex = ["M", "F", "Random"]
-  return availableSex.includes(sex)
+  // console.log(sex);
+  return availableSex.has(sex)
 }
 
 function generateCharacter(){
-  if (!validateForm){
+  // console.log(generateButton);
+  if (!validateForm()){
     return false
   }
+
+  loadingSpinnerOn()
 
   let firstName = firstNameForm.value
   let lastName = lastNameForm.value
@@ -200,6 +229,9 @@ function generateCharacter(){
     )
   }
 }
+
+// Add Event listener to generate button
+generateButton.addEventListener("click", generateCharacter)
 
 // Generate character when page is loaded
 generateCharacter()

@@ -22,6 +22,10 @@ class Skills(UserDict):
     :type UserDict: abc.ABCMeta
     """
 
+    def get_json_format(self):
+        """Return Skills as a dictionary"""
+        return {k: v for k, v in self.items()}
+
     # all_skills = ALL_SKILLS.copy()
     def __setitem__(self, key: any, value: int) -> None:
         """Add validation for skill values

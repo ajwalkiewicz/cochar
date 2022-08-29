@@ -604,6 +604,7 @@ class Character:
                 "first_name": self.first_name,
                 "last_name": self.last_name,
                 "age": self.age,
+                "sex": self.sex,
                 "country": self.country,
                 "occupation": self.occupation,
                 "strength": self.strength,
@@ -633,6 +634,7 @@ class Character:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "age": self.age,
+            "sex": self.sex,
             "country": self.country,
             "occupation": self.occupation,
             "strength": self.strength,
@@ -651,7 +653,7 @@ class Character:
             "sanity_points": self.sanity_points,
             "magic_points": self.magic_points,
             "hit_points": self.hit_points,
-            "skills": self.skills,
+            "skills": self.skills.get_json_format(),
         }
 
     # TODO: write unit test
@@ -733,6 +735,7 @@ class Character:
         :rtype: dict
         """
         # TODO: character in JSON format
+        # TODO: case when incorrect mode is provided
         if mode == "full":
             results = self.get_full_characteristics()
         if mode == "main":
@@ -740,7 +743,7 @@ class Character:
         if mode == "personal":
             results = self.get_personal_info()
 
-        return json.dumps(results)
+        return results
 
     # TODO: write unit test
     def get_csv_format(self, mode="full"):

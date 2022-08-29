@@ -11,7 +11,7 @@ from typing import List, Tuple, Union
 import randname
 
 import cochar
-import cochar.character as character
+import cochar.character
 import cochar.occup
 import cochar.skill
 import cochar.utils
@@ -27,7 +27,9 @@ def create_character(
     sex: str = False,
     occupation: str = "optimal",
     skills: cochar.skill.Skills = {},
-) -> character.Character:
+    *args,
+    **kwargs,
+) -> cochar.character.Character:
     """Main function for creating Character.
     Use this function instead of instantiating Character class.
 
@@ -54,12 +56,13 @@ def create_character(
     weights = cochar.WEIGHTS
 
     if sex in cochar.SEX_OPTIONS:
-        sex = character.get_sex(sex)
+        sex = cochar.character.get_sex(sex)
     else:
         raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None']")
 
     age: int = get_age(year, sex, age)
 
+    # TODO: Log from which file name is taken
     if not first_name:
         first_name: str = get_first_name(year, sex, country, weights)
     else:
@@ -107,7 +110,7 @@ def create_character(
         occupation, occupation_points, hobby_points, dexterity, education
     )
 
-    return character.Character(
+    return cochar.character.Character(
         year=year,
         country=country,
         first_name=first_name,
