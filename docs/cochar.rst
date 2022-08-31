@@ -20,7 +20,7 @@ cochar.character module
 cochar.occupations module
 -------------------------
 
-.. automodule:: cochar.occupations
+.. automodule:: cochar.occup
    :members:
    :undoc-members:
    :show-inheritance:
@@ -28,7 +28,7 @@ cochar.occupations module
 cochar.skills module
 --------------------
 
-.. automodule:: cochar.skills
+.. automodule:: cochar.skill
    :members:
    :undoc-members:
    :show-inheritance:
@@ -44,7 +44,7 @@ cochar.utils module
 cochar.errors module
 --------------------
 
-.. automodule:: cochar.errors
+.. automodule:: cochar.error
    :members:
    :undoc-members:
    :show-inheritance:

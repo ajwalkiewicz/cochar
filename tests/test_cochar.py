@@ -6,7 +6,7 @@ from randname import randname
 from cochar import create_character, get_first_name, get_last_name
 from cochar.character import Character
 from cochar.utils import ALL_SKILLS
-from cochar.errors import *
+from cochar.error import *
 
 TEST_OCC = {
     "test_occ": {
@@ -271,6 +271,7 @@ class TestCharacter(unittest.TestCase):
         skills = {"ride": "a"}
         with self.assertRaises(SkillValueNotAnInt):
             self.character.skills = skills
+
     # def test_skills_incorrect_key(self):
     #     skills = {"ride": 50, "fake skill": 50}
     #     c = Character()

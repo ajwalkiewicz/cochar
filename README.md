@@ -66,7 +66,7 @@ If you want to contribute to `cochar` projcet read [contribution](CONTRIBUTION.m
 
 ### Basic improvements
 
-1. [ ] Move occupation to external files
+1. [x] Move occupations to external file
 2. [ ] Write more thorough unit tests
 3. [ ] Save characters feature
 4. [ ] Simple GUI 
