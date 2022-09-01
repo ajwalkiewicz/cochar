@@ -61,9 +61,11 @@ function sendRequest(
   age = "",
   sex = "",
   year = "",
+  random_mode = "",
   occupation = ""
 ) {
-  let url = new URL("https://cochar.loca.lt/api/get");
+  let url = new URL("http://127.0.0.1:5000/api/get");
+  // let url = new URL("https://cochar.loca.lt/api/get");
 
   if (firstName) url.searchParams.append("first_name", firstName);
   if (lastName) url.searchParams.append("last_name", lastName);
@@ -71,6 +73,7 @@ function sendRequest(
   if (year) url.searchParams.append("year", year);
   if (country) url.searchParams.append("country", country);
   if (sex) url.searchParams.append("sex", sex);
+  if (random_mode) url.searchParams.append("random_mode", random_mode)
   if (occupation) url.searchParams.append("occupation", occupation);
 
   console.log(url);
@@ -235,13 +238,19 @@ function generateCharacter() {
   let sex = sexForm.value.toLowerCase();
   let year = yearForm.value;
   let occupation = occupationForm.value.toLowerCase();
+  let random_mode
 
   if (sex === "random") sex = "";
   if (sex === "male") sex = "M";
   if (sex === "female") sex = "F";
+  if (occupation === "random") {
+    random_mode = true
+    occupation = ""
+  }
+  if (occupation === "optimal") occupation = ""
 
   if (validateForm()) {
-    sendRequest(firstName, lastName, country, age, sex, year, occupation);
+    sendRequest(firstName, lastName, country, age, sex, year, random_mode, occupation);
   }
 }
 

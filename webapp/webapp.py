@@ -45,7 +45,10 @@ get_args.add_argument(
     location="args",
 )
 get_args.add_argument(
-    "occupation", default="optimal", type=str, case_sensitive=False, location="args"
+    "random_mode", default=False, type=bool, case_sensitive=False, location="args"
+)
+get_args.add_argument(
+    "occupation", default="", type=str, case_sensitive=False, location="args"
 )
 get_args.add_argument(
     "mode", default="full", type=str, case_sensitive=False, location="args"

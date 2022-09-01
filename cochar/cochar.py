@@ -25,7 +25,8 @@ def create_character(
     last_name: str = False,
     age: int = False,
     sex: str = False,
-    occupation: str = "optimal",
+    random_mode: bool = False,
+    occupation: str = None,
     skills: cochar.skill.Skills = {},
     *args,
     **kwargs,
@@ -45,7 +46,9 @@ def create_character(
     :type age: int, optional
     :param sex: character's sex, defaults to False
     :type sex: str, optional
-    :param occupation: character's occupation, defaults to "optimal"
+    :param random_mode: choose occupation completely randomly, regardless the character's statistics, defaults to "False"
+    :type random_mode: bool, optional
+    :param occupation: character's occupation return provided occupation as character's occupation if it exists, defaults to "None"
     :type occupation: str, optional
     :param skills: character's skills, defaults to {}
     :type skills: Skills, optional
@@ -92,6 +95,7 @@ def create_character(
         dexterity=dexterity,
         appearance=appearance,
         strength=strength,
+        random_mode=random_mode,
         occupation=occupation,
     )
 

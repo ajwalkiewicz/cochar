@@ -16,7 +16,8 @@ def get_occupation(
     dexterity: int,
     appearance: int,
     strength: int,
-    occupation: str = "optimal",
+    random_mode: bool = False,
+    occupation: str = None,
 ) -> str:
     """Return occupation based on:
     education, power, dexterity, appearance and strength
@@ -31,16 +32,14 @@ def get_occupation(
     :type appearance: int
     :param strength: strength points
     :type strength: int
-    :param occupation: occupation can accept any valid occupation defined in "occupations.json". Additionally, it can accept "optimal" or "random" option. "optimal" will return occupations that gives the highest amount of occupation points based on provided characteristics. "random" will return completely random occupation regardless provides characteristics, defaults to "optimal"
+    :param random_mode: choose occupation completely randomly, regardless the character's statistics, defaults to "False"
+    :type random_mode: bool, optional
+    :param occupation: character's occupation return provided occupation as character's occupation if it exists, defaults to "None"
     :type occupation: str, optional
     :raises ValueError: raise if occupation in not in [optimal, random]
     :return: occupation
     :rtype: str
     """
-    # TODO: check why there is None
-    if occupation not in cochar.OCCUPATIONS_LIST + ["optimal", "random", None]:
-        raise ValueError("occupation incorrect")
-
     # TODO: What happen if user provide illegal values, strings or below 0?
     skill_points_groups: tuple[int] = (
         education * 4,  # 1
@@ -50,21 +49,23 @@ def get_occupation(
         education * 2 + strength * 2,  # 5
     )
 
-    if occupation == "random":
-        occupation = random.choice(cochar.OCCUPATIONS_LIST)
+    if random_mode:
+        return random.choice(cochar.OCCUPATIONS_LIST)
 
-    if occupation == "optimal":
-        skill_points: int = max(skill_points_groups)
-        candidates_for_occupation: List[str] = random.choice(
-            [
-                group
-                for index, group in enumerate(cochar.OCCUPATIONS_GROUPS)
-                if skill_points_groups[index] == skill_points
-            ]
-        )
-        occupation = random.choice(candidates_for_occupation)
+    if occupation:
+        if occupation not in cochar.OCCUPATIONS_LIST:
+            raise ValueError(f"Incorrect occupation: {occupation}")
+        return occupation
 
-    return occupation
+    skill_points: int = max(skill_points_groups)
+    candidates_for_occupation: List[str] = random.choice(
+        [
+            group
+            for index, group in enumerate(cochar.OCCUPATIONS_GROUPS)
+            if skill_points_groups[index] == skill_points
+        ]
+    )
+    return random.choice(candidates_for_occupation)
 
 
 # TODO: write unit test
