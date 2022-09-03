@@ -1,6 +1,7 @@
 # __init__.py
 import os
 import json
+import logging
 from typing import List, Union
 
 import randname
@@ -9,6 +10,32 @@ __title__ = "cochar"
 __version__ = "1.0.0-alpha.2"
 __author__ = "Adam Walkiewicz"
 __license__ = "GPL 3.0"
+
+DEFAULT_LOGGING_LEVEL = logging.ERROR
+
+LOGGING_LEVEL_MAP = {
+    "debug": logging.DEBUG,
+    "info": logging.INFO,
+    "warning": logging.WARNING,
+    "error": logging.ERROR,
+    "critical": logging.CRITICAL,
+}
+
+logging_level = DEFAULT_LOGGING_LEVEL
+
+logging.basicConfig(
+    format="[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s",
+    level=logging_level,
+)
+
+
+def set_logging_level(logging_level=logging_level):
+    logging_level = LOGGING_LEVEL_MAP.get(logging_level)
+    return logging.basicConfig(
+        format="[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s",
+        level=logging_level,
+    )
+
 
 SEX_OPTIONS: List[Union[str, bool]] = ["M", "F", False]
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))

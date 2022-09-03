@@ -16,6 +16,8 @@ import cochar.occup
 import cochar.skill
 import cochar.utils
 
+cochar.set_logging_level("debug")
+
 
 # TODO: write unit test
 def create_character(
@@ -156,7 +158,13 @@ def get_age(year, sex, age: int = False) -> int:
         if variable_year < 1950:
             variable_year = 1950
         else:
-            year_index = bisect_left(cochar.utils.YEAR_RANGE, year)
+            # Correction of year index. If bisect_left returns int > len(data_range)
+            # return bisect_left - 1. It's in case of very small data sets.
+            def correct_bisect_left(data, year):
+                bisect = bisect_left(data, year)
+                return bisect if bisect != len(data) else bisect - 1
+
+            year_index = correct_bisect_left(cochar.utils.YEAR_RANGE, year)
             variable_year = cochar.utils.YEAR_RANGE[year_index]
         variable_name = f"pop{variable_year}"
 
