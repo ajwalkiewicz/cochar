@@ -37,9 +37,9 @@ const availableCountries = new Set(["US", "PL", "ES"]);
 const availableSex = new Set(["Male", "Female", "Random"]);
 
 const countriesMap = new Map([
-  ["United States", "US"],
-  ["Poland", "PL"],
-  ["Spain", "ES"],
+  ["(US) United States", "US"],
+  ["(PL) Poland", "PL"],
+  ["(ES) Spain", "ES"],
 ]);
 
 // Main Functions
@@ -247,12 +247,14 @@ function generateCharacter() {
     random_mode = true
     occupation = ""
   }
-  if (occupation === "optimal") occupation = ""
+  if (occupation.split(" ")[0] === "optimal") occupation = ""
 
   if (validateForm()) {
     sendRequest(firstName, lastName, country, age, sex, year, random_mode, occupation);
   }
 }
+
+document.getElementById('validation-country').value="(US) United States"
 
 // Add Event listener to generate button
 generateButton.addEventListener("click", generateCharacter);

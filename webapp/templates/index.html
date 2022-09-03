@@ -3,6 +3,20 @@
 {% block custom_css %}
 <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
 {% endblock %}
+{% block navitems %}
+<li class="nav-item">
+  <a class="nav-link active" aria-current="page" href="/">Generator</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/about">About</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/donation">Donation</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="https://github.com/ajwalkiewicz/cochar">Github</a>
+</li>
+{% endblock %}
 {% block content %}
 <div class="container mt-3 px-md-5">
   <div class="row">
@@ -26,32 +40,32 @@
 
         <!-- Form -->
         <form class="row needs-validation" novalidate>
-          <div class="row mb-1">
-            <label for="validation-first-name" class="form-label">First name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="validation-first-name"
-              value=""
-              placeholder="leave empty to be random"
-              required
-            />
-            <div class="invalid-feedback">First name cannot be empty</div>
+            <div class="row mb-2 gx-0">
+              <label for="validation-first-name" class="form-label">First name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="validation-first-name"
+                value=""
+                placeholder="Leave empty to be random"
+                required
+              />
+              <div class="invalid-feedback">First name cannot be empty</div>
           </div>
-          <div class="row mb-1">
+          <div class="row gx-0">
             <label for="validation-last-name" class="form-label">Last name</label>
             <input
               type="text"
               class="form-control"
               id="validation-last-name"
               value=""
-              placeholder="leave empty to be random"
+              placeholder="Leave empty to be random"
               required
             />
             <div class="invalid-feedback">Last name cannot be empty.</div>
           </div>
-          <div class="row mb-2 ml-0">
-            <div class="col-lg-6">
+          <div class="row gx-0">
+            <div class="col-lg-6 mt-2">
               <label for="validation-country" class="form-label">Country</label>
               <div class="input-group has-validation">
                 <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
@@ -61,14 +75,14 @@
                   aria-describedby="inputGroupPrepend"
                   required
                 >
-                  <option active>United States</option>
-                  <option>Poland</option>
-                  <option>Spain</option>
+                <option>(PL) Poland</option>
+                <option>(ES) Spain</option>
+                <option selected>(US) United States</option>
                 </select>
                 <div class="invalid-feedback">Please use valid country.</div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 mt-2">
               <label for="validation-age" class="form-label">Age</label>
               <input
                 type="text"
@@ -81,8 +95,8 @@
               <div class="invalid-feedback">Age must be between 15 and 90.</div>
             </div>
           </div>
-          <div class="row mb-2">
-            <div class="col-lg-6">
+          <div class="row ml-0 gx-0">
+            <div class="col-lg-6 mt-2">
               <label for="validation-sex" class="form-label">Gender</label>
               <div class="input-group has-validation">
                 <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
@@ -100,8 +114,8 @@
               </div>
             </div>
 
-            <div class="col-lg-6">
-              <label for="validation-year" class="form-label">Year of</label>
+            <div class="col-lg-6 mt-2">
+              <label for="validation-year" class="form-label">Year in the game</label>
               <input
                 type="text"
                 class="form-control"
@@ -113,10 +127,10 @@
               <div class="invalid-feedback">Year must be an Integer</div>
             </div>
           </div>
-          <div class="row">
+          <div class="row gx-0 mt-2">
             <label for="validation-occupation" class="form-label">Occupation</label>
             <select class="form-select" id="validation-occupation" required>
-              <option selected>optimal</option>
+              <option selected>optimal (max skill points)</option>
               <option>random</option>
               <option>antiquarian</option>
               <option>artist</option>
