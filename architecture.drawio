@@ -1,1 +1,67 @@
-<mxfile host="app.diagrams.net" modified="2022-09-04T17:13:51.150Z" agent="5.0 (X11)" version="20.2.8" etag="mQbw5O2cVcsFN3Sn00k3" type="github"><diagram id="hDjVOjlgSvwsbOcHMxLZ">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-09-04T17:27:05.389Z" agent="5.0 (X11)" etag="OgXc9y6ICfZmvSpZ-pD2" version="20.2.8" type="github">
+  <diagram id="hDjVOjlgSvwsbOcHMxLZ" name="Page-1">
+    <mxGraphModel dx="804" dy="563" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-1" value="Name database" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;verticalAlign=bottom;" vertex="1" parent="1">
+          <mxGeometry x="130" y="320" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-2" value="randname module" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-3" value="&lt;div&gt;cochar module&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-9" value="BACKEND" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="510" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LOO2_JpGDvs3zzVvn0xj-12" target="LOO2_JpGDvs3zzVvn0xj-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LOO2_JpGDvs3zzVvn0xj-12" target="LOO2_JpGDvs3zzVvn0xj-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-12" value="&lt;div&gt;Flask app&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-15" value="Web app" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-18" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="LOO2_JpGDvs3zzVvn0xj-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="320" as="sourcePoint" />
+            <mxPoint x="210" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-19" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="LOO2_JpGDvs3zzVvn0xj-2" target="LOO2_JpGDvs3zzVvn0xj-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="210" as="sourcePoint" />
+            <mxPoint x="360" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-21" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="239.5" as="sourcePoint" />
+            <mxPoint x="440" y="239.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-24" value="WEB API" style="sketch=0;html=1;dashed=0;whitespace=wrap;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon;prIcon=api;verticalAlign=top;horizontal=1;labelPosition=center;verticalLabelPosition=bottom;align=center;" vertex="1" parent="1">
+          <mxGeometry x="457.5" y="310" width="85" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-26" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.995;exitY=0.63;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="LOO2_JpGDvs3zzVvn0xj-24" target="LOO2_JpGDvs3zzVvn0xj-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="660" y="350" as="sourcePoint" />
+            <mxPoint x="710" y="300" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="700" y="354" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LOO2_JpGDvs3zzVvn0xj-27" value="FRONTEND" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="620" y="140" width="160" height="280" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
