@@ -27,3 +27,11 @@ class TestCharacter(unittest.TestCase):
 
     def test_year_bigger_that_range(self):
         c = create_character(year=2022, country="US")
+
+    def test_invalid_country(self):
+        with self.assertRaises(InvalidCountryValue):
+            self.character.country = "T1"
+
+    def test_invalid_occupation_value(self):
+        with self.assertRaises(InvalidOccupationValue):
+            self.character.occupation = "invalid_occupation"

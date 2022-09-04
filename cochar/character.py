@@ -94,8 +94,7 @@ class Character:
     @year.setter
     def year(self, new_year: int) -> None:
         if not isinstance(new_year, int):
-            # TODO: custom error for invalid year
-            raise ValueError(f"Invalid year: {new_year}. year must be integer")
+            raise cochar.error.InvalidYearValue(new_year)
         self._year = new_year
 
     @property
@@ -110,7 +109,7 @@ class Character:
 
         As there is not data for non binary names. When ``None`` is selected sex will be randomly drawn from [M, F]
 
-        :raises ValueError: Incorrect sex value: sex -> ['M', 'F', None']
+        :raises InvalidSexValue: Incorrect sex value: sex -> ['M', 'F', None']
         :return: sex
         :rtype: Union[str, None]
 
@@ -125,8 +124,7 @@ class Character:
         if new_sex in cochar.SEX_OPTIONS:
             self._sex = get_sex(new_sex)
         else:
-            # TODO: custom error for invalid sex
-            raise ValueError("Incorrect sex value: sex -> ['M', 'F', None']")
+            raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
 
     @property
     def age(self) -> int:
@@ -134,8 +132,8 @@ class Character:
 
         Age has to be between MIN_AGE and MAX_AGE.
 
-        :raises ValueError: Invalid age. Age must be an integer
-        :raises ValueError: Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]
+        :raises InvalidAgeValue: Invalid age. Age must be an integer
+        :raises AgeNotInRange: Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]
         :return: Character age
         :rtype: int
         """
@@ -144,15 +142,12 @@ class Character:
     @age.setter
     def age(self, new_age: int) -> None:
         if not isinstance(new_age, int):
-            raise cochar.error.SkillValueNotAnInt("Invalid age. Age must be an integer")
+            raise cochar.error.InvalidAgeValue(new_age)
 
         if cochar.MIN_AGE <= new_age <= cochar.MAX_AGE:
             self._age = new_age
         else:
-            # TODO: custom error for invalid age
-            raise ValueError(
-                f"Age not in range: {new_age} -> [{cochar.MIN_AGE}, {cochar.MAX_AGE}]"
-            )
+            raise cochar.error.AgeNotInRange(new_age, cochar.MIN_AGE, cochar.MAX_AGE)
 
     @property
     def country(self) -> str:
@@ -162,7 +157,7 @@ class Character:
 
         See ``randname.available_countries()``
 
-        :raises ValueError: "Country not available: {new_country} -> {randname.available_countries()}
+        :raises InvalidCountryValue: "Country not available: {new_country} -> {randname.available_countries()}
         :return: character country
         :rtype: str
         """
@@ -170,13 +165,11 @@ class Character:
 
     @country.setter
     def country(self, new_country: str) -> None:
-        if new_country in randname.available_countries():
+        available_countries = randname.available_countries()
+        if new_country in available_countries:
             self._country = new_country
         else:
-            # TODO: custom error for invalid country
-            raise ValueError(
-                f"Country not available: {new_country} -> {randname.available_countries()}"
-            )
+            raise cochar.error.InvalidCountryValue(new_country, available_countries)
 
     @property
     def occupation(self) -> str:
@@ -184,7 +177,7 @@ class Character:
 
         Occupation must be in ``OCCUPATION_LIST``
 
-        :raises ValueError: Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}
+        :raises InvalidOccupationValue: {new_occupation} not in -> {OCCUPATIONS_LIST}
         :return: [description]
         :rtype: str
         """
@@ -195,9 +188,8 @@ class Character:
         if new_occupation in cochar.OCCUPATIONS_LIST:
             self._occupation = new_occupation
         else:
-            # TODO; custom error for invalid occupation
-            raise ValueError(
-                f"Occupation: {new_occupation} not in -> {cochar.OCCUPATIONS_LIST}"
+            raise cochar.error.InvalidOccupationValue(
+                new_occupation, cochar.OCCUPATIONS_LIST
             )
 
     @property
@@ -357,8 +349,7 @@ class Character:
     @first_name.setter
     def first_name(self, new_first_name: str) -> None:
         if new_first_name == "":
-            # TODO: custom error for invalid first name
-            raise ValueError("Invalid first name. Name cannot be an empty string")
+            raise cochar.error.EmptyName()
         self._first_name = str(new_first_name)
 
     @property
@@ -374,8 +365,7 @@ class Character:
     @last_name.setter
     def last_name(self, new_last_name: str) -> None:
         if new_last_name == "":
-            # TODO: custom error for invalid last name
-            raise ValueError("Invalid last name. Name cannot be an empty string")
+            raise cochar.error.EmptyName()
         self._last_name = str(new_last_name)
 
     @property
@@ -493,7 +483,7 @@ class Character:
 
         ``correct_values = ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6']``
 
-        :raises ValueError: Invalid damage bonus. {new_damage_bonus} not in {correct_values}
+        :raises InvalidDamageBonusValue: Invalid damage bonus. {new_damage_bonus} not in {correct_values}
         :return: damage bonus
         :rtype: str
         """
@@ -517,10 +507,7 @@ class Character:
         if new_damage_bonus in correct_values:
             self._damage_bonus = new_damage_bonus
         else:
-            # TODO: custom error for invalid damage bonus
-            raise ValueError(
-                f"Invalid damage bonus. {new_damage_bonus} not in {correct_values}"
-            )
+            raise cochar.error.InvalidDamageBonusValue(new_damage_bonus, correct_values)
 
     @property
     def build(self) -> int:
@@ -530,7 +517,7 @@ class Character:
 
         TODO: increase range. +1 for each 80 point above STR+SIZ
 
-        :raises ValueError: Invalid build. {new_build} not in {correct_values}
+        :raises InvalidBuildValue: Invalid build. {new_build} not in {correct_values}
         :return: build
         :rtype: int
         """
@@ -542,8 +529,7 @@ class Character:
         if new_build in correct_values:
             self._build = new_build
         else:
-            # TODO: Custom error for invalid build value
-            raise ValueError(f"Invalid build. {new_build} not in {correct_values}")
+            raise cochar.error.InvalidBuildValue(new_build, correct_values)
 
     @property
     def doge(self) -> int:
@@ -575,8 +561,8 @@ class Character:
         :type new_variable: int
         :param variable_name: name of that variable
         :type variable_name: str
-        :raises SkillValueNotAnInt: if variable is not an integer
-        :raises SkillValueNotAnInt: if variable is below 0
+        :raises CharacteristicValueNotAnInt: if variable is not an integer
+        :raises CharacteristicPointsBelowZero: if variable is below 0
 
         >>> Character._Character__validate_character_properties("a", 'luck')
         errors.SkillValueNotAnInt: Invalid luck points. Luck points must be an integer
@@ -585,13 +571,9 @@ class Character:
         """
         variable_name = str(variable_name)
         if not isinstance(new_variable, int):
-            raise cochar.error.SkillValueNotAnInt(
-                f"Invalid {variable_name.lower()} points. {variable_name.capitalize()} points must be an integer: {new_variable}"
-            )
+            raise cochar.error.CharacteristicValueNotAnInt(variable_name, new_variable)
         if new_variable < 0:
-            raise ValueError(
-                f"{variable_name.capitalize()} points cannot be less than 0"
-            )
+            raise cochar.error.CharacteristicPointsBelowZero(new_variable)
 
     # TODO: write unit test
     def get_full_characteristics(self) -> dict:
