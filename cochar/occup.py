@@ -125,3 +125,7 @@ def get_hobby_points(intelligence: int, hobby_points: int = None) -> int:
     :rtype: int
     """
     return hobby_points if hobby_points else intelligence * 2
+
+
+def get_occupation_list():
+    return sorted(cochar.OCCUPATIONS_LIST)

@@ -1,7 +1,5 @@
 """
 **Errors for cochar module**
-
-TODO: Add more custom errors
 """
 from typing import Any
 

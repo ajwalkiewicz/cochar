@@ -514,6 +514,7 @@ class TestCharacter(unittest.TestCase):
         c = self.character
         d = eval(c.__repr__())
         c.occupation = "criminal"
+        print(DeepDiff(c.__dict__, d.__dict__), end="")
         assert c != d
 
 
