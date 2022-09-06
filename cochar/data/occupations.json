@@ -205,5 +205,69 @@
             "fighting", "firearms", "first aid", "navigate",
             "pilot [boat]", "survival [sea]", "swim"
         ]
+    },
+    "sailor, commercial": {
+        "groups": ["edudex", "edustr"],
+        "credit_rating": [20, 40],
+        "skills": [
+            "first aid", "mechanical repair", "natural world", "navigate", "1i", "pilot [boat]", "spot hidden", "swim"
+        ]
+    },
+    "bartender": {
+        "groups": ["eduapp"],
+        "credit_rating": [8, 25],
+        "skills": [
+            "accounting", "2i", "fighting [brawl]", "listen", "psychology", "spot hidden", "1*"
+        ]
+    },
+    "butler/valet": {
+        "groups": ["edu"],
+        "credit_rating": [9, 40],
+        "skills": [
+            [1, "accounting", "appraise"], "1a", "first aid", "listen", "1l", "psychology", "spot hidden",
+            "2*"
+        ]
+    },
+    "chauffeur": {
+        "groups": ["edudex"],
+        "credit_rating": [10, 40],
+        "skills": [
+            "drive auto", "2i", "listen", "mechanical repair", "navigate", "spot hidden", "1*"
+        ]
+    },
+    "driver": {
+        "groups": ["edudex", "edustr"],
+        "credit_rating": [9, 20],
+        "skills": [
+            "accounting", "drive auto", "1i", "listen", "mechanical repair", "navigate", "psychology", "1*"            
+        ]
+    },
+    "mechanic": {
+        "groups": ["edu"],
+        "credit_rating": [9, 40],
+        "skills": [
+            "1a", "climb", "drive auto", "electrical repair", "mechanical repair", "operate heavy machinery", "2*"
+        ]
+    },
+    "nurse": {
+        "groups": ["edu"],
+        "credit_rating": [9, 30],
+        "skills": [
+            "first aid", "listen", "medicine", "1i", "psychology", "science [biology]", "science [chemistry]", "spot hidden" 
+        ]
+    },
+    "waiter": {
+        "groups": ["eduapp", "edudex"],
+        "credit_rating": [9, 20],
+        "skills": [
+            "accounting", "1a", "doge", "listen", "2i", "psychology", "1*"
+        ]
+    },
+    "laborer, unskilled": {
+        "groups": ["edudex", "edustr"],
+        "credit_rating": [9, 30],
+        "skills": [
+            "drive auto", "electrical repair", "1f", "first aid", "mechanical repair", "operate heavy machinery", "throw", "1*"
+        ]
     }
 }
