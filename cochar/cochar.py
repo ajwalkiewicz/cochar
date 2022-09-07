@@ -15,6 +15,7 @@ import cochar.character
 import cochar.occup
 import cochar.skill
 import cochar.utils
+import cochar.error
 
 cochar.set_logging_level("debug")
 
@@ -61,20 +62,20 @@ def create_character(
     weights = cochar.WEIGHTS
 
     if sex in cochar.SEX_OPTIONS:
-        sex = cochar.character.get_sex(sex)
+        sex = cochar.character.generate_sex(sex)
     else:
         raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None']")
 
-    age: int = get_age(year, sex, age)
+    age: int = generate_age(year, sex, age)
 
     # TODO: Log from which file name is taken
     if not first_name:
-        first_name: str = get_first_name(year, sex, country, weights)
+        first_name: str = generate_first_name(year, sex, country, weights)
     else:
         first_name = first_name
 
     if not last_name:
-        last_name: str = get_last_name(year, sex, country, weights)
+        last_name: str = generate_last_name(year, sex, country, weights)
     else:
         last_name = last_name
 
@@ -89,9 +90,9 @@ def create_character(
         power,
         luck,
         move_rate,
-    ) = get_base_characteristics(age=age)
+    ) = generate_base_characteristics(age=age)
 
-    occupation = cochar.occup.get_occupation(
+    occupation = cochar.occup.generate_occupation(
         education=education,
         power=power,
         dexterity=dexterity,
@@ -101,18 +102,18 @@ def create_character(
         occupation=occupation,
     )
 
-    sanity_points, magic_points, hit_points = get_derived_attributes(
+    sanity_points, magic_points, hit_points = calc_derived_attributes(
         power, size, condition
     )
 
     # TODO: analyze doge flow
-    damage_bonus, build, doge = get_combat_characteristics(strength, size, dexterity)
+    damage_bonus, build, doge = calc_combat_characteristics(strength, size, dexterity)
 
-    occupation_points = cochar.occup.get_occupation_points(
+    occupation_points = cochar.occup.calc_occupation_points(
         occupation, education, power, dexterity, appearance, strength
     )
-    hobby_points = cochar.occup.get_hobby_points(intelligence)
-    skills = cochar.skill.get_skills(
+    hobby_points = cochar.occup.calc_hobby_points(intelligence)
+    skills = cochar.skill.generate_skills(
         occupation, occupation_points, hobby_points, dexterity, education
     )
 
@@ -145,7 +146,7 @@ def create_character(
 
 
 # TODO: write unit test
-def get_age(year, sex, age: int = False) -> int:
+def generate_age(year, sex, age: int = False) -> int:
     """Set age
 
     :param age: new age, defaults to None
@@ -178,7 +179,7 @@ def get_age(year, sex, age: int = False) -> int:
 
 
 # TODO: write unit test
-def get_base_characteristics(
+def generate_base_characteristics(
     age,
     strength: int = 0,
     condition: int = 0,
@@ -264,7 +265,7 @@ def get_base_characteristics(
         strength, condition, dexterity, mod_char_points
     )
     education = characteristic_test(education, mod_edu)
-    move_rate = get_move_rate(strength, dexterity, size) - mod_move_rate
+    move_rate = calc_move_rate(strength, dexterity, size) - mod_move_rate
 
     return (
         strength,
@@ -281,7 +282,7 @@ def get_base_characteristics(
 
 
 # TODO: write unit test
-def get_derived_attributes(
+def calc_derived_attributes(
     power: int,
     size: int,
     condition: int,
@@ -318,7 +319,7 @@ def get_derived_attributes(
 
 
 # TODO: write unit test
-def get_combat_characteristics(
+def calc_combat_characteristics(
     strength: int, size: int, dexterity: int, skills: cochar.skill.Skills = None
 ) -> Tuple[str, int, int]:
     """Based on strength, size, dexterity and Skills,
@@ -341,17 +342,17 @@ def get_combat_characteristics(
     if not skills:
         skills = cochar.skill.Skills({})
     if not isinstance(skills, cochar.skill.Skills):
-        raise ValueError()
+        raise cochar.error.SkillsNotADict()
 
-    damage_bonus = get_damage_bonus(strength, size)
-    build = get_build(strength, size)
-    doge = get_doge(dexterity, skills)
+    damage_bonus = calc_damage_bonus(strength, size)
+    build = calc_build(strength, size)
+    doge = calc_doge(dexterity, skills)
 
     return damage_bonus, build, doge
 
 
 # TODO: write unit test
-def get_damage_bonus(strength: int, size: int) -> str:
+def calc_damage_bonus(strength: int, size: int) -> str:
     """Return damage bonus, based on sum of strength and size.
 
     f: X -> Y
@@ -375,7 +376,7 @@ def get_damage_bonus(strength: int, size: int) -> str:
 
 
 # TODO: write unit test
-def get_build(strength: int, size: int) -> int:
+def calc_build(strength: int, size: int) -> int:
     """Return build based on sum od strength and size.
 
     f: X -> Y
@@ -397,7 +398,7 @@ def get_build(strength: int, size: int) -> int:
 
 
 # TODO: write unit test
-def get_doge(dexterity: int, skills: cochar.skill.Skills = None) -> int:
+def calc_doge(dexterity: int, skills: cochar.skill.Skills = None) -> int:
     """Return doge based on dexterity:
 
     doge = dexterity // 2
@@ -523,7 +524,7 @@ def characteristic_test(tested_value: int, repetition: int = 1) -> int:
 
 
 # TODO: write unit test
-def get_move_rate(strength: int, dexterity: int, size: int) -> int:
+def calc_move_rate(strength: int, dexterity: int, size: int) -> int:
     """Return move rate base on relations between
     strength, dexterity and size
 
@@ -571,7 +572,7 @@ def is_skill_valid(skill_value: int) -> bool:
 
 
 # TODO: write unit test
-def get_last_name(year: int, sex: str, country: str, weights: bool) -> str:
+def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random last name based on the given parameters
 
     .. note:
@@ -588,7 +589,7 @@ def get_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     :return: last name
     :rtype: str
     """
-    sex = _get_valid_sex(sex, country, name="last_names")
+    sex = verify_and_return_sex(sex, country, name="last_names")
     return randname.last_name(
         year,
         sex,
@@ -600,7 +601,7 @@ def get_last_name(year: int, sex: str, country: str, weights: bool) -> str:
 
 
 # TODO: write unit test
-def get_first_name(year: int, sex: str, country: str, weights: bool) -> str:
+def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random first name based on given parameters.
 
     .. note:
@@ -617,7 +618,7 @@ def get_first_name(year: int, sex: str, country: str, weights: bool) -> str:
     :return: first name
     :rtype: str
     """
-    sex = _get_valid_sex(sex, country, name="first_names")
+    sex = verify_and_return_sex(sex, country, name="first_names")
     return randname.first_name(
         year,
         sex,
@@ -630,7 +631,7 @@ def get_first_name(year: int, sex: str, country: str, weights: bool) -> str:
 
 # TODO: write unit test
 # TODO: investigate sex flow
-def _get_valid_sex(sex: str, country: str, name: str) -> str:
+def verify_and_return_sex(sex: str, country: str, name: str) -> str:
     """Return valid sex, based on sex, country and name.
     if provided sex is invalid, it will be overridden, and
     function return valid sex.
@@ -653,6 +654,7 @@ def _get_valid_sex(sex: str, country: str, name: str) -> str:
     return sex
 
 
+# TODO: consider refactoring sex functions
 # TODO: write unit test
 def is_sex_valid(sex: str) -> bool:
     """Return True if sex is valid, else False

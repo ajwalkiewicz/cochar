@@ -7,10 +7,11 @@ from typing import List, Tuple
 
 import cochar
 import cochar.skill
+import cochar.error
 
-
+# TODO: Think about creating occupation class, to store occupations.
 # TODO: write unit test
-def get_occupation(
+def generate_occupation(
     education: int,
     power: int,
     dexterity: int,
@@ -54,7 +55,7 @@ def get_occupation(
 
     if occupation:
         if occupation not in cochar.OCCUPATIONS_LIST:
-            raise ValueError(f"Incorrect occupation: {occupation}")
+            raise cochar.error.IncorrectOccupation(occupation)
         return occupation
 
     skill_points: int = max(skill_points_groups)
@@ -69,7 +70,7 @@ def get_occupation(
 
 
 # TODO: write unit test
-def get_occupation_points(
+def calc_occupation_points(
     occupation: str,
     education: int,
     power: int,
@@ -103,14 +104,14 @@ def get_occupation_points(
     return (
         occupation_points
         if occupation_points
-        else cochar.skill.get_skill_points(
+        else cochar.skill.calc_skill_points(
             occupation, education, power, dexterity, appearance, strength
         )
     )
 
 
 # TODO: write unit test
-def get_hobby_points(intelligence: int, hobby_points: int = None) -> int:
+def calc_hobby_points(intelligence: int, hobby_points: int = None) -> int:
     """Return hobby points, based on intelligence.
 
     occupation points = 2 * intelligence

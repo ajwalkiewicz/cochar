@@ -27,11 +27,11 @@ class Skills(UserDict):
         return {k: v for k, v in self.items()}
 
     # all_skills = ALL_SKILLS.copy()
-    def __setitem__(self, key: any, value: int) -> None:
+    def __setitem__(self, key: str, value: int) -> None:
         """Add validation for skill values
 
         :param key: skill name
-        :type key: any
+        :type key: str
         :param value: skill value
         :type value: int
         :raises SkillValueNotAnInt: when value is not an integer
@@ -53,7 +53,7 @@ class Skills(UserDict):
 
 
 # TODO: write unit test
-def get_skills(
+def generate_skills(
     occupation: str,
     occupation_points: int,
     hobby_points: int,
@@ -92,7 +92,7 @@ def get_skills(
         skills = Skills(skills)
     else:
         # Order of following instructions is very important!
-        skills: Skills[str, int] = Skills()
+        skills = Skills()
 
         # self.occupation_skills_list: list[str] = []
         # self.hobby_skills_list: list[str] = []
@@ -102,7 +102,9 @@ def get_skills(
         )
 
         # Assigning points to credit rating
-        credit_rating_points = get_credit_rating_points(occupation, occupation_points)
+        credit_rating_points = generate_credit_rating_points(
+            occupation, occupation_points
+        )
 
         occupation_points_to_distribute = occupation_points - credit_rating_points
 
@@ -129,7 +131,7 @@ def get_skills(
 
 
 # TODO: write unit test
-def get_credit_rating_points(occupation: str, occupation_points: int) -> int:
+def generate_credit_rating_points(occupation: str, occupation_points: int) -> int:
     """For provided occupation, and it occupation points, return
     credit rating points.
 
@@ -149,7 +151,7 @@ def get_credit_rating_points(occupation: str, occupation_points: int) -> int:
 
 
 # TODO: write unit test
-def get_skill_points(
+def calc_skill_points(
     occupation: str,
     education: int,
     power: int,
@@ -325,15 +327,23 @@ def filter_skills(skills: Dict) -> Dict[str, int]:
     >>> filter_skills(example_dict)
     {'language (spanish)': 66}
     """
-    return Skills(
-        filter(
-            lambda item: cochar.utils.ALL_SKILLS.get(
-                item[0], cochar.utils.ALL_SKILLS.setdefault(item[0], 1)
-            )
-            != item[1],
-            skills.items(),
-        )
-    )
+
+    def has_skill_default_value(item) -> bool:
+        skill, value = item
+        return cochar.utils.ALL_SKILLS.get(skill, 1) != value
+
+    skills = filter(has_skill_default_value, skills.items())
+
+    return Skills(skills)
+    # return Skills(
+    #     filter(
+    #         lambda item: cochar.utils.ALL_SKILLS.get(
+    #             item[0], cochar.utils.ALL_SKILLS.setdefault(item[0], 1)
+    #         )
+    #         != item[1],
+    #         skills.items(),
+    #     )
+    # )
 
 
 # TODO: write unit test

@@ -122,7 +122,7 @@ class Character:
     @sex.setter
     def sex(self, new_sex: Union[str, None]) -> None:
         if new_sex in cochar.SEX_OPTIONS:
-            self._sex = get_sex(new_sex)
+            self._sex = generate_sex(new_sex)
         else:
             raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
 
@@ -693,7 +693,6 @@ class Character:
         :return: personal information
         :rtype: dict
         """
-        # TODO: personal info
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
@@ -789,7 +788,7 @@ Skills:
 
 
 # TODO: write unit test
-def get_sex(sex: Union[str, bool]) -> str:
+def generate_sex(sex: Union[str, bool]) -> str:
     """Get sex
 
     # TODO: investigate sex workflow. Why there is no sex verification here

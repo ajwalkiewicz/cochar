@@ -3,7 +3,7 @@ import unittest
 from deepdiff import DeepDiff
 
 from randname import randname
-from cochar import create_character, get_first_name, get_last_name
+from cochar import create_character, generate_first_name, generate_last_name
 from cochar.character import Character
 from cochar.utils import ALL_SKILLS
 from cochar.error import *
@@ -487,7 +487,7 @@ class TestCharacter(unittest.TestCase):
         available_countries = tuple(randname.available_countries())
         for country in available_countries:
             for sex in available_sex:
-                name = get_last_name(year, sex, country, weights)
+                name = generate_last_name(year, sex, country, weights)
                 self.assertIsInstance(name, str)
 
     def test_generate_first_name(self):
@@ -498,7 +498,7 @@ class TestCharacter(unittest.TestCase):
         available_countries = tuple(randname.available_countries())
         for country in available_countries:
             for sex in available_sex:
-                name = get_first_name(year, sex, country, weights)
+                name = generate_first_name(year, sex, country, weights)
                 self.assertIsInstance(name, str)
 
     # TEST DUNDER METHODS

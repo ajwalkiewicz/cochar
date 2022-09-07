@@ -8,6 +8,18 @@ class CocharError(Exception):
     pass
 
 
+class IncorrectOccupation(CocharError):
+    """Raise when occupation is not in OCCUPATIONS_LIST"""
+
+    def __init__(self, occupation_name: str):
+        self.occupation_name = occupation_name
+        self.message = f"'{self.occupation_name.capitalize()}' not in available occupations. Check cochar.OCCUPATIONS_LIST"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
 class CharacteristicValueNotAnInt(CocharError):
     """Characteristic value has to be an integer number"""
 

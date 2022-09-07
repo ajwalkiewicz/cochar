@@ -19,7 +19,7 @@
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
-            "art/craft [literature]", "language [own]",
+            "art/craft (literature)", "language (own)",
             "psychology", "library use", "history",
             [1, "occult", "natural world"], "1l", "1*"
         ]
@@ -46,7 +46,7 @@
     "librarian": {
         "groups": ["edu"],
         "credit_rating": [9, 35],
-        "skills": ["accounting", "library use", "language [own]", "1l", "4*"]
+        "skills": ["accounting", "library use", "language (own)", "1l", "4*"]
     },
     "military officer": {
         "groups": ["edudex", "edustr"],
@@ -68,13 +68,13 @@
         "groups": ["edudex", "edupow"],
         "credit_rating": [9, 30],
         "skills":
-        ["art/craft [instrument]", "listen", "psychology", "1a", "1i", "4*"]
+        ["art/craft (instrument)", "listen", "psychology", "1a", "1i", "4*"]
     },
     "parapsychologist": {
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
-            "art/craft [photography]", "anthropology", "history",
+            "art/craft (photography)", "anthropology", "history",
             "library use", "occult", "psychology", "1l", "1*"
         ]
     },
@@ -83,8 +83,8 @@
         "credit_rating": [20, 70],
         "skills": [
             "electrical repair", "mechanical repair", "navigate",
-            "operate heavy machinery", "pilot [aircraft]",
-            "science [astronomy]", "2*"
+            "operate heavy machinery", "pilot (aircraft)",
+            "science (astronomy)", "2*"
         ]
     },
     "clergy": {
@@ -113,8 +113,8 @@
         "groups": ["edu"],
         "credit_rating": [30, 80],
         "skills": [
-            "first aid", "language [latin]", "medicine", "psychology",
-            "science [biology]", "science [pharmacy]", "2*"
+            "first aid", "language (latin)", "medicine", "psychology",
+            "science (biology)", "science (pharmacy)", "2*"
         ]
     },
     "drifter": {
@@ -126,16 +126,16 @@
         "groups": ["edu"],
         "credit_rating": [30, 60],
         "skills": [
-            "art/craft [technical drawing]", "electrical repair",
+            "art/craft (technical drawing)", "electrical repair",
             "library use", "mechanical repair", "operate heavy machinery",
-            "science [engineering]", "science [physics]", "1*"
+            "science (engineering)", "science (physics)", "1*"
         ]
     },
     "farmer": {
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
-            "art/craft [farming]", "drive auto", "1i", "mechanical repair",
+            "art/craft (farming)", "drive auto", "1i", "mechanical repair",
             "natural world", "operate heavy machinery", "track", "1*"
         ]
     },
@@ -151,8 +151,8 @@
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
-            "art/craft [photography]", "history", "library use",
-            "language [own]", "1i", "psychology", "2*"
+            "art/craft (photography)", "history", "library use",
+            "language (own)", "1i", "psychology", "2*"
         ]
     },
     "police detective": {
@@ -160,14 +160,14 @@
         "credit_rating": [20, 50],
         "skills": [
             "firearms", "law", "listen", "psychology", "spot hidden",
-            [1, "art/craft [acting]", "disguise"], "1i", "1*"
+            [1, "art/craft (acting)", "disguise"], "1i", "1*"
         ]
     },
     "police officer": {
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
-            "fighting [brawl]", "firearms", "first aid", "law", "psychology", "spot hidden",
+            "fighting (brawl)", "firearms", "first aid", "law", "psychology", "spot hidden",
             [1, "drive auto", "ride"], "1i"
         ]
     },
@@ -175,21 +175,21 @@
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
-            "art/craft [photography]", "disguise", "law", "library use", "1i",
+            "art/craft (photography)", "disguise", "law", "library use", "1i",
             "psychology", "spot hidden", "1*"
         ]
     },
     "professor": {
         "groups": ["edu"],
         "credit_rating": [20, 70],
-        "skills": ["library use", "1l", "language [own]", "psychology", "4p"]
+        "skills": ["library use", "1l", "language (own)", "psychology", "4p"]
     },
     "tribe member": {
         "groups": ["edudex", "edustr"],
         "credit_rating": [0, 15],
         "skills": [
             "climb", "fighting", "throw", "natural world", "listen", "occult",
-            "spot hidden", "swim", "survival [any]"
+            "spot hidden", "swim", "survival"
         ]
     },
     "zealot": {
@@ -203,21 +203,21 @@
         "skills": [
             [1, "electrical repair", "mechanical repair"],
             "fighting", "firearms", "first aid", "navigate",
-            "pilot [boat]", "survival [sea]", "swim"
+            "pilot (boat)", "survival (sea)", "swim"
         ]
     },
     "sailor, commercial": {
         "groups": ["edudex", "edustr"],
         "credit_rating": [20, 40],
         "skills": [
-            "first aid", "mechanical repair", "natural world", "navigate", "1i", "pilot [boat]", "spot hidden", "swim"
+            "first aid", "mechanical repair", "natural world", "navigate", "1i", "pilot (boat)", "spot hidden", "swim"
         ]
     },
     "bartender": {
         "groups": ["eduapp"],
         "credit_rating": [8, 25],
         "skills": [
-            "accounting", "2i", "fighting [brawl]", "listen", "psychology", "spot hidden", "1*"
+            "accounting", "2i", "fighting (brawl)", "listen", "psychology", "spot hidden", "1*"
         ]
     },
     "butler/valet": {
@@ -253,7 +253,7 @@
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
-            "first aid", "listen", "medicine", "1i", "psychology", "science [biology]", "science [chemistry]", "spot hidden" 
+            "first aid", "listen", "medicine", "1i", "psychology", "science (biology)", "science (chemistry)", "spot hidden" 
         ]
     },
     "waiter": {

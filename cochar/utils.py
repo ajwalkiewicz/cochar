@@ -4,12 +4,12 @@
 :param TRANSLATION_DICT: dictionary with translations for skills
 :param CATEGORY_SKILLS_LIST: 
 :param AGE_RANGE: tuple[int, int], contains ranges of possible ages.
-:param YEAR_RANGE: tupel[int], available years for last names
+:param YEAR_RANGE: tuple[int], available years for last names
 :param OCCUPATIONS_GROUPS: list[list[str]], list of 5 occupation groups.
 :param OCCUPATIONS_LIST: list of all occupations
 :param OCCUPATIONS_DATA: dictionary with occupation details
 :param BASIC_SKILLS: dictionary with basic skills data
-:param CATEGORY_SKILLS: dictionary with skills divided on cathegories
+:param CATEGORY_SKILLS: dictionary with skills divided on categories
 :param ALL_SKILLS: dict with all skills
 
 **legend**:
@@ -47,7 +47,7 @@ TRANSLATION_DICT: Dict[str, str] = {
     "l": "language",
     "*": None,
     "p": "professor"
-    # just for professor occ. (i ingored doctor, and give him 2*)
+    # just for professor occ. (i ignored doctor, and give him 2*)
 }
 
 CATEGORY_SKILLS_LIST: List[str] = [
@@ -56,6 +56,7 @@ CATEGORY_SKILLS_LIST: List[str] = [
     "science",
     "fighting",
     "firearms",
+    "survival",
 ]
 
 AGE_RANGE: Tuple[int, int] = (
@@ -96,7 +97,7 @@ YEAR_RANGE: Tuple[int] = (
     2020,
 )
 
-# Credit raiting is not in a default basic skills
+# Credit rating is not in a default basic skills
 BASIC_SKILLS: Dict[str, int] = {
     "accounting": 5,
     "acting": 5,
@@ -147,6 +148,8 @@ BASIC_SKILLS: Dict[str, int] = {
     "track": 10,
 }
 
+# TODO: improve generating skills to include base skill value, even if skill is not in this list. eg. art/craft (technical drawing)
+# TODO: add survival category
 CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
     "art/craft": {
         "art/craft (acting)": 5,
@@ -164,8 +167,9 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "art/craft (photography)": 5,
         "art/craft (potter)": 5,
         "art/craft (sculptor)": 5,
-        "art/craft (vacume tube blower)": 5,
+        "art/craft (vacuum tube blower)": 5,
         "art/craft (instrument)": 5,
+        "art/craft (technical drawing)": 5,
     },
     "science": {
         "science (astronomy)": 1,
@@ -193,7 +197,7 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
     "firearms": {
         "firearms (bow)": 15,
         "firearms (handgun)": 20,
-        "firearms (heavy wepons)": 10,
+        "firearms (heavy weapons)": 10,
         "firearms (machine gun)": 10,
         "firearms (rifle)": 25,
         "firearms (shotgun)": 25,
@@ -212,9 +216,16 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "language (spanish)": 0,
         "language (french)": 0,
         "language (latin)": 0,
-        "language (acient greek)": 0,
-        "language (egiptian)": 0,
+        "language (ancient greek)": 0,
+        "language (egyptian)": 0,
         "language (other)": 0,
+    },
+    "survival": {
+        "survival (desert)": 10,
+        "survival (sea)": 10,
+        "survival (arctic)": 10,
+        "survival (jungle)": 10,
+        "survival (mountains)": 10,
     },
     # "modern": {
     #     "computer use": 5,
@@ -229,8 +240,8 @@ CATEGORY_SKILLS: Dict[str, Dict[str, int]] = {
         "language (spanish)": 0,
         "language (french)": 0,
         "language (latin)": 0,
-        "language (acient greek)": 0,
-        "language (egiptian)": 0,
+        "language (ancient greek)": 0,
+        "language (egyptian)": 0,
         "language (other)": 0,
         "psychology": 10,
         "science (astronomy)": 1,

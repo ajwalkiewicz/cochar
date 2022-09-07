@@ -11,5 +11,5 @@ class TestOccupation(unittest.TestCase):
     #     self.assertEqual()
 
     def test_get_hobby_points(self):
-        points = cochar.occup.get_hobby_points(50)
+        points = cochar.occup.calc_hobby_points(50)
         self.assertEqual(points, 100)
