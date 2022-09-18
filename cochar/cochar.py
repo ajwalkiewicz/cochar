@@ -1,12 +1,10 @@
 """**Cochar - main module**"""
-
 import json
-import logging
-import os
 import random
 from bisect import bisect_left
-from distutils.command.build import build
 from typing import List, Tuple, Union
+from math import ceil
+from copy import deepcopy
 
 import randname
 
@@ -61,21 +59,20 @@ def create_character(
     """
     weights = cochar.WEIGHTS
 
-    if sex in cochar.SEX_OPTIONS:
-        sex = cochar.character.generate_sex(sex)
+    if is_sex_valid(sex):
+        sex = generate_sex(sex)
     else:
         raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None']")
 
     age: int = generate_age(year, sex, age)
 
-    # TODO: Log from which file name is taken
     if not first_name:
-        first_name: str = generate_first_name(year, sex, country, weights)
+        first_name = generate_first_name(year, sex, country, weights)
     else:
         first_name = first_name
 
     if not last_name:
-        last_name: str = generate_last_name(year, sex, country, weights)
+        last_name = generate_last_name(year, sex, country, weights)
     else:
         last_name = last_name
 
@@ -114,8 +111,10 @@ def create_character(
     )
     hobby_points = cochar.occup.calc_hobby_points(intelligence)
     skills = cochar.skill.generate_skills(
-        occupation, occupation_points, hobby_points, dexterity, education
+        occupation, occupation_points, hobby_points, dexterity, education, skills
     )
+
+    doge = skills.get("doge", doge)
 
     return cochar.character.Character(
         year=year,
@@ -154,26 +153,28 @@ def generate_age(year, sex, age: int = False) -> int:
     :return: new age
     :rtype: int
     """
-    if age is False:
-        variable_year = year
-        if variable_year < 1950:
-            variable_year = 1950
-        else:
-            # Correction of year index. If bisect_left returns int > len(data_range)
-            # return bisect_left - 1. It's in case of very small data sets.
-            def correct_bisect_left(data, year):
-                bisect = bisect_left(data, year)
-                return bisect if bisect != len(data) else bisect - 1
+    if age:
+        return age
 
-            year_index = correct_bisect_left(cochar.utils.YEAR_RANGE, year)
-            variable_year = cochar.utils.YEAR_RANGE[year_index]
-        variable_name = f"pop{variable_year}"
+    if year < 1950:
+        corrected_year = 1950
+    else:
+        # Correction of year index. If bisect_left returns int > len(data_range)
+        # return bisect_left - 1. It's in case of very small data sets.
+        def correct_bisect_left(data, year):
+            bisect = bisect_left(data, year)
+            return bisect if bisect != len(data) else bisect - 1
 
-        with open(cochar.POP_PYRAMID_PATH) as json_file:
-            age_population = cochar.utils.AGE_RANGE
-            age_weights = json.load(json_file)[variable_name][sex][3:-1]
-            age_range = random.choices(age_population, weights=age_weights)[0]
-            age = random.randint(*age_range)
+        year_index = correct_bisect_left(cochar.utils.YEAR_RANGE, year)
+        corrected_year = cochar.utils.YEAR_RANGE[year_index]
+
+    file_name = f"pop{corrected_year}"
+
+    with open(cochar.POP_PYRAMID_PATH) as json_file:
+        age_population = cochar.utils.AGE_RANGE
+        age_weights = json.load(json_file)[file_name][sex][3:-1]
+        age_range = random.choices(age_population, weights=age_weights)[0]
+        age = random.randint(*age_range)
 
     return age
 
@@ -309,20 +310,60 @@ def calc_derived_attributes(
     :rtype: tuple
     """
     if sanity_points == 0:
-        sanity_points = power
+        sanity_points = calc_sanity_points(power)
     if magic_points == 0:
-        magic_points = power // 5
+        magic_points = calc_magic_points(power)
     if hit_points == 0:
-        hit_points = (size + condition) // 10
+        hit_points = calc_hit_points(size, condition)
 
     return sanity_points, magic_points, hit_points
 
 
+def calc_sanity_points(power: int) -> int:
+    """Return sanity points based on power
+
+    :param power: power value
+    :type power: int
+    :return: sanity points
+    :rtype: int
+    """
+    return power
+
+
+def calc_magic_points(power: int) -> int:
+    """Return magic points based on power
+
+    :param power: power value
+    :type power: int
+    :return: magic points
+    :rtype: int
+    """
+    return power // 5
+
+
+def calc_hit_points(size: int, condition: int) -> int:
+    """Return hit points based on size and condition.
+
+    :param size: size value
+    :type size: int
+    :param condition: condition value
+    :type condition: int
+    :return: hit points
+    :rtype: int
+    """
+    return (size + condition) // 10
+
+
 # TODO: write unit test
 def calc_combat_characteristics(
-    strength: int, size: int, dexterity: int, skills: cochar.skill.Skills = None
+    strength: int,
+    size: int,
+    dexterity: int,
+    damage_bonus: str = "",
+    build: int = 0,
+    doge: int = 0,
 ) -> Tuple[str, int, int]:
-    """Based on strength, size, dexterity and Skills,
+    """Based on strength, size and dexterity,
     return combat characteristics such as:
     dame bonus, build, doge
 
@@ -332,21 +373,15 @@ def calc_combat_characteristics(
     :type size: int
     :param dexterity: dexterity points
     :type dexterity: int
-    :param skills: Skills dictionary, defaults to None
-    :type skills: Skills, optional
-    :raises ValueError: raise if skills is not an instance of Skills
     :return: (damage bonus, build, doge)
     :rtype: Tuple(str, int, int)
     """
-    # TODO: Investigate: why am I using Skills here?
-    if not skills:
-        skills = cochar.skill.Skills({})
-    if not isinstance(skills, cochar.skill.Skills):
-        raise cochar.error.SkillsNotADict()
-
-    damage_bonus = calc_damage_bonus(strength, size)
-    build = calc_build(strength, size)
-    doge = calc_doge(dexterity, skills)
+    if damage_bonus == "":
+        damage_bonus = calc_damage_bonus(strength, size)
+    if build == 0:
+        build = calc_build(strength, size)
+    if doge == 0:
+        doge = calc_doge(dexterity)
 
     return damage_bonus, build, doge
 
@@ -384,6 +419,8 @@ def calc_build(strength: int, size: int) -> int:
     X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
     Y: {-2, -1, 0, 1, 2, 3, 4, 5, 6}
 
+    TODO: Increase bonus damage for +1K6 for every 80 points above 524
+
     :param strength: character's strength
     :type strength: int
     :param size: character's size
@@ -397,35 +434,17 @@ def calc_build(strength: int, size: int) -> int:
     return build
 
 
-# TODO: write unit test
-def calc_doge(dexterity: int, skills: cochar.skill.Skills = None) -> int:
+def calc_doge(dexterity: int) -> int:
     """Return doge based on dexterity:
 
     doge = dexterity // 2
 
-    Unless, there is already doge skill in Skills,
-    then return value from Skills
-
-    It's because function get_skills(), also set doge to
-    dexterity // 2
-
-    .. warning::
-
-        Better to use it before running get_skills()
-
-
     :param dexterity: character's dexterity
     :type dexterity: int
-    :param skills: character's skills, defaults to None
-    :type skills: Skills, optional
     :return: character's doge
     :rtype: int
     """
-    if "doge" in skills:
-        doge = skills["doge"]
-    else:
-        doge = dexterity // 2
-    return doge
+    return dexterity // 2
 
 
 # TODO: write unit test
@@ -665,3 +684,18 @@ def is_sex_valid(sex: str) -> bool:
     :rtype: bool
     """
     return True if sex in cochar.SEX_OPTIONS else False
+
+
+# TODO: write unit test
+def generate_sex(sex: Union[str, bool]) -> str:
+    """Get sex
+
+    TODO: investigate sex workflow. Why there is no sex verification here
+    TODO: add unit tests for sex
+
+    :param sex: character's sex
+    :type sex: Union[str, bool]
+    :return: sex
+    :rtype: str
+    """
+    return random.choice(["M", "F"]) if sex is False else sex.upper()

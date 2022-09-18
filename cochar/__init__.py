@@ -2,7 +2,7 @@
 import os
 import json
 import logging
-from typing import List, Union
+from typing import Dict, List, Union
 
 import randname
 
@@ -60,9 +60,9 @@ VALUE_MATRIX = {
 
 with open(os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r") as json_file:
     # Full data of occupations
-    OCCUPATIONS_DATA: dict = dict(json.load(json_file))
+    OCCUPATIONS_DATA: Dict[str, dict] = dict(json.load(json_file))
     # Just occupations names in the list
-    OCCUPATIONS_LIST: list = list(OCCUPATIONS_DATA.keys())
+    OCCUPATIONS_LIST: List[str] = list(OCCUPATIONS_DATA.keys())
     # Occupations divided on 5 categories depends on skill point calculation method
     OCCUPATIONS_GROUPS: List[List[str]] = [
         [key for key, value in OCCUPATIONS_DATA.items() if "edu" in value["groups"]],

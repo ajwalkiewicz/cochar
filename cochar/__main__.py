@@ -58,7 +58,7 @@ def pars_arguments():
         "--occupation",
         type=str,
         required=False,
-        default="optimal",
+        default=None,
         # dest='occupation',
         help="Character's occupation",
     )

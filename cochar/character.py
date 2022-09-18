@@ -4,10 +4,7 @@ a container for characters.
 
 Contain:
 - Character class
-- get_sex function
 """
-import json
-import random
 from typing import List, Union
 
 import randname
@@ -15,6 +12,7 @@ import randname
 import cochar
 import cochar.error
 import cochar.skill
+import cochar.cochar
 
 
 class Character:
@@ -122,7 +120,7 @@ class Character:
     @sex.setter
     def sex(self, new_sex: Union[str, None]) -> None:
         if new_sex in cochar.SEX_OPTIONS:
-            self._sex = generate_sex(new_sex)
+            self._sex = cochar.cochar.generate_sex(new_sex)
         else:
             raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
 
@@ -611,7 +609,6 @@ class Character:
         :return: full characteristics
         :rtype: dict
         """
-        # TODO: full characteristic
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
@@ -785,18 +782,3 @@ Move rate: {self._move_rate}
 Skills:
 {skills}
 """
-
-
-# TODO: write unit test
-def generate_sex(sex: Union[str, bool]) -> str:
-    """Get sex
-
-    # TODO: investigate sex workflow. Why there is no sex verification here
-    # TODO: add unit tests for sex
-
-    :param sex: character's sex
-    :type sex: Union[str, bool]
-    :return: sex
-    :rtype: str
-    """
-    return random.choice(["M", "F"]) if sex is False else sex.upper()
