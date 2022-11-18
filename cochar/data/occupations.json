@@ -269,5 +269,12 @@
         "skills": [
             "drive auto", "electrical repair", "1f", "first aid", "mechanical repair", "operate heavy machinery", "throw", "1*"
         ]
+    },
+    "gangster boss": {
+        "groups": ["eduapp"],
+        "credit_rating": [60, 95],
+        "skills": [
+            "fighting (brawl)", "firearms", "law", "listen", "2i", "psychology", "spot hidden"
+        ]
     }
 }
