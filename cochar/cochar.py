@@ -3,8 +3,6 @@ import json
 import random
 from bisect import bisect_left
 from typing import List, Tuple, Union
-from math import ceil
-from copy import deepcopy
 
 import randname
 
@@ -175,7 +173,6 @@ def generate_age(year, sex, age: int = False) -> int:
         age_weights = json.load(json_file)[file_name][sex][3:-1]
         age_range = random.choices(age_population, weights=age_weights)[0]
         age = random.randint(*age_range)
-
     return age
 
 
@@ -637,6 +634,7 @@ def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str
     :return: first name
     :rtype: str
     """
+    # TODO: Fix capitalization for Spanish first names
     sex = verify_and_return_sex(sex, country, name="first_names")
     return randname.first_name(
         year,
@@ -698,4 +696,4 @@ def generate_sex(sex: Union[str, bool]) -> str:
     :return: sex
     :rtype: str
     """
-    return random.choice(["M", "F"]) if sex is False else sex.upper()
+    return random.choice(("M", "F")) if sex is False else sex.upper()
