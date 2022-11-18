@@ -64,8 +64,8 @@ function sendRequest(
   random_mode = "",
   occupation = ""
 ) {
-  let url = new URL("http://127.0.0.1:5000/api/get");
-  // let url = new URL("https://cochar.loca.lt/api/get");
+  const url = new URL("http://127.0.0.1:5000/api/get");
+  // const url = new URL("https://cochar.loca.lt/api/get");
 
   if (firstName) url.searchParams.append("first_name", firstName);
   if (lastName) url.searchParams.append("last_name", lastName);
@@ -243,7 +243,7 @@ function generateCharacter() {
   if (sex === "random") sex = "";
   if (sex === "male") sex = "M";
   if (sex === "female") sex = "F";
-  if (occupation === "random") {
+  if (occupation.split(" ")[0] === "random") {
     random_mode = true
     occupation = ""
   }
@@ -263,3 +263,5 @@ generateButton.addEventListener("click", generateCharacter);
 generateCharacter();
 
 // TODO: Disable form submission with invalid data
+// TODO: Sort occupation
+// TODO: Rule out occupations like hacker if year is to low 

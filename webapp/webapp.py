@@ -1,10 +1,20 @@
 import cochar
+import markdown
+import os
 from cochar import error
-from flask import Flask, render_template, url_for, Response, jsonify, abort
+from flask import Flask, Response, abort, jsonify, render_template, url_for
 from flask_restful import Api, Resource, reqparse
+
+_THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+_README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
+
+with open(_README, "r") as readme:
+    text = readme.read()
+    html = markdown.markdown(text)
 
 app = Flask(__name__)
 api = Api(app)
+
 
 # API
 
@@ -96,6 +106,11 @@ def about():
 @app.route("/donation")
 def donation():
     return render_template("donation.html")
+
+
+@app.route("/tests")
+def tests():
+    return text
 
 
 if __name__ == "__main__":
