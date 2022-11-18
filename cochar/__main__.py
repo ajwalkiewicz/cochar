@@ -1,6 +1,7 @@
 # __main__.py
 import argparse
-import cochar
+
+from . import cochar
 
 
 def pars_arguments():
@@ -11,13 +12,13 @@ def pars_arguments():
         required=False,
         default=1925,
         # dest="year",
-        help="Characte's year of born",
+        help="Character's year of born",
     )
     parser.add_argument(
         "--first_name",
         type=str,
         required=False,
-        default=False,
+        default="",
         # dest="first_name",
         help="Character's first name",
     )
@@ -25,7 +26,7 @@ def pars_arguments():
         "--last_name",
         type=str,
         required=False,
-        default=False,
+        default="",
         # dest="last_name",
         help="Character's last name",
     )
@@ -43,7 +44,7 @@ def pars_arguments():
         required=False,
         default=False,
         dest="sex",
-        help="Characte's sex",
+        help="Character's sex",
     )
     parser.add_argument(
         "--country",
@@ -51,15 +52,15 @@ def pars_arguments():
         required=False,
         default="US",
         # dest="country",
-        help="Characte's cauntry",
+        help="Character's country",
     )
     parser.add_argument(
         "--occupation",
         type=str,
         required=False,
-        default="optimal",
+        default=None,
         # dest='occupation',
-        help="Characte's occupation",
+        help="Character's occupation",
     )
     return parser.parse_args()
 
@@ -67,7 +68,7 @@ def pars_arguments():
 def main():
     args = pars_arguments()
     print(
-        cochar.Character(
+        cochar.create_character(
             year=args.year,
             first_name=args.first_name,
             last_name=args.last_name,

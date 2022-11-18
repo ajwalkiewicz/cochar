@@ -8,7 +8,7 @@ with open(f"{THIS_FOLDER}/docs/readme.md", "r") as fh:
 
 setup(
     name="cochar",
-    version="0.2.4",
+    version="1.0.0-alpha.1",
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -16,12 +16,12 @@ setup(
     url="https://github.com/ajwalkiewicz/cochar",
     project_urls={
         "Documentation": "https://ajwalkiewicz.github.io/cochar/_build/html/index.html"
-        },
+    },
     author="Adam Walkiewicz",
     license="GPL 3.0",
     classifiers=[
         "License :: OSI Approved :: GNU Affero General Public License v3",
-        'Operating System :: OS Independent',
+        "Operating System :: OS Independent",
         # "Programming Language :: Python :: 3.6",
         # "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -30,14 +30,8 @@ setup(
     ],
     packages=["cochar"],
     include_package_data=True,
-    install_requires=[
-        "rname"
-    ],
+    install_requires=["rname"],
     # packages=find_packages("src"),
     # package_dir={'': 'src'},
-    entry_points={
-        "console_scripts": [
-            "cochar=cochar.__main__:main"
-        ]
-    }
+    entry_points={"console_scripts": ["cochar=cochar.__main__:main"]},
 )

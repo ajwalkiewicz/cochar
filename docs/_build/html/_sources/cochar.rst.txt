@@ -9,6 +9,30 @@ cochar.cochar module
    :undoc-members:
    :show-inheritance:
 
+cochar.character module
+-----------------------
+
+.. automodule:: cochar.character
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cochar.occupations module
+-------------------------
+
+.. automodule:: cochar.occup
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cochar.skills module
+--------------------
+
+.. automodule:: cochar.skill
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 cochar.utils module
 -------------------
 
@@ -20,7 +44,7 @@ cochar.utils module
 cochar.errors module
 --------------------
 
-.. automodule:: cochar.errors
+.. automodule:: cochar.error
    :members:
    :undoc-members:
    :show-inheritance:

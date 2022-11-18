@@ -1,0 +1,29 @@
+{% extends "base.html" %} 
+{% block title %}Cochar - Generator{% endblock %} 
+{% block custom_css %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block navitems %}
+<li class="nav-item">
+  <a class="nav-link active" aria-current="page" href="/">Generator</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/about">About</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/donation">Donation</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="https://github.com/ajwalkiewicz/cochar">Github</a>
+</li>
+{% endblock %}
+{% block content %}
+<div class="container mt-3 px-md-5">
+    <div class="row">
+        
+    </div>
+</div>
+<!-- cochar -->
+<!-- <script src="script.js"></scrip> -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

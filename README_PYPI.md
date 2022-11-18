@@ -4,7 +4,7 @@ Fast way of creating a random character for Chall of Cthulhu RPG 7th ed.
 
 ## Summary
 
-`cochar` stands fo `Call of Cthulhu Character`. It's a python module desing to create a full characters for Call of Cthulgu RPG 7th ed.
+`cochar` stands fo `Call of Cthulhu Character`. It's a python module design to create a full characters for Call of Cthulhu RPG 7th ed.
 
 ## Installation
 
@@ -17,9 +17,10 @@ pip3 install cochar
 Example:
 
 ```Python
-from cochar import Character
-c = Character()
-Character(age=30, sex='M', first_name='Kelvin', last_name='Burlingame', country='US', occupation='antiquarian', characteristics={'str': 57, 'con': 23, 'siz': 75, 'dex': 23, 'app': 80, 'edu': 87, 'int': 48, 'pow': 18, 'move_rate': 7}, luck=33, skills={'appraise': 64, 'history': 90, 'library use': 90, 'spot hidden': 90, 'listen': 27, 'persuade': 89, 'pilot': 9, 'sleight of hand': 12, 'credit rating': 69, 'doge': 11}, weights=True, damage_bonus='+1K4', build=1, doge=11)
+>>> from cochar import create_character
+>>> person = create_character(1925, "US")
+>>> person
+Character(year=1925, country='US', first_name='Anthem', last_name='Pharr', age=22, sex='M', occupation='doctor of medicine', strength=33, condition=30, size=78, dexterity=40, appearance=23, education=87, intelligence=65, power=50, move_rate=7, luck=38, skills={'first aid': 38, 'language [latin]': 9, 'medicine': 73, 'science [biology]': 48, 'ride': 64, 'anthropology': 6, 'charm': 46, 'intimidate': 32, 'art/craft (sculptor)': 9, 'credit rating': 74, 'doge': 20}, damage_bonus='0', build=0, doge=20, sanity_points=50, magic_points=10, hit_points=10)
 ```
 
 ## Dependencies
@@ -37,7 +38,7 @@ Detailed documentation of module can by found here:
 
 ## Contribution
 
-If you want to contribute to `cochar` projcet read [contribution](CONTRIBUTION.md) for more information.
+If you want to contribute to `cochar` project read [contribution](CONTRIBUTION.md) for more information.
 
 ## Authors & Contributors
 

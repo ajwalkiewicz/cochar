@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}Cochar - Generator{% endblock %}
+{% block custom_css %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="container mt-3 px-md-5">
+  <!-- Generator Card -->
+  <div class="row border rounded bg-light p-5 mt-3 justify-content-center">
+    <div class="col-12">
+      <!-- <div class="container"> -->
+        <div class="row mb-3">
+          <div class="col-8">
+            <h2>Call of Cthulhu Character Generator</h2>
+          </div>
+          <div class="col-4">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-danger btn-sm mb-3 " id="clear-btn" type="button">Clear</button>
+            </div>
+          </div>
+        <!-- </div> -->
+      </div>
+      <!-- Form -->
+      <form class="row g-3 needs-validation" novalidate>
+        <div class="col-lg-2">
+          <label for="validationCustom01" class="form-label">First name</label>
+          <input type="text" class="form-control" id="validationCustom01" value="" placeholder="Random" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label for="validationCustom02" class="form-label">Last name</label>
+          <input type="text" class="form-control" id="validationCustom02" value="" placeholder="Random" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label for="validationCustomUsername" class="form-label">Country</label>
+          <div class="input-group has-validation">
+            <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+            <select class="form-select" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+              <option active>US</option>
+              <option>PL</option>
+              <option>ES</option>
+            </select>
+            <div class="invalid-feedback">
+              Please choose a username.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1">
+          <label for="validationCustom05" class="form-label">Age</label>
+          <input type="text" class="form-control" id="validationCustom05" value="" placeholder="Random" required>
+          <div class="invalid-feedback">
+            Please provide a valid zip.
+          </div>
+        </div>
+        <div class="col-lg-1">
+          <label for="validationCustom05" class="form-label">Year</label>
+          <input type="text" class="form-control" id="validationCustom05" value="1925" placeholder="1925" required>
+          <div class="invalid-feedback">
+            Please provide a valid zip.
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label for="validationCustomUsername" class="form-label">Gender</label>
+          <div class="input-group has-validation">
+            <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+            <select class="form-select" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+              <option active>Random</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+            <div class="invalid-feedback">
+              Please choose a username.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label for="validationCustom04" class="form-label">Occupation</label>
+          <select class="form-select" id="validationCustom04" required>
+            <option selected>optimal</option>
+            <option>random</option>
+            <option>antiquarian</option>
+            <option>artist</option>
+            <option>athlete</option>
+            <option>author</option>
+            <option>entertainer</option>
+            <option>soldier</option>
+            <option>lawyer</option>
+            <option>librarian</option>
+            <option>military officer</option>
+            <option>missionary</option>
+            <option>musician</option>
+            <option>parapsychologist</option>
+            <option>pilot</option>
+            <option>clergy</option>
+            <option>criminal</option>
+            <option>dilettante</option>
+            <option>doctor of medicine</option>
+            <option>drifter</option>
+            <option>engineer</option>
+            <option>farmer</option>
+            <option>hacker</option>
+            <option>journalist</option>
+            <option>police detective</option>
+            <option>police  officer</option>
+            <option>private  investigator</option>
+            <option>professor</option>
+            <option>tribe member</option>
+            <option>zealot</option>
+            <option>sailor, naval</option>
+          </select>
+          <div class="invalid-feedback">
+            Please select a valid state.
+          </div>
+        </div>
+        
+        <!-- <div class="col-md-6">
+          <label for="validationCustom03" class="form-label">City</label>
+          <input type="text" class="form-control" id="validationCustom03" required>
+          <div class="invalid-feedback">
+            Please provide a valid city.
+          </div>
+        </div> -->
+        <!-- <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+            <label class="form-check-label" for="invalidCheck">
+              Agree to terms and conditions
+            </label>
+            <div class="invalid-feedback">
+              You must agree before submitting.
+            </div>
+          </div>
+        </div> -->
+        <button class="btn btn-primary mt-4 btn-lg btn-block" id="generate-btn" type="button">Generate Character</button>
+      </form>
+      <!-- <div class="mt-3 d-grid gap-2 d-lg-flex justify-content-md-end">
+        <button class="btn btn-primary btn-lg" id="generate-btn" type="button">Generate Character</button>
+      </div> -->
+    </div>
+  </div>
+  <!-- Character Card -->
+  <div class="row border rounded bg-light p-5 mt-3 mb-5 hidden" id="character-card">
+    <div class="row">
+      <h2 id="character-name">Mr John Dow, Doctor, US</h2>
+    </div>
+    <div class="col-5">
+      <h4>Characteristics</h4>
+      <div class="row">
+        <div class="col" id="str">STR:</div>
+        <div class="col" id="con">CON:</div>
+        <div class="col" id="siz">SIZ:</div>
+      </div>
+      <div class="row">
+        <div class="col" id="dex">DEX:</div>
+        <div class="col" id="app">APP:</div>
+        <div class="col" id="edu">EDU:</div>
+      </div>
+      <div class="row">
+        <div class="col" id="int">INT:</div>
+        <div class="col" id="pow">POW:</div>
+        <div class="col" id="luck">Luck:</div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col" id="damage-bonus">Damage bonus:</div>
+        <div class="col" id="build">Build:</div>
+        <div class="col" id="doge">Doge:</div>
+      </div>
+      <div class="row">
+        <div class="col" id="move-rate">Move rate:</div>
+      </div>
+    </div>
+    <div class="col-7">
+      <h4>Skills</h4>
+      <p id="skills">
+
+      </p>
+    </div>
+  </div>
+</div>
+<!-- cochar -->
+<!-- <script src="script.js"></script> -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

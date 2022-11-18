@@ -1,1376 +1,699 @@
-#!/usr/bin/python3
-"""
-**Call of Cthulhu character generator**
-
-Generate random character with characteristics for the Call of Cthulhu RPG game.
-It support's CoC 7th eddition.
-
-See module ``randname`` for a mechanism to generate random names.
-
-**Classes:**
-
-:class Skills: dictionary like obcject to stroe character skills
-:class Character: main character class to represent character
-
-**Misc. variables:**
-
-:param POP_PIRAMID_PATH: path to file with population piramid
-:param OCCUPATIONS_GROUPS: occupations deviced on 5 groups
-:param OCCUPATION_LIST: list of all occupatoins
-:param MIN_AGE: min age for character
-:param MAX_AGE: max age for character
-:param MAX_SKILL_LEVEL: max skill lever for a skill
-:param _THIS_FOLDER: path to this module folder
-:param _BASE_CHARACTERISTICS: basic character characteristics
-
-**Example:**
-
->>> c= Character()
->>> c
-Character(age=30, sex='M', first_name='Kelvin', last_name='Burlingame', country='US', occupation='antiquarian', characteristics={'str': 57, 'con': 23, 'siz': 75, 'dex': 23, 'app': 80, 'edu': 87, 'int': 48, 'pow': 18, 'move_rate': 7}, luck=33, skills={'appraise': 64, 'history': 90, 'library use': 90, 'spot hidden': 90, 'listen': 27, 'persuade': 89, 'pilot': 9, 'sleight of hand': 12, 'credit rating': 69, 'doge': 11}, weights=True, damage_bonus='+1K4', build=1, doge=11)
-"""
+"""**Cochar - main module**"""
 import json
-import os
 import random
-from pprint import pprint
 from bisect import bisect_left
-from collections import UserDict
-from typing import Dict, List, Tuple, Union
+from typing import List, Tuple, Union
 
 import randname
 
-from .utils import (
-    AGE_RANGE,
-    ALL_SKILLS,
-    BASIC_SKILLS,
-    CATEGORY_SKILLS,
-    CATEGORY_SKILLS_LIST,
-    TRANSLATION_DICT,
-    YEAR_RANGE,
-)
-from .errors import *
+import cochar
+import cochar.character
+import cochar.occup
+import cochar.skill
+import cochar.utils
+import cochar.error
 
-# randname.WARNINGS = False # Upgrade randname
-_THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-POP_PIRAMID_PATH = os.path.abspath(
-    os.path.join(_THIS_FOLDER, "data", "popPiramid.json")
-)
-
-# Load default settiings
-with open(os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r") as json_file:
-    # Full data of occupations
-    OCCUPATIONS_DATA: dict = dict(json.load(json_file))
-    # Just occupations names in the list
-    OCCUPATIONS_LIST: list = list(OCCUPATIONS_DATA.keys())
-    # Occupations divided on 5 cathegories depends on skill point calculation method
-    OCCUPATIONS_GROUPS: List[List[str]] = [
-        [key for key, value in OCCUPATIONS_DATA.items() if "edu" in value["groups"]],
-        [key for key, value in OCCUPATIONS_DATA.items() if "edupow" in value["groups"]],
-        [key for key, value in OCCUPATIONS_DATA.items() if "edudex" in value["groups"]],
-        [key for key, value in OCCUPATIONS_DATA.items() if "eduapp" in value["groups"]],
-        [key for key, value in OCCUPATIONS_DATA.items() if "edustr" in value["groups"]],
-    ]
-
-with open(os.path.join(_THIS_FOLDER, "data", "settings.json"), "r") as json_file:
-    settings: dict = json.load(json_file)
-    MIN_AGE: int = settings["min_age"]
-    MAX_AGE: int = settings["max_age"]
-    MAX_SKILL_LEVEL: int = settings["max_skill_level"]
-    YEAR: int = settings["year"]
-    AGE: int = settings["age"]
-    SEX: str = settings["sex"]
-    FIRST_NAME: str = settings["first_name"]
-    LAST_NAME: str = settings["last_name"]
-    COUNTRY: str = settings["country"]
-    OCCUPATION: str = settings["occupation"]
-    WEIGHTS: bool = settings["weights"]
-    SHOW_WARNINGS: bool = settings["show_warnings"]
-
-    DATABASE: str = settings["database"]
-    if not DATABASE:
-        DATABASE = randname.DATABASE
-
-_BASE_CHARACTERISTICS = (
-    "strength",
-    "condition",
-    "size",
-    "dexterity",
-    "apperance",
-    "edducation",
-    "intelligence",
-    "power",
-    "move_rate",
-    "sanity_points",
-    "magic_points",
-    "hit_points",
-)
-
-# __SEX_OPTIONS: list = ['M', 'F', None]
+cochar.set_logging_level("debug")
 
 
-class Skills(UserDict):
-    """Dictionary like object to store charcter skills.
-    Override __setitem__ to validate skills data.
+# TODO: write unit test
+def create_character(
+    year: int,
+    country: str,
+    first_name: str = False,
+    last_name: str = False,
+    age: int = False,
+    sex: str = False,
+    random_mode: bool = False,
+    occupation: str = None,
+    skills: cochar.skill.Skills = {},
+    *args,
+    **kwargs,
+) -> cochar.character.Character:
+    """Main function for creating Character.
+    Use this function instead of instantiating Character class.
 
-    :param UserDict: UserDict from collections
-    :type UserDict: abc.ABCMets
-    """
-
-    # all_skills = ALL_SKILLS.copy()
-    def __setitem__(self, key: any, value: int) -> None:
-        """Add vallidation for skill values
-
-        :param key: skill name
-        :type key: any
-        :param value: skill value
-        :type value: int
-        :raises SkillValueNotAnInt: when value is not an integer
-        :raises SkillPointsBelowZero: when value is less than 0
-        """
-        key = str(key)
-        # if key not in ALL_SKILLS:
-        #     raise ValueError(f"Skill: {key}, doesn't exist")
-        if not isinstance(value, int):
-            raise SkillValueNotAnInt(
-                f"Invalid {key.lower()} points. {key.capitalize()} points must be an integer"
-            )
-        if value < 0:
-            raise SkillPointsBelowZero(
-                f"{key.capitalize()} points cannot be less than 0"
-            )
-        # self.all_skills.setdefault()
-        self.data[key] = value
-
-
-class Character:
-    """Character class
-
-    :param year: year when character born, defaults to 1925
-    :type year: int, optional
-    :param age: character age, defaults to None
-    :type age: str, optional
-    :param sex: character sex, defaults to None
-    :type sex: str, optional
-    :param first_name: character name, random if not set, defaults to None
+    :param year: year of the game
+    :type year: int
+    :param country: country of character's origin
+    :type country: str
+    :param first_name: character's first name, defaults to ""
     :type first_name: str, optional
-    :param last_name: character last name, random if not set, defaults to None
+    :param last_name: character's last name, defaults to ""
     :type last_name: str, optional
-    :param country: country to generate name and last name, defaults to "US"
-    :type country: str, optional
-    :param occupation: character occupation, optimal occupation (base on max skill points) if not set, defaults to "optimal"
+    :param age: character's age, defaults to False
+    :type age: int, optional
+    :param sex: character's sex, defaults to False
+    :type sex: str, optional
+    :param random_mode: choose occupation completely randomly, regardless the character's statistics, defaults to "False"
+    :type random_mode: bool, optional
+    :param occupation: character's occupation return provided occupation as character's occupation if it exists, defaults to "None"
     :type occupation: str, optional
-    :param occupation_points: occupation point, max if not set, defaults to None
-    :type occupation_points: int, optional
-    :param hobby_points: hobby points, 2*intelligence if not set, defaults to None
-    :type hobby_points: int, optional
-    :param skills: character skills, random if not set, defaults to None
-    :type skills: dict, optional
-    :param strength: character strength, random if not set, defaults to 0
-    :type strength: int, optional
-    :param condition: character condition, random if not set, defaults to 0
-    :type condition: int, optional
-    :param size: character size, random if not set,  defaults to 0
-    :type size: int, optional
-    :param dexterity: character dexterity, random if not set,  defaults to 0
-    :type dexterity: int, optional
-    :param apperance: character apperance, random if not set,  defaults to 0
-    :type apperance: int, optional
-    :param edducation: character edducation, random if not set,  defaults to 0
-    :type edducation: int, optional
-    :param intelligence: character intelligence, random if not set,  defaults to 0
-    :type intelligence: int, optional
-    :param power: character power, random if not set,  defaults to 0
-    :type power: int, optional
-    :param move_rate: character move_rate, random if not set,  defaults to 0
-    :type move_rate: int, optional
-    :param sanity_points: character sanity_points, random if not set,  defaults to 0
-    :type sanity_points: int, optional
-    :param magic_points: character magic_points, random if not set,  defaults to 0
-    :type magic_points: int, optional
-    :param hit_points: character hit_points, random if not set,  defaults to 0
-    :type hit_points: int, optional
-    :param luck: character luck, random if not set,  default to 0
-    :type luck: int, optional
-
-    **Characteristics**::
-
-    - strength       = random.randint(15, 90)
-    - condition      = random.randint(15, 90)
-    - size           = random.randint(40, 90)
-    - dexterity      = random.randint(15, 90)
-    - apperance      = random.randint(15, 90)
-    - edducation     = random.randint(40, 90)
-    - intelligence   = random.randint(40, 90)
-    - power          = random.randint(15, 90)
-    - move_rate      = [0, 0, 1, 2, 3, 4, 5]
-    - sanity_points  = power
-    - magic_points   = power // 5
-    - hit_points     = (size + condition) // 10
-    - luck           = random.randint(15, 90)
+    :param skills: character's skills, defaults to {}
+    :type skills: Skills, optional
+    :raises ValueError: raise if sex is incorrect
+    :return: generated character
+    :rtype: Character
     """
-
-    __SEX_OPTIONS: list = ["M", "F", False]
-
-    def __init__(
-        self,
-        year: int = YEAR,
-        age: str = AGE,
-        sex: str = SEX,
-        first_name: str = FIRST_NAME,
-        last_name: str = LAST_NAME,
-        country: str = COUNTRY,
-        occupation: str = OCCUPATION,
-        occupation_points: int = None,
-        hobby_points: int = None,
-        # occupation_mode: str = "optimal",
-        skills: dict = None,  # Highly not recomended
-        weights: bool = WEIGHTS,
-        **kwargs,
-    ) -> None:
-        """Constructs all the necessary attributes for the character object"""
-        ### basics ###
-        self.year: int = year
-        if sex in self.__SEX_OPTIONS:
-            self._sex = self.set_sex(sex)
-        else:
-            raise ValueError(f"incorrect sex falue: {sex} -> ['M', 'F', None']")
-        self.age: int = self.set_age(age)
-        self.country: str = country
-        self.weights: bool = weights
-
-        ### personals ###
-        self.first_name: str = (
-            self.generate_first_name(
-                self._year, self._sex, self._country, self._weights
-            )
-            if not first_name
-            else first_name
-        )
-        self.last_name: str = (
-            self.generate_last_name(self._year, self._sex, self._country, self._weights)
-            if not last_name
-            else last_name
-        )
-
-        ### characteristics ###
-        for char in _BASE_CHARACTERISTICS:
-            if char in kwargs:
-                setattr(self, char, kwargs[char])
-            else:
-                setattr(self, char, 0)
-
-        self.set_characteristics()
-
-        ### repeat characteristics change if set
-        for char in _BASE_CHARACTERISTICS:
-            if char in kwargs:
-                setattr(self, char, kwargs[char])
-
-        self.set_derived_attributes()
-
-        ### occupation ###
-        if occupation in OCCUPATIONS_LIST + ["optimal", "random", None]:
-            self._occupation = occupation
-        else:
-            raise ValueError("occupation incorrect")
-
-        # if occupation_mode in ["optimal", "random"]:
-        #     self._occupation_mode = "optimal"
-        # else:
-        #     raise ValueError("incorrect occupation mode")
-
-        self.skill_points_groups: tuple[int] = (
-            self._edu * 4,  # 1
-            self._edu * 2 + self._pow * 2,  # 2
-            self._edu * 2 + self._dex * 2,  # 3
-            self._edu * 2 + self._app * 2,  # 4
-            self._edu * 2 + self._str * 2,  # 5
-        )
-
-        self._occupation: str = self.set_occupation(self._occupation)
-
-        if occupation_points is None:
-            self._occupation_points: int = self.get_skill_points(self._occupation)
-        else:
-            self.occupation_points = occupation_points
-
-        if hobby_points is None:
-            self._hobby_points = self._int * 2  # Create public function for that
-        else:
-            self.hobby_points = hobby_points
-
-        ### Skills ###
-        if skills:
-            self._skills = Skills(skills)
-        else:
-            # Order of following instructions is very important!
-            self._skills: Skills[str, int] = Skills()
-            # self.occupation_skills_list: list[str] = []
-            # self.hobby_skills_list: list[str] = []
-
-            ALL_SKILLS.update({"doge": self._dex // 2, "language (own)": self._edu})
-
-            # Assigning points to credit rating
-            credit_rating_points = self.get_credit_rating_points()
-
-            # self._occupation_points -= credit_rating_points
-            occupation_points_to_distribute = (
-                self._occupation_points - credit_rating_points
-            )
-
-            if occupation_points_to_distribute < 0:
-                occupation_points_to_distribute = 0
-
-            self._skills = self.set_skills_dict(occupation_points_to_distribute)
-            self._skills.setdefault("credit rating", credit_rating_points)
-
-        ### combat values ###
-        if "damage_bonus" in kwargs:
-            self.damage_bonus = str(kwargs["damage_bonus"])
-        else:
-            self.set_damage_bonus()
-
-        if "build" in kwargs:
-            self.build = kwargs["build"]
-        else:
-            self.set_build()
-
-        if "doge" in kwargs:
-            self.doge = kwargs["doge"]
-        else:
-            self.set_doge()
-
-        ### luck ###
-        if "luck" in kwargs:
-            self.luck = kwargs["luck"]
-        else:
-            self._set_luck()
-
-    # PROPERTIES
-
-    @property
-    def year(self) -> int:
-        """**Year of born**
-
-        :raises ValueError: Invalid year. year must be integer
-        :return: year
-        :rtype: int
-
-        >>> c = Character()
-        >>> c.year = 1800
-        """
-        return self._year
-
-    @year.setter
-    def year(self, new_year: int) -> None:
-        if not isinstance(new_year, int):
-            raise ValueError("Invalid year. year must be integer")
-        self._year = new_year
-
-    @property
-    def sex(self) -> Union[str, None]:
-        """Character sex
-
-        **legend**
-
-        - M: male
-        - F: female
-        - None: for non binary
-
-        As there is not data for non biary names. When ``None`` is selected sex will be randomly drawn from [M, F]
-
-        :raises ValueError: Incorrect sex falue: sex -> ['M', 'F', None']
-        :return: sex
-        :rtype: Union[str, None]
-
-        >>> c = Character()
-        >>> c.sex
-        'F'
-        """
-        return self._sex
-
-    @sex.setter
-    def sex(self, new_sex: Union[str, None]) -> None:
-        if new_sex in self.__SEX_OPTIONS:
-            self._sex = self.set_sex(new_sex)
-        else:
-            raise ValueError("Incorrect sex falue: sex -> ['M', 'F', None']")
-
-    @property
-    def age(self) -> int:
-        """**Character age**
-
-        Age has to be between MIN_AGE and MAX_AGE.
-
-        :raises ValueError: Invalid age. Age must be an integer
-        :raises ValueError: Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]
-        :return: Character age
-        :rtype: int
-        """
-        return self._age
-
-    @age.setter
-    def age(self, new_age: int) -> None:
-        if not isinstance(new_age, int):
-            raise SkillValueNotAnInt("Invalid age. Age must be an integer")
-
-        if MIN_AGE <= new_age <= MAX_AGE:
-            self._age = new_age
-        else:
-            raise ValueError(f"Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]")
-
-    @property
-    def country(self) -> str:
-        """**Character country**
-
-        Country must bu in availables countries.
-
-        See ``randname.availavle_countries()``
-
-        :raises ValueError: "Country not available: {new_country} -> {randname.available_countries()}
-        :return: character country
-        :rtype: str
-        """
-        return self._country
-
-    @country.setter
-    def country(self, new_country: str) -> None:
-        if new_country in randname.available_countries():
-            self._country = new_country
-        else:
-            raise ValueError(
-                f"Country not available: {new_country} -> {randname.available_countries()}"
-            )
-
-    @property
-    def weights(self) -> bool:
-        """weights
-
-        Required for random.choices()
-
-        - **True**: use weights when generating names
-        - **False**: every name in a given year has same chance to be drawn.
-
-        :raises ValueError: Weights must be a bool type
-        :return: weights
-        :rtype: bool
-        """
-        return self._weights
-
-    @weights.setter
-    def weights(self, new_weights: bool) -> None:
-        if isinstance(new_weights, bool):
-            self._weights = new_weights
-        else:
-            raise ValueError("Weights must be a bool type")
-
-    @property
-    def occupation(self) -> str:
-        """Character occupation.
-
-        Occupation must be in ``OCCUPATION_LIST``
-
-        :raises ValueError: Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}
-        :return: [description]
-        :rtype: str
-        """
-        return self._occupation
-
-    @occupation.setter
-    def occupation(self, new_occupation: str) -> None:
-        if new_occupation in OCCUPATIONS_LIST:
-            self._occupation = new_occupation
-        else:
-            raise ValueError(
-                f"Occupation: {new_occupation} not in -> {OCCUPATIONS_LIST}"
-            )
-
-    @property
-    def strength(self) -> int:
-        """Character strength
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character strength
-        :rtype: int
-        """
-        return self._str
-
-    @strength.setter
-    def strength(self, new_strength: int) -> None:
-        self.__validate_character_properties(new_strength, "strength")
-        self._str = new_strength
-
-    @property
-    def condition(self) -> int:
-        """Charater condition.
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character condition
-        :rtype: int
-        """
-        return self._con
-
-    @condition.setter
-    def condition(self, new_condition: int) -> None:
-        self.__validate_character_properties(new_condition, "condition")
-        self._con = new_condition
-
-    @property
-    def size(self) -> int:
-        """Character size
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character size
-        :rtype: int
-        """
-        return self._siz
-
-    @size.setter
-    def size(self, new_size: int) -> None:
-        self.__validate_character_properties(new_size, "size")
-        self._siz = new_size
-
-    @property
-    def dexterity(self) -> int:
-        """Character dexterity
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character dexterity
-        :rtype: int
-        """
-        return self._dex
-
-    @dexterity.setter
-    def dexterity(self, new_dexterity: int) -> None:
-        self.__validate_character_properties(new_dexterity, "dexterity")
-        self._dex = new_dexterity
-
-    @property
-    def apperance(self) -> int:
-        """Character apperance
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character apperance
-        :rtype: int
-        """
-        return self._app
-
-    @apperance.setter
-    def apperance(self, new_apperance: int) -> None:
-        self.__validate_character_properties(new_apperance, "apperance")
-        self._app = new_apperance
-
-    @property
-    def edducation(self) -> int:
-        """Character edducation
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character edducation
-        :rtype: int
-        """
-        return self._edu
-
-    @edducation.setter
-    def edducation(self, new_edducation: int) -> None:
-        self.__validate_character_properties(new_edducation, "edducation")
-        self._edu = new_edducation
-
-    @property
-    def intelligence(self) -> int:
-        """Character intelligence
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character intelligence
-        :rtype: int
-        """
-        return self._int
-
-    @intelligence.setter
-    def intelligence(self, new_inteligence: int) -> None:
-        self.__validate_character_properties(new_inteligence, "intelligence")
-        self._int = new_inteligence
-
-    @property
-    def power(self) -> int:
-        """Character power
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character power
-        :rtype: int
-        """
-        return self._pow
-
-    @power.setter
-    def power(self, new_power: int) -> None:
-        self.__validate_character_properties(new_power, "power")
-        self._pow = new_power
-
-    @property
-    def move_rate(self) -> int:
-        """Character move rate
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: character move rate
-        :rtype: int
-        """
-        return self._move_rate
-
-    @move_rate.setter
-    def move_rate(self, new_move_rate: int) -> None:
-        self.__validate_character_properties(new_move_rate, "move rate")
-        self._move_rate = new_move_rate
-
-    @property
-    def first_name(self) -> str:
-        """Character first name
-
-        :raises ValueError: Invalid first name. Name cannot be an empty string
-        :return: first name
-        :rtype: str
-        """
-        return self._first_name
-
-    @first_name.setter
-    def first_name(self, new_first_name: str) -> None:
-        if new_first_name == "":
-            raise ValueError("Invalid first name. Name cannot be an empty string")
-        self._first_name = str(new_first_name)
-
-    @property
-    def last_name(self) -> str:
-        """Character last name
-
-        :raises ValueError: Invalid last name. Name cannot be an empty string
-        :return: last name
-        :rtype: str
-        """
-        return self._last_name
-
-    @last_name.setter
-    def last_name(self, new_last_name: str) -> None:
-        if new_last_name == "":
-            raise ValueError("Invalid last name. Name cannot be an empty string")
-        self._last_name = str(new_last_name)
-
-    # @property
-    # def characteristics(self) -> Dict[str, int]:
-    #     return self._characteristics
-
-    # @characteristics.setter
-    # def characteristics(self, new_characteristics: Dict[str, int]) -> Dict[str, int]:
-    #     for item, value in new_characteristics.items():
-    #         if item not in self._characteristics.keys():
-    #             raise ValueError(f"Invalid characteristic. {item} not in {self._characteristics.keys()}")
-    #         # if not isinstance(value, int):
-    #         #     raise ValueError(f"Invalid {item}. {item} must be an integer")
-    #         # if value < 0:
-    #         #     raise ValueError("{item} cannot be less than 0")
-    #         self.__validate_character_properties(value, item)
-    #         self._characteristics.update({item: value})
-    #         # print(getattr(self, f"_{item}"))
-    #         self.__dict__.update({f"_{item}": value})
-    #         # setattr(self, f"_{item}", value)
-
-    @property
-    def occupation_points(self) -> int:
-        """Character occupation points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: occupation points
-        :rtype: int
-        """
-        return self._occupation_points
-
-    @occupation_points.setter
-    def occupation_points(self, new_occupation_points: int) -> None:
-        self.__validate_character_properties(new_occupation_points, "occupation")
-        self._occupation_points = new_occupation_points
-
-    @property
-    def hobby_points(self) -> int:
-        """Character hobby points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: hobby points
-        :rtype: int
-        """
-        return self._hobby_points
-
-    @hobby_points.setter
-    def hobby_points(self, new_hobby_points: int) -> None:
-        self.__validate_character_properties(new_hobby_points, "hobby")
-        self._hobby_points = new_hobby_points
-
-    @property
-    def sanity_points(self) -> int:
-        """Character sanity points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: sanity points
-        :rtype: int
-        """
-        return self._sanity_points
-
-    @sanity_points.setter
-    def sanity_points(self, new_sanity_points: int) -> None:
-        self.__validate_character_properties(new_sanity_points, "sanity")
-        self._sanity_points = new_sanity_points
-
-    @property
-    def magic_points(self) -> int:
-        """Character magic points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: magic points
-        :rtype: int
-        """
-        return self._magic_points
-
-    @magic_points.setter
-    def magic_points(self, new_magic_points: int) -> None:
-        self.__validate_character_properties(new_magic_points, "magic")
-        self._magic_points = new_magic_points
-
-    @property
-    def hit_points(self) -> int:
-        """Character hit points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: hit points
-        :rtype: int
-        """
-        return self._hit_points
-
-    @hit_points.setter
-    def hit_points(self, new_hit_points: int) -> None:
-        self.__validate_character_properties(new_hit_points, "hit")
-        self._hit_points = new_hit_points
-
-    @property
-    def luck(self) -> int:
-        """Character luck
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: luck
-        :rtype: int
-        """
-        return self._luck
-
-    @luck.setter
-    def luck(self, new_luck: int) -> None:
-        self.__validate_character_properties(new_luck, "luck")
-        self._luck = new_luck
-
-    @property
-    def skills(self) -> Skills:
-        return self._skills
-
-    @skills.setter
-    def skills(self, new_skills: dict) -> None:
-        if not isinstance(new_skills, dict):
-            raise SkillsNotADict("Invalid skills. Skills must be a dict")
-
-        # for key, value in new_skills.items():
-        #     if key not in ALL_SKILLS:
-        #         raise ValueError(f"Skill: {value}, doesn't exist")
-        #     if not isinstance(value, int):
-        #         raise ValueError(f"Skill value: {value}, must be an integer")
-        #     if value < 0:
-        #         raise ValueError(f"Skill value: {value}, cannot be below 0")
-
-        self._skills = Skills(new_skills)
-
-    @property
-    def damage_bonus(self) -> str:
-        """Character damage bonus
-
-        ``correct_values = ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6']``
-
-        :raises ValueError: Invalid damage bonus. {new_damage_bonus} not in {correct_values}
-        :return: damage bonus
-        :rtype: str
-        """
-        return self._damage_bonus
-
-    @damage_bonus.setter
-    def damage_bonus(self, new_damage_bonus: str) -> None:
-        # TODO: Increase range. +1 for each 80 point above STR+SIZ
-        correct_values = [
-            "-2",
-            "-1",
-            "0",
-            "+1K4",
-            "+1K6",
-            "+2K6",
-            "+3K6",
-            "+4K6",
-            "+5K6",
+    weights = cochar.WEIGHTS
+
+    if is_sex_valid(sex):
+        sex = generate_sex(sex)
+    else:
+        raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None']")
+
+    age: int = generate_age(year, sex, age)
+
+    if not first_name:
+        first_name = generate_first_name(year, sex, country, weights)
+    else:
+        first_name = first_name
+
+    if not last_name:
+        last_name = generate_last_name(year, sex, country, weights)
+    else:
+        last_name = last_name
+
+    (
+        strength,
+        condition,
+        size,
+        dexterity,
+        appearance,
+        education,
+        intelligence,
+        power,
+        luck,
+        move_rate,
+    ) = generate_base_characteristics(age=age)
+
+    occupation = cochar.occup.generate_occupation(
+        education=education,
+        power=power,
+        dexterity=dexterity,
+        appearance=appearance,
+        strength=strength,
+        random_mode=random_mode,
+        occupation=occupation,
+    )
+
+    sanity_points, magic_points, hit_points = calc_derived_attributes(
+        power, size, condition
+    )
+
+    # TODO: analyze doge flow
+    damage_bonus, build, doge = calc_combat_characteristics(strength, size, dexterity)
+
+    occupation_points = cochar.occup.calc_occupation_points(
+        occupation, education, power, dexterity, appearance, strength
+    )
+    hobby_points = cochar.occup.calc_hobby_points(intelligence)
+    skills = cochar.skill.generate_skills(
+        occupation, occupation_points, hobby_points, dexterity, education, skills
+    )
+
+    doge = skills.get("doge", doge)
+
+    return cochar.character.Character(
+        year=year,
+        country=country,
+        first_name=first_name,
+        last_name=last_name,
+        age=age,
+        sex=sex,
+        occupation=occupation,
+        strength=strength,
+        condition=condition,
+        size=size,
+        dexterity=dexterity,
+        appearance=appearance,
+        education=education,
+        intelligence=intelligence,
+        power=power,
+        luck=luck,
+        damage_bonus=damage_bonus,
+        build=build,
+        move_rate=move_rate,
+        skills=skills,
+        doge=doge,
+        sanity_points=sanity_points,
+        magic_points=magic_points,
+        hit_points=hit_points,
+    )
+
+
+# TODO: write unit test
+def generate_age(year, sex, age: int = False) -> int:
+    """Set age
+
+    :param age: new age, defaults to None
+    :type age: int, optional
+    :return: new age
+    :rtype: int
+    """
+    if age:
+        return age
+
+    if year < 1950:
+        corrected_year = 1950
+    else:
+        # Correction of year index. If bisect_left returns int > len(data_range)
+        # return bisect_left - 1. It's in case of very small data sets.
+        def correct_bisect_left(data, year):
+            bisect = bisect_left(data, year)
+            return bisect if bisect != len(data) else bisect - 1
+
+        year_index = correct_bisect_left(cochar.utils.YEAR_RANGE, year)
+        corrected_year = cochar.utils.YEAR_RANGE[year_index]
+
+    file_name = f"pop{corrected_year}"
+
+    with open(cochar.POP_PYRAMID_PATH) as json_file:
+        age_population = cochar.utils.AGE_RANGE
+        age_weights = json.load(json_file)[file_name][sex][3:-1]
+        age_range = random.choices(age_population, weights=age_weights)[0]
+        age = random.randint(*age_range)
+    return age
+
+
+# TODO: write unit test
+def generate_base_characteristics(
+    age,
+    strength: int = 0,
+    condition: int = 0,
+    size: int = 0,
+    dexterity: int = 0,
+    appearance: int = 0,
+    education: int = 0,
+    intelligence: int = 0,
+    power: int = 0,
+    luck: int = 0,
+    move_rate: int = 0,
+) -> tuple:
+    """Return base characteristics based on age as a tuple.
+
+    Base characteristics:
+    1. strength
+    2. condition
+    3. size
+    4. dexterity
+    5. appearance
+    6. education
+    7. intelligence
+    8. power
+    9. luck
+    10. move rate
+
+    :param age: character's age
+    :type age: int
+    :param strength: strength, defaults to 0
+    :type strength: int, optional
+    :param condition: condition, defaults to 0
+    :type condition: int, optional
+    :param size: size, defaults to 0
+    :type size: int, optional
+    :param dexterity: dexterity, defaults to 0
+    :type dexterity: int, optional
+    :param appearance: appearance, defaults to 0
+    :type appearance: int, optional
+    :param education: education, defaults to 0
+    :type education: int, optional
+    :param intelligence: intelligence, defaults to 0
+    :type intelligence: int, optional
+    :param power: power, defaults to 0
+    :type power: int, optional
+    :param move_rate: move rate, defaults to 0
+    :type move_rate: int, optional
+    :param luck: luck, defaults to 0
+    :type luck: int, optional
+    :return: (strength, condition, size, dexterity, appearance, education, intelligence, power, luck, move_rate)
+    :rtype: tuple
+    """
+    if strength == 0:
+        strength = random.randint(15, 90)
+    if condition == 0:
+        condition = random.randint(15, 90)
+    if size == 0:
+        size = random.randint(40, 90)
+    if dexterity == 0:
+        dexterity = random.randint(15, 90)
+    if appearance == 0:
+        appearance = random.randint(15, 90)
+    if education == 0:
+        education = random.randint(40, 90)
+    if intelligence == 0:
+        intelligence = random.randint(40, 90)
+    if power == 0:
+        power = random.randint(15, 90)
+    if move_rate == 0:
+        move_rate = 0
+    if luck == 0:
+        luck = random.randint(15, 90)
+    if age <= 19:
+        luck = max(luck, random.randint(15, 90))
+
+    age_range = bisect_left(cochar.MODIFIERS["age_range"], age)
+    mod_char_points = cochar.MODIFIERS["mod_char_points"][age_range]
+    mod_app = cochar.MODIFIERS["mod_app"][age_range]
+    mod_move_rate = cochar.MODIFIERS["mod_move_rate"][age_range]
+    mod_edu = cochar.MODIFIERS["mod_edu"][age_range]
+
+    appearance = subtract_points_from_characteristic(appearance, mod_app)
+    strength, condition, dexterity = subtract_points_from_str_con_dex(
+        strength, condition, dexterity, mod_char_points
+    )
+    education = characteristic_test(education, mod_edu)
+    move_rate = calc_move_rate(strength, dexterity, size) - mod_move_rate
+
+    return (
+        strength,
+        condition,
+        size,
+        dexterity,
+        appearance,
+        education,
+        intelligence,
+        power,
+        luck,
+        move_rate,
+    )
+
+
+# TODO: write unit test
+def calc_derived_attributes(
+    power: int,
+    size: int,
+    condition: int,
+    sanity_points: int = 0,
+    magic_points: int = 0,
+    hit_points: int = 0,
+) -> Tuple[int, int, int]:
+    """Based on power, size and condition,
+    return sanity, magic and hit points
+
+    :param power: power points
+    :type power: int
+    :param size: size points
+    :type size: int
+    :param condition: condition points
+    :type condition: int
+    :param sanity_points: sanity points, defaults to 0
+    :type sanity_points: int, optional
+    :param magic_points: magic points, defaults to 0
+    :type magic_points: int, optional
+    :param hit_points: hit points, defaults to 0
+    :type hit_points: int, optional
+    :return: (sanity points, magic points, hit points)
+    :rtype: tuple
+    """
+    if sanity_points == 0:
+        sanity_points = calc_sanity_points(power)
+    if magic_points == 0:
+        magic_points = calc_magic_points(power)
+    if hit_points == 0:
+        hit_points = calc_hit_points(size, condition)
+
+    return sanity_points, magic_points, hit_points
+
+
+def calc_sanity_points(power: int) -> int:
+    """Return sanity points based on power
+
+    :param power: power value
+    :type power: int
+    :return: sanity points
+    :rtype: int
+    """
+    return power
+
+
+def calc_magic_points(power: int) -> int:
+    """Return magic points based on power
+
+    :param power: power value
+    :type power: int
+    :return: magic points
+    :rtype: int
+    """
+    return power // 5
+
+
+def calc_hit_points(size: int, condition: int) -> int:
+    """Return hit points based on size and condition.
+
+    :param size: size value
+    :type size: int
+    :param condition: condition value
+    :type condition: int
+    :return: hit points
+    :rtype: int
+    """
+    return (size + condition) // 10
+
+
+# TODO: write unit test
+def calc_combat_characteristics(
+    strength: int,
+    size: int,
+    dexterity: int,
+    damage_bonus: str = "",
+    build: int = 0,
+    doge: int = 0,
+) -> Tuple[str, int, int]:
+    """Based on strength, size and dexterity,
+    return combat characteristics such as:
+    dame bonus, build, doge
+
+    :param strength: strength points
+    :type strength: int
+    :param size: size points
+    :type size: int
+    :param dexterity: dexterity points
+    :type dexterity: int
+    :return: (damage bonus, build, doge)
+    :rtype: Tuple(str, int, int)
+    """
+    if damage_bonus == "":
+        damage_bonus = calc_damage_bonus(strength, size)
+    if build == 0:
+        build = calc_build(strength, size)
+    if doge == 0:
+        doge = calc_doge(dexterity)
+
+    return damage_bonus, build, doge
+
+
+# TODO: write unit test
+def calc_damage_bonus(strength: int, size: int) -> str:
+    """Return damage bonus, based on sum of strength and size.
+
+    f: X -> Y
+
+    X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
+    Y: {"-2", "-1", "0", "+1K4", "+1K6", "+2K6", "+3K6", "+4K6", "+5K6",}
+
+    TODO: Increase bonus damage for +1K6 for every 80 points above 524
+
+    :param strength: character's strength
+    :type strength: int
+    :param size: character's size
+    :type size: int
+    :return: character's damage bonus
+    :rtype: str
+    """
+    sum_str_siz = strength + size
+    combat_range = bisect_left(cochar.VALUE_MATRIX["combat_range"], sum_str_siz)
+    damage_bonus = cochar.VALUE_MATRIX["damage_bonus"][combat_range]
+    return damage_bonus
+
+
+# TODO: write unit test
+def calc_build(strength: int, size: int) -> int:
+    """Return build based on sum od strength and size.
+
+    f: X -> Y
+
+    X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
+    Y: {-2, -1, 0, 1, 2, 3, 4, 5, 6}
+
+    TODO: Increase bonus damage for +1K6 for every 80 points above 524
+
+    :param strength: character's strength
+    :type strength: int
+    :param size: character's size
+    :type size: int
+    :return: character's build
+    :rtype: int
+    """
+    sum_str_siz = strength + size
+    combat_range = bisect_left(cochar.VALUE_MATRIX["combat_range"], sum_str_siz)
+    build = cochar.VALUE_MATRIX["build"][combat_range]
+    return build
+
+
+def calc_doge(dexterity: int) -> int:
+    """Return doge based on dexterity:
+
+    doge = dexterity // 2
+
+    :param dexterity: character's dexterity
+    :type dexterity: int
+    :return: character's doge
+    :rtype: int
+    """
+    return dexterity // 2
+
+
+# TODO: write unit test
+def subtract_points_from_characteristic(
+    characteristic_points: int, subtract_points: int
+) -> int:
+    """Subtract points from characteristic points,
+    but if result would be zero or below, than return 1.
+
+    :param characteristic_points: _description_
+    :type characteristic_points: int
+    :param subtract_points: _description_
+    :type subtract_points: int
+    :return: _description_
+    :rtype: int
+
+    >>> education = 50
+    >>> points_to_subtract = 10
+    >>> subtract_points_from_characteristic(education, points_to_subtract)
+    40
+    >>> points_to_subtract = 60
+    >>> subtract_points_from_characteristic(education, points_to_subtract)
+    1
+    """
+    return (
+        characteristic_points - subtract_points
+        if characteristic_points > subtract_points
+        else 1
+    )
+
+
+# TODO: write unit test
+def subtract_points_from_str_con_dex(
+    strength: int, condition: int, dexterity: int, subtract_points: int
+) -> Tuple[int, int, int]:
+    """Subtract certain amount of points from strength, condition and
+    dexterity, but but prevent each of the characteristics to be
+    lower than 1.
+
+    :param strength: character's strength
+    :type strength: int
+    :param condition: character's condition
+    :type condition: int
+    :param dexterity: character's dexterity
+    :type dexterity: int
+    :param subtract_points: amount of points to subtract
+    :type subtract_points: int
+    :return: (strength, condition, dexterity)
+    :rtype: Tuple[int, int, int]
+    """
+    strength = strength
+    condition = condition
+    dexterity = dexterity
+    for _ in range(subtract_points):
+        characteristic_to_subtract = [
+            characteristic
+            for characteristic in (strength, condition, dexterity)
+            if characteristic != 1
         ]
-        new_damage_bonus = str(new_damage_bonus).upper()
-        if new_damage_bonus in correct_values:
-            self._damage_bonus = new_damage_bonus
+        if characteristic_to_subtract:
+            characteristic = random.choice(characteristic_to_subtract)
+            characteristic = characteristic - 1
         else:
-            raise ValueError(
-                f"Invalid damage bonus. {new_damage_bonus} not in {correct_values}"
-            )
+            break
 
-    @property
-    def build(self) -> int:
-        """Character build
+    return strength, condition, dexterity
 
-        ``correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]``
 
-        To do: increse range. +1 for each 80 point above STR+SIZ
+# TODO: write unit test
+def characteristic_test(tested_value: int, repetition: int = 1) -> int:
+    """Perform characteristic test.
 
-        :raises ValueError: Invalid build. {new_build} not in {correct_values}
-        :return: build
-        :rtype: int
-        """
-        return self._build
+    TODO: Double check if that works this way for characteristics.
+    Works like improvement test. Roll number between 1 to 100,
+    If that number is higher than tested value or higher
+    then 95, than increase tested value with random number,
+    between 1 to 10.
 
-    @build.setter
-    def build(self, new_build: int) -> None:
-        # To do: increase range. +1 for each 80 point above STR+SIZ
-        correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]
-        if new_build in correct_values:
-            self._build = new_build
+    Repeat repetition times.
+
+    .. note:
+        for skills use skill_test()
+
+    :param tested_value: tested value
+    :type tested_value: int
+    :param repetition: how many test to perform
+    :type repetition: int
+    :return: unchanged or increased tested value
+    :rtype: int
+    """
+    for _ in range(repetition):
+        test = random.randint(1, 100)
+        if tested_value < test:
+            tested_value += random.randint(1, 10)
+    return tested_value
+
+
+# TODO: write unit test
+def calc_move_rate(strength: int, dexterity: int, size: int) -> int:
+    """Return move rate base on relations between
+    strength, dexterity and size
+
+    if both dexterity and strength are smaller than size,
+    return 7
+    if both strength and size are higher or equal than size,
+    return 9
+    else return 8
+
+    :param strength: character's strength
+    :type strength: int
+    :param dexterity: characters dexterity
+    :type dexterity: int
+    :param size: character's size
+    :type size: int
+    :return: move rate
+    :rtype: int
+    """
+    if dexterity < size and strength < size:
+        move_rate = 7
+    elif strength >= size and dexterity >= size:
+        move_rate = 9
+    else:
+        move_rate = 8
+
+    return move_rate
+
+
+# TODO: write unit test
+def is_skill_valid(skill_value: int) -> bool:
+    """Check if skill value is int type and it is not
+    below 0.
+
+    :param skill_value: skill value to test
+    :type skill_value: int
+    :return: True if value is valid, else False
+    :rtype: bool
+    """
+    if not isinstance(skill_value, int):
+        return False
+    if skill_value < 0:
+        return False
+
+    return True
+
+
+# TODO: write unit test
+def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
+    """Return random last name based on the given parameters
+
+    .. note:
+        For generating only last name, use randname module.
+
+    :param year: year of the data set with names (if data set not available use a closes available data set)
+    :type year: int
+    :param sex: name gender, available options ['M', 'F', 'N', None]
+    :type sex: str
+    :param country: name country
+    :type country: str
+    :param weights: If true, take under account popularity of names. [default: True]
+    :type weights: bool
+    :return: last name
+    :rtype: str
+    """
+    sex = verify_and_return_sex(sex, country, name="last_names")
+    return randname.last_name(
+        year,
+        sex,
+        country,
+        weights,
+        database=cochar.DATABASE,
+        show_warnings=cochar.SHOW_WARNINGS,
+    )
+
+
+# TODO: write unit test
+def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
+    """Return random first name based on given parameters.
+
+    .. note:
+        For generating only first name, use randname module.
+
+    :param year: year of the data set with names (if data set not available use a closes available data set)
+    :type year: int
+    :param sex: name gender, available options ['M', 'F', 'N', None]
+    :type sex: str
+    :param country: name country
+    :type country: str
+    :param weights: if true, take under account popularity of names. [default: True]
+    :type weights: bool
+    :return: first name
+    :rtype: str
+    """
+    # TODO: Fix capitalization for Spanish first names
+    sex = verify_and_return_sex(sex, country, name="first_names")
+    return randname.first_name(
+        year,
+        sex,
+        country,
+        weights,
+        database=cochar.DATABASE,
+        show_warnings=cochar.SHOW_WARNINGS,
+    )
+
+
+# TODO: write unit test
+# TODO: investigate sex flow
+def verify_and_return_sex(sex: str, country: str, name: str) -> str:
+    """Return valid sex, based on sex, country and name.
+    if provided sex is invalid, it will be overridden, and
+    function return valid sex.
+
+    :param sex: _description_
+    :type sex: str
+    :param country: _description_
+    :type country: str
+    :param name: _description_
+    :type name: str
+    :return: _description_
+    :rtype: str
+    """
+    available_sex = randname.data_lookup()[country][name]
+    if sex not in available_sex:
+        if "N" in available_sex:
+            sex = "N"
         else:
-            raise ValueError(f"Invalid build. {new_build} not in {correct_values}")
-
-    @property
-    def doge(self) -> int:
-        """Charcter doge
-
-        Doge is also one of the character skills.
-        Changing this value changes also ``skills['doge']``.
-        But it doesn't work vice versa.
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if varible is below 0
-        :return: doge
-        :rtype: int
-        """
-        return self._doge
-
-    @doge.setter
-    def doge(self, new_doge: int) -> None:
-        self.__validate_character_properties(new_doge, "doge")
-        self.skills["doge"] = new_doge
-        self._doge = new_doge
-
-    @staticmethod
-    def set_sex(sex: Union[str, bool]) -> str:
-        if sex is False:
-            return random.choice(["M", "F"])
-        else:
-            return sex.upper()
-
-    # TODO: Change this to static method
-    def set_age(self, age: int = False) -> int:
-        """Set age
-
-        :param age: new age, defaults to None
-        :type age: int, optional
-        :return: new age
-        :rtype: int
-        """
-        if age is False:
-            variable_year = self._year
-            if variable_year < 1950:
-                variable_year = 1950
-            else:
-                year_index = bisect_left(YEAR_RANGE, self._year)
-                variable_year = YEAR_RANGE[year_index]
-            variable_name = f"pop{variable_year}"
-
-            with open(POP_PIRAMID_PATH) as json_file:
-                age_population = AGE_RANGE
-                age_weights = json.load(json_file)[variable_name][self._sex][3:-1]
-                age_range = random.choices(age_population, weights=age_weights)[0]
-                self._age = random.randint(*age_range)
-            return self._age
-        else:
-            self._age = age
-            return self._age
-
-    @staticmethod
-    def __validate_character_properties(new_variable: int, variable_name: str) -> None:
-        """Private function to validate in setters whether new_variable
-        is a correct one.
-
-        :param new_variable: variable to check
-        :type new_variable: int
-        :param variable_name: name of that variable
-        :type variable_name: str
-        :raises SkillValueNotAnInt: if variable is not an integer
-        :raises SkillValueNotAnInt: if varible is below 0
-
-        >>> Character._Character__validate_character_properties("a", 'luck')
-        SkillValueNotAnInt: Invalid luck points. Luck points must be an integer
-        >>> Character._Character__validate_character_properties(-1, 'luck')
-        SkillValueNotAnInt: Luck points cannot be less than 0
-        """
-        variable_name = str(variable_name)
-        if not isinstance(new_variable, int):
-            raise SkillValueNotAnInt(
-                f"Invalid {variable_name.lower()} points. {variable_name.capitalize()} points must be an integer"
-            )
-        if new_variable < 0:
-            raise ValueError(
-                f"{variable_name.capitalize()} points cannot be less than 0"
-            )
-
-    # CHARACTERISTICS
-
-    def set_characteristics(self) -> None:
-        # Main characteristics
-        if self._str == 0:
-            self._str = random.randint(15, 90)
-        if self._con == 0:
-            self._con = random.randint(15, 90)
-        if self._siz == 0:
-            self._siz = random.randint(40, 90)
-        if self._dex == 0:
-            self._dex = random.randint(15, 90)
-        if self._app == 0:
-            self._app = random.randint(15, 90)
-        if self._edu == 0:
-            self._edu = random.randint(40, 90)
-        if self._int == 0:
-            self._int = random.randint(40, 90)
-        if self._pow == 0:
-            self._pow = random.randint(15, 90)
-        if self._move_rate == 0:
-            self._move_rate = 0
-
-        # Modificators table for characteristics depends on age
-        MODIFIERS = {
-            "age_range": [19, 39, 49, 59, 69, 79, 90],
-            "mod_char_points": [5, 0, 5, 10, 20, 40, 80],
-            "mod_app": [0, 0, 5, 10, 15, 20, 25],
-            "mod_move_rate": [0, 0, 1, 2, 3, 4, 5],
-            "mod_edu": [0, 1, 2, 3, 4, 4, 4],
-        }
-
-        age_range = bisect_left(MODIFIERS["age_range"], self.age)
-        mod_char_points = MODIFIERS["mod_char_points"][age_range]
-        mod_app = MODIFIERS["mod_app"][age_range]
-        mod_move_rate = MODIFIERS["mod_move_rate"][age_range]
-        mod_edu = MODIFIERS["mod_edu"][age_range]
-
-        self._substract_characteristics_points(
-            mod_points=mod_char_points, char="_app", points=mod_app
-        )
-
-        self._characteristic_test("_edu", mod_edu)
-        self._correct_move_rate(mod_move_rate)
-
-    def set_derived_attributes(self) -> None:
-        if self._sanity_points == 0:
-            self._sanity_points = self._pow
-        if self._magic_points == 0:
-            self._magic_points = self._pow // 5
-        if self._hit_points == 0:
-            self._hit_points = (self._siz + self._con) // 10
-
-    def _set_luck(self) -> None:
-        self._luck = random.randint(15, 90)
-        if self.age <= 19:
-            self._luck = max(self._luck, random.randint(15, 90))
-
-    def _substract_characteristics_points(
-        self, mod_points: int = None, char: str = "", points: int = 0
-    ) -> None:
-        if char and points:
-            setattr(self, char, getattr(self, char) - points)
-
-            if getattr(self, char) < 1:
-                setattr(self, char, 1)
-
-        if mod_points:
-            for _ in range(mod_points):
-                choice = [
-                    skill
-                    for skill in ("_str", "_con", "_dex")
-                    if getattr(self, skill) != 1
-                ]
-                if choice:
-                    skill = random.choice(choice)
-                    setattr(self, skill, getattr(self, skill) - 1)
-                else:
-                    break
-
-    def _characteristic_test(self, attr_name: str, count: int) -> None:
-        characteristic_value = getattr(self, attr_name)
-        for _ in range(count):
-            test = random.randint(1, 100)
-            if characteristic_value < test:
-                characteristic_value += random.randint(1, 10)
-        setattr(self, attr_name, characteristic_value)
-
-    def _correct_move_rate(self, count: int) -> None:
-        if self._dex < self._siz and self._str < self._siz:
-            self._move_rate = 7
-        elif self._str >= self._siz and self._dex >= self._siz:
-            self._move_rate = 9
-        else:
-            self._move_rate = 8
-
-        self._move_rate -= count
-
-    # OCCUPATION
-
-    def set_occupation(self, occupation: str = "optimal") -> str:
-        """[summary]
-
-        :param occupation: [description], defaults to "dupa"
-        :type occupation: str, optional
-        :return: [description]
-        :rtype: str
-        """
-        if occupation == "random":
-            self._occupation = random.choice(self.occupations_list)
-            return self._occupation
-        elif occupation == "optimal":
-            skill_points = max(self.skill_points_groups)
-            occupations = random.choice(
-                [
-                    group
-                    for index, group in enumerate(OCCUPATIONS_GROUPS)
-                    if self.skill_points_groups[index] == skill_points
-                ]
-            )
-            self._occupation = random.choice(occupations)
-            return self._occupation
-        else:
-            self._occupation = occupation
-            return self._occupation
-
-    # SKILLS
-
-    def get_credit_rating_points(self) -> int:
-        credit_rating_range = OCCUPATIONS_DATA[self._occupation]["credit_rating"].copy()
-        if self._occupation_points < min(credit_rating_range):
-            credit_rating_range = [0, self._occupation_points]
-        if self._occupation_points < max(credit_rating_range):
-            credit_rating_range[1] = self._occupation_points
-        return random.randint(*credit_rating_range)
-
-    def get_skill_points(self, occupation: str) -> int:
-        group_index = [
-            index
-            for index, group in enumerate(OCCUPATIONS_GROUPS)
-            if occupation in group
-        ]
-        points = [self.skill_points_groups[i] for i in group_index]
-
-        return max(points)
-
-    def set_skills_dict(self, occupation_points: int) -> Skills:
-        self._skills = Skills()
-        occupation_input_list = OCCUPATIONS_DATA[self._occupation]["skills"].copy()
-        occupation_skills_list = self._get_skills_list(occupation_input_list)
-
-        # categories = [f"1{cat}" for cat in TRANSLATION_DICT.keys()]
-        # hobby_input_list = list(BASIC_SKILLS.keys()) + categories
-        hobby_input_list = list(BASIC_SKILLS.keys())
-        hobby_skills_list = self._get_skills_list(hobby_input_list)
-
-        self._assign_skill_points(occupation_points, occupation_skills_list)
-        self._assign_skill_points(self._hobby_points, hobby_skills_list)
-        self._skills = self.filter_skills(self._skills)
-
-        return self._skills
-
-    def _get_skills_list(self, input_list: list) -> List[str]:
-        skills_list = []
-        skills_list += list(
-            filter(
-                lambda x: len(x) > 2
-                and isinstance(x, str)
-                and x not in CATEGORY_SKILLS_LIST,
-                input_list,
-            )
-        )
-        skills_list += self._get_choice_skills(input_list)
-        skills_list += self._get_category_skills(input_list)
-        return skills_list
-
-    def _get_choice_skills(self, skills_list: list) -> List[str]:
-        result = []
-        for item in skills_list:
-            if isinstance(item, tuple):
-                population = item[1:]
-                k = item[0]
-                result.extend(random.choices(population, k=k))
-                result.extend(self._get_category_skills(result))
-                result = list(filter(lambda x: len(x) > 2, result))
-        return result
-
-    def _get_category_skills(self, skills_list: list) -> List[str]:
-        result = []
-        for item in skills_list:
-            if len(item) == 2:
-                k = int(item[0])
-                if item[1] == "*":
-                    population = list(BASIC_SKILLS.keys())
-                else:
-                    population = list(
-                        CATEGORY_SKILLS[TRANSLATION_DICT.get(item[1])].keys()
-                    )
-                result.extend(random.choices(population, k=k))
-
-            elif item in CATEGORY_SKILLS_LIST:
-                population = list(CATEGORY_SKILLS[item].keys())
-                result.extend([random.choice(population)])
-
-        return result
-
-    def _assign_skill_points(self, points: int, skills_list: list) -> None:
-        for skill in skills_list:
-            if skill in ALL_SKILLS:
-                self._skills.setdefault(skill, ALL_SKILLS[skill])
-            else:
-                self._skills.setdefault(skill, 1)
-
-        while points:
-            skill = random.choice(skills_list)
-            if points <= MAX_SKILL_LEVEL - self._skills[skill]:
-                points_allocation = random.randint(0, points)
-            elif sum(list(self._skills.values())) % 90 == 0:
-                break
-            elif self._skills[skill] >= MAX_SKILL_LEVEL:
-                continue
-            else:
-                points_allocation = random.randint(
-                    0, MAX_SKILL_LEVEL - self._skills[skill]
-                )
-            self._skills[skill] += points_allocation
-            points -= points_allocation
-
-    def filter_skills(self, _skills: dict) -> Dict[str, int]:
-        """Filter out all skills with basic value form given dict.
-
-        >>> example_dict = {'psychoanalysis': 1, 'language (spanish)': 66}
-        >>> filter_skills(example_dict)
-        {'language (spanish)': 66}
-        """
-        return Skills(
-            filter(
-                lambda item: ALL_SKILLS.get(item[0], ALL_SKILLS.setdefault(item[0], 1))
-                != item[1],
-                _skills.items(),
-            )
-        )
-
-    # COMBAT VALUES
-
-    def set_damage_bonus(self) -> str:
-        """Set character damage bonus.
-
-        Use current Character object state to set its damage bonus.
-
-        :return: damage bonus
-        :rtype: str
-        """
-        VALUE_MATRIX = {
-            "combat_range": [64, 84, 124, 164, 204, 283, 364, 444, 524],
-            "damage_bonus": [
-                "-2",
-                "-1",
-                "0",
-                "+1K4",
-                "+1K6",
-                "+2K6",
-                "+3K6",
-                "+4K6",
-                "+5K6",
-            ],
-        }
-        sum_str_siz = self._str + self._siz
-        combat_range = bisect_left(VALUE_MATRIX["combat_range"], sum_str_siz)
-        self._damage_bonus = VALUE_MATRIX["damage_bonus"][combat_range]
-        return self._damage_bonus
-
-    def set_build(self) -> int:
-        """Set character buils
-
-        Use current character object state to set its build.
-
-        :return: build
-        :rtype: int
-        """
-        VALUE_MATRIX = {
-            "combat_range": [64, 84, 124, 164, 204, 283, 364, 444, 524],
-            "build": [-2, -1, 0, 1, 2, 3, 4, 5, 6],
-        }
-        sum_str_siz = self._str + self._siz
-        combat_range = bisect_left(VALUE_MATRIX["combat_range"], sum_str_siz)
-        self._build = VALUE_MATRIX["build"][combat_range]
-        return self._build
-
-    def set_doge(self) -> int:
-        """Set character doge.
-
-        Use current character object state to set its doge value.
-
-        .. warning::
-
-            When used outside ``__init__`` may require to set first
-            ``self.skills['doge']``. Use ``self.doge`` to manually set doge insted of
-            this function.
-
-        .. note::
-
-            Just a note.
-
-        :return: doge
-        :rtype: int
-        """
-        if "doge" in self._skills:
-            self.doge = self._skills["doge"]
-        else:
-            self.doge = self._dex // 2
-        return self.doge
-
-    # GENERAL FUNCTIONS
-
-    @classmethod
-    def generate_character(cls, *args, **kwargs):
-        return cls(*args, **kwargs)
-
-    @staticmethod
-    def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
-        """Generate Last Name.
-        Return random last name for the given parameters
-        This method is not recomended as it initialize a Character() class.
-        For faster generation use modeule randname
-
-        :param year: year of the data set with names (if data set not available use a closes available data set)
-        :type year: int
-        :param sex: name gender, available options ['M', 'F', 'N', None]
-        :type sex: str
-        :param country: name country
-        :type country: str
-        :param weights: If true, take under account popularity of names. [default: True]
-        :type weights: bool
-        :return: last name
-        :rtype: str
-        """
-        sex = Character._set_valid_sex(sex, country, name="last_names")
-        return randname.last_name(
-            year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS
-        )
-
-    @staticmethod
-    def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
-        """Generate First Name.
-        Return random first name for the given parameters
-        This method is not recomended as it initialize a Character() class.
-        For faster generation use modeule randname
-
-        :param year: year of the data set with names (if data set not available use a closes available data set)
-        :type year: int
-        :param sex: name gender, available options ['M', 'F', 'N', None]
-        :type sex: str
-        :param country: name country
-        :type country: str
-        :param weights: if true, take under account popularity of names. [default: True]
-        :type weights: bool
-        :return: first name
-        :rtype: str
-        """
-        sex = Character._set_valid_sex(sex, country, name="first_names")
-        return randname.first_name(
-            year, sex, country, weights, database=DATABASE, show_warnings=SHOW_WARNINGS
-        )
-
-    @staticmethod
-    def _set_valid_sex(sex: str, country: str, name: str):
-
-        available_sex = randname.data_lookup()[country][name]
-        if sex not in available_sex:
-            if "N" in available_sex:
-                sex = "N"
-            else:
-                sex = random.choice(available_sex)
-        return sex
-
-    def print(self) -> None:
-        return pprint(self.__dict__)
-
-    # DUNDER METHODS
-
-    def __eq__(self, o: object) -> bool:
-        return True if self.__dict__ == o.__dict__ else False
-
-    def __repr__(self) -> str:
-        return f"Character(first_name='{self._first_name}', last_name='{self._last_name}', age={self._age}, sex='{self._sex}', country='{self._country}', occupation='{self._occupation}', strength={self._str}, condition={self._con}, size={self._siz}, dexterity={self._dex}, apperance={self._app}, edducation={self._edu}, intelligence={self._int}, power={self._pow}, move_rate={self._move_rate}, luck={self._luck}, skills={self._skills}, weights={self._weights}, damage_bonus='{self._damage_bonus}', build={self._build}, doge={self._doge})"
-
-    def __str__(self) -> str:
-        skills = ""
-        max_items_in_row = 3
-        current_number_of_items_in_row = 0
-        for skill, value in self._skills.items():
-            if current_number_of_items_in_row == max_items_in_row:
-                skills += "\n"
-                current_number_of_items_in_row = 0
-            skills += f"| {skill.capitalize()}: {value} |"
-            current_number_of_items_in_row += 1
-        return f"""Character
-Name: {self._first_name} {self._last_name} 
-Sex: {self._sex}, Age: {self._age}, Country: {self._country} 
-Occupation: {self._occupation.capitalize()} 
-STR: {self._str} CON: {self._con} SIZ: {self._siz} 
-DEX: {self._dex} APP: {self._app} EDU: {self._edu}
-INT: {self._int} POW: {self._pow} Luck: {self._luck}
-Damage bonus: {self._damage_bonus}
-Build: {self._build}
-Doge: {self._doge}
-Move rate: {self._move_rate}
-Skills:
-{skills}
-"""
-
-
-if __name__ == "__main__":
-    print(Character(first_name="Adam"))
-    print(Character(strength=20))
-
-
-"""
-TODO: [x] P1: Fix luck!
-TODO: [ ] P1: Upgrade README for github
-TODO: [ ] P2: Document attributes/properties
-TODO: [ ] P2: Document public methods
-TODO: [ ] P2: Document private methods
-TODO: [ ] P2: More unit tests
-TODO: [ ] P2: Improve __str__ method
-TODO: [ ] P2: Improve CLI
-TODO: [ ] P2: Format with black
-TODO: [x] P1: fix for 2 way characteristics change  c.characteristics['pow'] and c.power
-TODO: [ ] P3: improve damage setting damage bonus and build. +1 for each 80 point above
-TODO: [ ] P3: add skill method to skills to validate skills
-TODO: [x] add validation during initialization
-TODO: [x] types for skills
-TODO: [x] fix issues with creddit rating substruction from occupation points
-TODO: [x] create repr
-TODO: [x] create function for credit rating
-TODO: [x] change validation for integer in setters from try: int(x) to isinstance
-TODO: [x] fix combat values
-"""
+            sex = random.choice(available_sex)
+    return sex
+
+
+# TODO: consider refactoring sex functions
+# TODO: write unit test
+def is_sex_valid(sex: str) -> bool:
+    """Return True if sex is valid, else False
+
+    :param sex: character's sex
+    :type sex: str
+    :return: True|False
+    :rtype: bool
+    """
+    return True if sex in cochar.SEX_OPTIONS else False
+
+
+# TODO: write unit test
+def generate_sex(sex: Union[str, bool]) -> str:
+    """Get sex
+
+    TODO: investigate sex workflow. Why there is no sex verification here
+    TODO: add unit tests for sex
+
+    :param sex: character's sex
+    :type sex: Union[str, bool]
+    :return: sex
+    :rtype: str
+    """
+    return random.choice(("M", "F")) if sex is False else sex.upper()
