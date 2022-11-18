@@ -72,6 +72,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(hit_points, 10)
 
     def test_calc_damage_bonus(self):
+        # TODO: test for bigger ranges
         self.assertEqual(cochar.calc_damage_bonus(0, 0), "-2")
         self.assertEqual(cochar.calc_damage_bonus(32, 32), "-2")
         self.assertEqual(cochar.calc_damage_bonus(42, 42), "-1")
@@ -85,6 +86,7 @@ class TestCharacter(unittest.TestCase):
         # self.assertEqual(cochar.calc_damage_bonus(600, 24), "+7K6")
 
     def test_calc_build(self):
+        # TODO: test for bigger ranges
         self.assertEqual(cochar.calc_build(1, 1), -2)
         self.assertEqual(cochar.calc_build(32, 32), -2)
         self.assertEqual(cochar.calc_build(42, 42), -1)
