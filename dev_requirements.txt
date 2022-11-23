@@ -12,7 +12,6 @@ commonmark==0.9.1
 cryptography==37.0.2
 deepdiff==5.8.1
 docutils==0.18.1
-flake8==6.0.0
 Flask==2.2.2
 Flask-RESTful==0.3.9
 idna==3.3
