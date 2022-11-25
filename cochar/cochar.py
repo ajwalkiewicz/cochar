@@ -662,7 +662,7 @@ def verify_and_return_sex(sex: str, country: str, name: str) -> str:
     :return: _description_
     :rtype: str
     """
-    available_sex = randname.data_lookup()[country][name]
+    available_sex = randname.show_data()[country][name]
     if sex not in available_sex:
         if "N" in available_sex:
             sex = "N"

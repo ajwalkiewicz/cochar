@@ -50,7 +50,7 @@ requests==2.27.1
 requests-toolbelt==0.9.1
 rfc3986==2.0.0
 rich==12.4.1
-rname==0.3.3
+rname==0.3.7
 SecretStorage==3.3.2
 six==1.16.0
 snowballstemmer==2.2.0
