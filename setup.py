@@ -3,7 +3,7 @@ from setuptools import setup
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
-with open(f"{THIS_FOLDER}/docs/readme.md", "r") as fh:
+with open(f"{THIS_FOLDER}/docs/readme.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(

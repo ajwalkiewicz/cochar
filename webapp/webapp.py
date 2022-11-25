@@ -8,7 +8,7 @@ from flask_restful import Api, Resource, reqparse
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
 
-with open(_README, "r") as readme:
+with open(_README, "r", encoding="utf-8") as readme:
     text = readme.read()
     html = markdown.markdown(text)
 
