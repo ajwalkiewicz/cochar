@@ -58,7 +58,9 @@ VALUE_MATRIX = {
     "damage_bonus": ["-2", "-1", "0", "+1K4", "+1K6", "+2K6", "+3K6", "+4K6", "+5K6"],
 }
 
-with open(os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r") as json_file:
+with open(
+    os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r", encoding="utf-8"
+) as json_file:
     # Full data of occupations
     OCCUPATIONS_DATA: Dict[str, dict] = dict(json.load(json_file))
     # Just occupations names in the list
@@ -72,7 +74,9 @@ with open(os.path.join(_THIS_FOLDER, "data", "occupations.json"), "r") as json_f
         [key for key, value in OCCUPATIONS_DATA.items() if "edustr" in value["groups"]],
     ]
 
-with open(os.path.join(_THIS_FOLDER, "data", "settings.json"), "r") as json_file:
+with open(
+    os.path.join(_THIS_FOLDER, "data", "settings.json"), "r", encoding="utf-8"
+) as json_file:
     settings: dict = json.load(json_file)
     MIN_AGE: int = settings["min_age"]
     MAX_AGE: int = settings["max_age"]

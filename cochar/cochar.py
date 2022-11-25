@@ -168,7 +168,7 @@ def generate_age(year, sex, age: int = False) -> int:
 
     file_name = f"pop{corrected_year}"
 
-    with open(cochar.POP_PYRAMID_PATH) as json_file:
+    with open(cochar.POP_PYRAMID_PATH, "r", encoding="utf-8") as json_file:
         age_population = cochar.utils.AGE_RANGE
         age_weights = json.load(json_file)[file_name][sex][3:-1]
         age_range = random.choices(age_population, weights=age_weights)[0]
