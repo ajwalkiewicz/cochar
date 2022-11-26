@@ -36,7 +36,8 @@
     }
 
 """
-from typing import Dict, List, Tuple, Union
+from bisect import bisect_left
+from typing import Dict, List, Tuple, Union, Sequence
 
 TRANSLATION_DICT: Dict[str, str] = {
     "a": "art/craft",
@@ -269,3 +270,22 @@ ALL_SKILLS.update(BASIC_SKILLS)
 
 for category in CATEGORY_SKILLS.keys():
     ALL_SKILLS.update(CATEGORY_SKILLS[category])
+
+
+def narrowed_bisect(a: Sequence[int], x: int) -> int:
+    """Standard bisect_left from bisect module
+    can return number that exceed len(a).
+    narrowed_bisect returns number that is <= len(a).
+
+    It is to prevent IndexError, as many other variables
+    relay on the index number returned.
+
+    :param a: sequence of numbers
+    :type a: Sequence
+    :param x: number to insert
+    :type x: int
+    :return: position of insertion
+    :rtype: int
+    """
+    i = bisect_left(a, x)
+    return i if i != len(a) else i - 1
