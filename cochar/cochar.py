@@ -1,7 +1,6 @@
 """**Cochar - main module**"""
 import json
 import random
-from bisect import bisect_left
 from typing import List, Tuple, Union
 
 import randname
@@ -157,22 +156,27 @@ def generate_age(year, sex, age: int = False) -> int:
     if year < 1950:
         corrected_year = 1950
     else:
-        # Correction of year index. If bisect_left returns int > len(data_range)
-        # return bisect_left - 1. It's in case of very small data sets.
-        def correct_bisect_left(data, year):
-            bisect = bisect_left(data, year)
-            return bisect if bisect != len(data) else bisect - 1
-
-        year_index = correct_bisect_left(cochar.utils.YEAR_RANGE, year)
+        year_index = cochar.utils.narrowed_bisect(cochar.utils.YEAR_RANGE, year)
         corrected_year = cochar.utils.YEAR_RANGE[year_index]
 
     file_name = f"pop{corrected_year}"
 
     with open(cochar.POP_PYRAMID_PATH, "r", encoding="utf-8") as json_file:
-        age_population = cochar.utils.AGE_RANGE
-        age_weights = json.load(json_file)[file_name][sex][3:-1]
+
+        def correct_age_range(age_range: Tuple[int, int], max_age: int):
+            for i, elem in enumerate(age_range):
+                if elem[1] > max_age:
+                    return i
+            return len(age_range) + 1
+
+        max_age_index = correct_age_range(cochar.utils.AGE_RANGE, cochar.MAX_AGE)
+        age_population = cochar.utils.AGE_RANGE[:max_age_index]
+
+        age_weights = json.load(json_file)[file_name][sex][3 : 3 + max_age_index]
         age_range = random.choices(age_population, weights=age_weights)[0]
+
         age = random.randint(*age_range)
+
     return age
 
 
@@ -252,7 +256,7 @@ def generate_base_characteristics(
     if age <= 19:
         luck = max(luck, random.randint(15, 90))
 
-    age_range = bisect_left(cochar.MODIFIERS["age_range"], age)
+    age_range = cochar.utils.narrowed_bisect(cochar.MODIFIERS["age_range"], age)
     mod_char_points = cochar.MODIFIERS["mod_char_points"][age_range]
     mod_app = cochar.MODIFIERS["mod_app"][age_range]
     mod_move_rate = cochar.MODIFIERS["mod_move_rate"][age_range]
@@ -402,7 +406,9 @@ def calc_damage_bonus(strength: int, size: int) -> str:
     :rtype: str
     """
     sum_str_siz = strength + size
-    combat_range = bisect_left(cochar.VALUE_MATRIX["combat_range"], sum_str_siz)
+    combat_range = cochar.utils.narrowed_bisect(
+        cochar.VALUE_MATRIX["combat_range"], sum_str_siz
+    )
     damage_bonus = cochar.VALUE_MATRIX["damage_bonus"][combat_range]
     return damage_bonus
 
@@ -426,7 +432,9 @@ def calc_build(strength: int, size: int) -> int:
     :rtype: int
     """
     sum_str_siz = strength + size
-    combat_range = bisect_left(cochar.VALUE_MATRIX["combat_range"], sum_str_siz)
+    combat_range = cochar.utils.narrowed_bisect(
+        cochar.VALUE_MATRIX["combat_range"], sum_str_siz
+    )
     build = cochar.VALUE_MATRIX["build"][combat_range]
     return build
 
