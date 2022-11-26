@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 import unittest
+import random
 from deepdiff import DeepDiff
 
+import cochar
 from randname import randname
 from cochar import create_character, generate_first_name, generate_last_name
 from cochar.character import Character
 from cochar.utils import ALL_SKILLS
 from cochar.error import *
+
 
 TEST_OCC = {
     "test_occ": {
@@ -513,7 +516,9 @@ class TestCharacter(unittest.TestCase):
     def test_repr_false(self):
         c = self.character
         d = eval(c.__repr__())
-        c.occupation = "criminal"
+        cochar.OCCUPATIONS_LIST.remove(c.occupation)
+        random_occupation = random.choice(cochar.OCCUPATIONS_LIST)
+        c.occupation = random_occupation
         print(DeepDiff(c.__dict__, d.__dict__), end="")
         assert c != d
 
