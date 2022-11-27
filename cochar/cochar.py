@@ -19,15 +19,16 @@ cochar.set_logging_level("debug")
 def create_character(
     year: int,
     country: str,
-    first_name: str = False,
-    last_name: str = False,
-    age: int = False,
-    sex: str = False,
+    first_name: str = cochar.FIRST_NAME,
+    last_name: str = cochar.LAST_NAME,
+    age: int = cochar.AGE,
+    sex: str = cochar.SEX,
     random_mode: bool = False,
-    occupation: str = None,
+    occupation: str = cochar.OCCUPATION,
     skills: cochar.skill.Skills = {},
-    *args,
-    **kwargs,
+    occup_type: str = cochar.OCCUPATION_TYPE,
+    era: str = cochar.ERA,
+    tags: List[str] = cochar.TAGS,
 ) -> cochar.character.Character:
     """Main function for creating Character.
     Use this function instead of instantiating Character class.
@@ -50,6 +51,12 @@ def create_character(
     :type occupation: str, optional
     :param skills: character's skills, defaults to {}
     :type skills: Skills, optional
+    :param occup_type: occupation type, defaults to None
+    :type occup_type: str, optional
+    :param era: occupation era, defaults to None
+    :type era: str, optional
+    :param tags: occupation tags, defaults to None
+    :type tags: List[str], optional
     :raises ValueError: raise if sex is incorrect
     :return: generated character
     :rtype: Character
@@ -65,13 +72,9 @@ def create_character(
 
     if not first_name:
         first_name = generate_first_name(year, sex, country, weights)
-    else:
-        first_name = first_name
 
     if not last_name:
         last_name = generate_last_name(year, sex, country, weights)
-    else:
-        last_name = last_name
 
     (
         strength,
@@ -94,6 +97,9 @@ def create_character(
         strength=strength,
         random_mode=random_mode,
         occupation=occupation,
+        occup_type=occup_type,
+        era=era,
+        tags=tags,
     )
 
     sanity_points, magic_points, hit_points = calc_derived_attributes(

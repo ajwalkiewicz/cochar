@@ -194,3 +194,48 @@ class InvalidBuildValue(CocharError):
 
     def __str__(self):
         return self.message
+
+
+class InvalidOccupationEra(CocharError):
+    """Raise when occupation era is not correct"""
+
+    def __init__(self, era: str, correct_era: list):
+        self.era = era
+        self.correct_era = correct_era
+        self.message = f"{self.era} not in [{self.correct_era}]"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class InvalidOccupationType(CocharError):
+    """Raise when occupation type is not correct"""
+
+    def __init__(self, _type: str, correct_type: list):
+        self._type = _type
+        self.correct_type = correct_type
+        self.message = f"{self._type} not in [{self.correct_type}]"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class InvalidOccupationTags(CocharError):
+    """Raise when tag is not among available tags"""
+
+    def __init__(self, tags: str, correct_tags: list):
+        self.tags = tags
+        self.correct_tags = correct_tags
+        self.message = f"{self.tags} not in [{self.correct_tags}]"
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
+
+
+class NoneOccupationMeetsCriteria(CocharError):
+    """Raise when searching criteria are not met by any occupation"""
+
+    pass
