@@ -1,9 +1,88 @@
 import unittest
 
+import pytest
+
 import cochar
-from cochar import character
 import cochar.error
 import cochar.skill
+
+
+@pytest.fixture
+def year():
+    return 1925
+
+
+@pytest.fixture
+def country():
+    return "US"
+
+
+@pytest.mark.parametrize(
+    "occupation",
+    [
+        "antiquarian",
+        "artist",
+        "athlete",
+        "author",
+        "bartender",
+        "butler/valet",
+        "chauffeur",
+        "clergy",
+        "criminal",
+        "dilettante",
+        "doctor of medicine",
+        "drifter",
+        "driver",
+        "engineer",
+        "entertainer",
+        "farmer",
+        "gangster boss",
+        "hacker",
+        "journalist",
+        "laborer, unskilled",
+        "lawyer",
+        "librarian",
+        "mechanic",
+        "military officer",
+        "missionary",
+        "musician",
+        "nurse",
+        "parapsychologist",
+        "pilot",
+        "police detective",
+        "police officer",
+        "private investigator",
+        "professor",
+        "software tester",
+        "sailor, commercial",
+        "sailor, naval",
+        "soldier",
+        "tribe member",
+        "waiter",
+        "zealot",
+    ],
+)
+def test_all_occupations(occupation, year, country):
+    c = cochar.create_character(year, country, occupation=occupation)
+    assert c.occupation == occupation
+
+
+@pytest.mark.parametrize("occup_type", ["classic", "expansion"])
+def test_create_character_occup_type(year, country, occup_type):
+    c = cochar.create_character(year, country, occup_type=occup_type)
+    assert cochar.OCCUPATIONS_DATA[c.occupation]["type"] == occup_type
+
+
+@pytest.mark.parametrize("era", ["classic-1920", "modern"])
+def test_create_character_occup_era(year, country, era):
+    c = cochar.create_character(year, country, era=era)
+    assert cochar.OCCUPATIONS_DATA[c.occupation]["era"] == era
+
+
+@pytest.mark.parametrize("tags", [["lovecraftian"], ["criminal"]])
+def test_create_character_occup_era(year, country, tags):
+    c = cochar.create_character(year, country, tags=tags)
+    assert cochar.OCCUPATIONS_DATA[c.occupation]["tags"] == tags
 
 
 class TestCharacter(unittest.TestCase):
@@ -12,16 +91,6 @@ class TestCharacter(unittest.TestCase):
         cls.year = 1925
         cls.country = "US"
         cls.character = cochar.create_character(cls.year, cls.country)
-
-    @classmethod
-    def tearDownClass(cls):
-        pass
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
 
     def test_year_bigger_that_range(self):
         c = cochar.create_character(year=2022, country="US")
@@ -35,25 +104,8 @@ class TestCharacter(unittest.TestCase):
             self.character.occupation = "invalid_occupation"
 
     def test_points_assignment_to_doge(self):
-        TEST_OCC = {
-            "test_occ": {
-                "groups": ["edu"],
-                "credit_rating": [1, 1],
-                "skills": [
-                    "doge",
-                ],
-            }
-        }
-        cochar.OCCUPATIONS_DATA.update(TEST_OCC)
-        cochar.OCCUPATIONS_GROUPS[0].append("test_occ")
-        cochar.OCCUPATIONS_LIST.append("test_occ")
-        occupation = "test_occ"
-
-        character = cochar.create_character(
-            self.year, self.country, occupation=occupation
-        )
-
-        self.assertGreater(character.doge, character.dexterity)
+        # TODO: Create a proper test
+        pass
 
     def test_sanity_points(self):
         power = 100

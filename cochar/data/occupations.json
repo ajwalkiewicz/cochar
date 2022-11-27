@@ -1,21 +1,33 @@
 {
     "antiquarian": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [30, 70],
         "skills": ["appraise", "history", "library use", "spot hidden"]
     },
     "artist": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edupow", "edudex"],
         "credit_rating": [9, 50],
         "skills":
         ["psychology", "spot hidden", [1, "history", "natural world"]]
     },
     "athlete": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 70],
         "skills": ["climb", "jump", "brawl", "ride", "swim", "throw", "1i"]
     },
     "author": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian"],
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
@@ -25,11 +37,17 @@
         ]
     },
     "entertainer": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["eduapp"],
         "credit_rating": [9, 30],
         "skills": ["acting", "disguise", "listen", "psychology", "2i", "2*"]
     },
     "soldier": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
@@ -38,17 +56,26 @@
         ]
     },
     "lawyer": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [30, 80],
         "skills":
         ["accounting", "law", "library use", "psychology", "2i", "2*"]
     },
     "librarian": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian"],
         "groups": ["edu"],
         "credit_rating": [9, 35],
         "skills": ["accounting", "library use", "language (own)", "1l", "4*"]
     },
     "military officer": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [20, 70],
         "skills": [
@@ -57,6 +84,9 @@
         ]
     },
     "missionary": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [0, 30],
         "skills": [
@@ -65,12 +95,18 @@
         ]
     },
     "musician": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edupow"],
         "credit_rating": [9, 30],
         "skills":
         ["art/craft (instrument)", "listen", "psychology", "1a", "1i", "4*"]
     },
     "parapsychologist": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
@@ -79,6 +115,9 @@
         ]
     },
     "pilot": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex"],
         "credit_rating": [20, 70],
         "skills": [
@@ -88,6 +127,9 @@
         ]
     },
     "clergy": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [9, 60],
         "skills": [
@@ -96,6 +138,9 @@
         ]
     },
     "criminal": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["criminal"],
         "groups": ["edudex", "edustr"],
         "credit_rating": [5, 65],
         "skills": [
@@ -105,11 +150,17 @@
         ]
     },
     "dilettante": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian"],
         "groups": ["eduapp"],
         "credit_rating": [50, 99],
         "skills": ["ride", "firearms", "1a", "1i", "1l", "3*"]
     },
     "doctor of medicine": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian"],
         "groups": ["edu"],
         "credit_rating": [30, 80],
         "skills": [
@@ -118,11 +169,17 @@
         ]
     },
     "drifter": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["eduapp", "edudex", "edustr"],
         "credit_rating": [0, 5],
         "skills": ["climb", "jump", "navigate", "1i", "2*"]
     },
     "engineer": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [30, 60],
         "skills": [
@@ -132,6 +189,9 @@
         ]
     },
     "farmer": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
@@ -140,6 +200,9 @@
         ]
     },
     "hacker": {
+        "type": "classic",
+        "era": "modern",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [10, 70],
         "skills": [
@@ -148,6 +211,9 @@
         ]
     },
     "journalist": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian"],
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
@@ -156,6 +222,9 @@
         ]
     },
     "police detective": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [20, 50],
         "skills": [
@@ -164,6 +233,9 @@
         ]
     },
     "police officer": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
@@ -172,6 +244,9 @@
         ]
     },
     "private investigator": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
@@ -180,11 +255,17 @@
         ]
     },
     "professor": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian"],
         "groups": ["edu"],
         "credit_rating": [20, 70],
         "skills": ["library use", "1l", "language (own)", "psychology", "4p"]
     },
     "tribe member": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [0, 15],
         "skills": [
@@ -193,11 +274,17 @@
         ]
     },
     "zealot": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["eduapp", "edupow"],
         "credit_rating": [0, 30],
         "skills": ["history", "psychology", "stealth", "2i", "3*"]
     },
     "sailor, naval": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
@@ -207,6 +294,9 @@
         ]
     },
     "sailor, commercial": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [20, 40],
         "skills": [
@@ -214,6 +304,9 @@
         ]
     },
     "bartender": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["eduapp"],
         "credit_rating": [8, 25],
         "skills": [
@@ -221,6 +314,9 @@
         ]
     },
     "butler/valet": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [9, 40],
         "skills": [
@@ -229,6 +325,9 @@
         ]
     },
     "chauffeur": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex"],
         "credit_rating": [10, 40],
         "skills": [
@@ -236,6 +335,9 @@
         ]
     },
     "driver": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 20],
         "skills": [
@@ -243,6 +345,9 @@
         ]
     },
     "mechanic": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [9, 40],
         "skills": [
@@ -250,6 +355,9 @@
         ]
     },
     "nurse": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edu"],
         "credit_rating": [9, 30],
         "skills": [
@@ -257,6 +365,9 @@
         ]
     },
     "waiter": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["eduapp", "edudex"],
         "credit_rating": [9, 20],
         "skills": [
@@ -264,6 +375,9 @@
         ]
     },
     "laborer, unskilled": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": [],
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
@@ -271,8 +385,21 @@
         ]
     },
     "gangster boss": {
+        "type": "expansion",
+        "era": "classic-1920",
+        "tags": ["criminal"],
         "groups": ["eduapp"],
         "credit_rating": [60, 95],
+        "skills": [
+            "fighting (brawl)", "firearms", "law", "listen", "2i", "psychology", "spot hidden"
+        ]
+    },
+    "software tester": {
+        "type": "custom",
+        "era": "modern",
+        "tags": [],
+        "groups": ["edu"],
+        "credit_rating": [20, 60],
         "skills": [
             "fighting (brawl)", "firearms", "law", "listen", "2i", "psychology", "spot hidden"
         ]

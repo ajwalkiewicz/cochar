@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 import unittest
 import random
+import pytest
 from deepdiff import DeepDiff
 
 import cochar
+import cochar.occup
 from randname import randname
 from cochar import create_character, generate_first_name, generate_last_name
 from cochar.character import Character
@@ -13,6 +15,9 @@ from cochar.error import *
 
 TEST_OCC = {
     "test_occ": {
+        "type": "classic",
+        "era": "classic-1920",
+        "tags": ["lovecraftian", "criminal"],
         "groups": ["edu", "edudex", "edustr", "eduapp", "edupow"],
         "credit_rating": [1, 99],
         "skills": [
@@ -343,148 +348,10 @@ class TestCharacter(unittest.TestCase):
             self.character.build = -3
             self.character.build = -7
 
-    #### OCCUPATIONS ####
-
-    def test_occupation_antiquarian(self):
-        occupation = "antiquarian"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_artist(self):
-        occupation = "artist"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_athlete(self):
-        occupation = "athlete"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_author(self):
-        occupation = "author"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_clergy(self):
-        occupation = "clergy"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_criminal(self):
-        occupation = "criminal"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_dilettante(self):
-        occupation = "dilettante"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_doctor_of_medicine(self):
-        occupation = "doctor of medicine"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_drifter(self):
-        occupation = "drifter"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_engineer(self):
-        occupation = "engineer"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_entertainer(self):
-        occupation = "entertainer"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_farmer(self):
-        occupation = "farmer"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_journalist(self):
-        occupation = "journalist"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_lawyer(self):
-        occupation = "lawyer"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_librarian(self):
-        occupation = "librarian"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_military_officer(self):
-        occupation = "military officer"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_missionary(self):
-        occupation = "missionary"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_musician(self):
-        occupation = "musician"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_parapsychologist(self):
-        occupation = "parapsychologist"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_pilot(self):
-        occupation = "pilot"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_police_detective(self):
-        occupation = "police detective"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_police_officer(self):
-        occupation = "police officer"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_private_investigator(self):
-        occupation = "private investigator"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_professor(self):
-        occupation = "professor"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_soldier(self):
-        occupation = "soldier"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_tribe_member(self):
-        occupation = "tribe member"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
-    def test_occupation_zealot(self):
-        occupation = "zealot"
-        c = create_character(self.year, self.country, occupation=occupation)
-        self.assertEqual(c.occupation, occupation)
-
     ########## TEST GENERAL FUNCTIONS ####################
 
     def test_generate_last_name(self):
         year = 1925
-        sex = "M"
         weights = True
         available_sex = ["M", "F", "G", None]
         available_countries = tuple(randname.available_countries())
@@ -495,7 +362,6 @@ class TestCharacter(unittest.TestCase):
 
     def test_generate_first_name(self):
         year = 1925
-        sex = "M"
         weights = True
         available_sex = ["M", "F", "G", None]
         available_countries = tuple(randname.available_countries())
@@ -516,8 +382,9 @@ class TestCharacter(unittest.TestCase):
     def test_repr_false(self):
         c = self.character
         d = eval(c.__repr__())
-        cochar.OCCUPATIONS_LIST.remove(c.occupation)
-        random_occupation = random.choice(cochar.OCCUPATIONS_LIST)
+        all_occupations = cochar.OCCUPATIONS_LIST.copy()
+        all_occupations.remove(c.occupation)
+        random_occupation = random.choice(all_occupations)
         c.occupation = random_occupation
         print(DeepDiff(c.__dict__, d.__dict__), end="")
         assert c != d

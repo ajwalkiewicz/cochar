@@ -7,7 +7,7 @@ from typing import Dict, List, Union, Set
 import randname
 
 __title__ = "cochar"
-__version__ = "1.0.0-alpha.2"
+__version__ = "1.0.0-alpha.3"
 __author__ = "Adam Walkiewicz"
 __license__ = "GPL 3.0"
 
@@ -63,6 +63,7 @@ with open(
 ) as json_file:
     # Full data of occupations
     OCCUPATIONS_DATA: Dict[str, dict] = dict(json.load(json_file))
+    # OCCUPATIONS_DATA.pop("test")
     # Just occupations names in the list
     OCCUPATIONS_LIST: List[str] = list(OCCUPATIONS_DATA.keys())
     # Occupations divided on 5 categories depends on skill point calculation method
@@ -90,6 +91,9 @@ with open(
     OCCUPATION: str = settings["occupation"]
     WEIGHTS: bool = settings["weights"]
     SHOW_WARNINGS: bool = settings["show_warnings"]
+    OCCUPATION_TYPE: str = settings["occupation_type"]
+    ERA: str = settings["era"]
+    TAGS: List[str] = settings["tags"]
 
     DATABASE: str = settings["database"]
     if not DATABASE:

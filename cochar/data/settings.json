@@ -3,13 +3,16 @@
   "max_age": 90,
   "max_skill_level": 90,
   "year": 1925,
-  "age": false,
+  "age": null,
   "sex": false,
-  "first_name": false,
-  "last_name": false,
+  "first_name": null,
+  "last_name": null,
   "country": "US",
-  "occupation": "optimal",
+  "occupation": null,
   "weights": true,
   "database": "",
-  "show_warnings": false
+  "show_warnings": false,
+  "occupation_type": null,
+  "era": "classic-1920",
+  "tags": null
 }

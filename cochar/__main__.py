@@ -10,39 +10,35 @@ def pars_arguments():
         "--year",
         type=int,
         required=False,
-        default=1925,
-        # dest="year",
+        default=cochar.YEAR,
         help="Character's year of born",
     )
     parser.add_argument(
         "--first_name",
         type=str,
         required=False,
-        default="",
-        # dest="first_name",
+        default=cochar.FIRST_NAME,
         help="Character's first name",
     )
     parser.add_argument(
         "--last_name",
         type=str,
         required=False,
-        default="",
-        # dest="last_name",
+        default=cochar.LAST_NAME,
         help="Character's last name",
     )
     parser.add_argument(
         "--age",
         type=int,
         required=False,
-        default=False,
-        # dest="age",
+        default=cochar.AGE,
         help="Character's age",
     )
     parser.add_argument(
         "--sex",
         type=str,
         required=False,
-        default=False,
+        default=cochar.SEX,
         dest="sex",
         help="Character's sex",
     )
@@ -50,34 +46,68 @@ def pars_arguments():
         "--country",
         type=str,
         required=False,
-        default="US",
-        # dest="country",
+        default=cochar.COUNTRY,
+        choices=["US", "PL", "ES"],
         help="Character's country",
     )
     parser.add_argument(
         "--occupation",
         type=str,
         required=False,
-        default=None,
-        # dest='occupation',
+        default=cochar.OCCUPATION,
         help="Character's occupation",
     )
+    parser.add_argument(
+        "--occup_type",
+        type=str,
+        required=False,
+        default=cochar.OCCUPATION_TYPE,
+        choices=["classic", "expansion"],
+        help="Occupation type",
+    )
+    parser.add_argument(
+        "--era",
+        type=str,
+        required=False,
+        default=cochar.ERA,
+        choices=["classic-1920", "modern"],
+        help="Occupation era",
+    )
+    parser.add_argument(
+        "--tags",
+        type=str,
+        required=False,
+        default=cochar.TAGS,
+        choices=["lovecraftian", "criminal"],
+        help="Occupation tags",
+    )
+
     return parser.parse_args()
 
 
 def main():
     args = pars_arguments()
-    print(
-        cochar.create_character(
-            year=args.year,
-            first_name=args.first_name,
-            last_name=args.last_name,
-            age=args.age,
-            sex=args.sex,
-            country=args.country,
-            occupation=args.occupation,
+    if args.tags:
+        tags = [args.tags]
+    else:
+        tags = args.tags
+    try:
+        print(
+            cochar.create_character(
+                year=args.year,
+                first_name=args.first_name,
+                last_name=args.last_name,
+                age=args.age,
+                sex=args.sex,
+                country=args.country,
+                occupation=args.occupation,
+                occup_type=args.occup_type,
+                era=args.era,
+                tags=tags,
+            )
         )
-    )
+    except cochar.error.NoneOccupationMeetsCriteria as e:
+        print(e)
 
 
 if __name__ == "__main__":
