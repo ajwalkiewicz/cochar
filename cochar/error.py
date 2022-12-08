@@ -33,12 +33,13 @@ class CharacteristicValueNotAnInt(CocharError):
         return self.message
 
 
-class CharacteristicPointsBelowZero(CocharError):
-    """Characteristic points cannot be below zero"""
+class CharacteristicPointsBelowMinValue(CocharError):
+    """Characteristic points cannot be below defined minimal value"""
 
-    def __init__(self, skill_name: str):
+    def __init__(self, skill_name: str, min_value=0):
         self.skill_name = skill_name
-        self.message = f"'{self.skill_name}' Characteristic points cannot be below zero"
+        self.min_value = min_value
+        self.message = f"'{self.skill_name}' Characteristic points cannot be below: {self.min_value}"
         super().__init__(self.message)
 
     def __str__(self):
