@@ -127,7 +127,7 @@ class TestCharacter(unittest.TestCase):
         self.character.strength = 0
 
     def test_strength_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.strength = -1
 
     def test_strength_not_integer(self):
@@ -138,7 +138,7 @@ class TestCharacter(unittest.TestCase):
         self.character.condition = 0
 
     def test_condition_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.condition = -1
 
     def test_condition_not_integer(self):
@@ -149,7 +149,7 @@ class TestCharacter(unittest.TestCase):
         self.character.size = 0
 
     def test_size_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.size = -1
 
     def test_size_not_integer(self):
@@ -160,7 +160,7 @@ class TestCharacter(unittest.TestCase):
         self.character.dexterity = 0
 
     def test_dexterity_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.dexterity = -1
 
     def test_dexterity_not_integer(self):
@@ -171,7 +171,7 @@ class TestCharacter(unittest.TestCase):
         self.character.appearance = 0
 
     def test_appearance_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.appearance = -1
 
     def test_appearance_not_integer(self):
@@ -182,7 +182,7 @@ class TestCharacter(unittest.TestCase):
         self.character.education = 0
 
     def test_education_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.education = -1
 
     def test_education_not_integer(self):
@@ -193,7 +193,7 @@ class TestCharacter(unittest.TestCase):
         self.character.intelligence = 0
 
     def test_intelligence_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.intelligence = -1
 
     def test_intelligence_not_integer(self):
@@ -204,7 +204,7 @@ class TestCharacter(unittest.TestCase):
         self.character.power = 0
 
     def test_power_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.power = -1
 
     def test_power_not_integer(self):
@@ -215,7 +215,7 @@ class TestCharacter(unittest.TestCase):
         self.character.sanity_points = 0
 
     def test_sanity_points_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.sanity_points = -1
 
     def test_sanity_points_not_integer(self):
@@ -226,7 +226,7 @@ class TestCharacter(unittest.TestCase):
         self.character.magic_points = 0
 
     def test_magic_points_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.magic_points = -1
 
     def test_magic_points_not_integer(self):
@@ -237,7 +237,7 @@ class TestCharacter(unittest.TestCase):
         self.character.hit_points = 0
 
     def test_hit_points_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.hit_points = -1
 
     def test_hit_points_not_integer(self):
@@ -248,7 +248,7 @@ class TestCharacter(unittest.TestCase):
         self.character.luck = 0
 
     def test_luck_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.luck = -1
 
     def test_luck_not_integer(self):
@@ -259,7 +259,7 @@ class TestCharacter(unittest.TestCase):
         self.character.move_rate = 0
 
     def test_move_rate_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowZero):
+        with self.assertRaises(CharacteristicPointsBelowMinValue):
             self.character.move_rate = -1
 
     def test_move_rate_not_integer(self):

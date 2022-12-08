@@ -1,28 +1,313 @@
-"""**Characters**
-Character module contain main Character class, that is
-a container for characters. 
+""""This module contains classes related with Character object itself."""
 
-Contain:
-- Character class
-"""
+from abc import ABC, abstractmethod
 from typing import List, Union
 
 import randname
 
 import cochar
+import cochar.cochar
 import cochar.error
 import cochar.skill
-import cochar.cochar
+
+
+class Validator(ABC):
+    """It's a parent class for all other descriptors.
+
+    Defines validate method, that needs to be implemented by
+    all children.
+
+    :param ABC: abstract base class
+    :type ABC: ABCMeta
+    """
+
+    def __set_name__(self, owner, name):
+        self.public_name = name
+        self.private_name = "_" + name
+
+    def __get__(self, obj, objtype=None):
+        return getattr(obj, self.private_name)
+
+    def __set__(self, obj, value):
+        self.validate(value)
+        setattr(obj, self.private_name, value)
+
+    @abstractmethod
+    def validate(self, value):
+        pass
+
+
+class Characteristic(Validator):
+    """Base characteristic for character class"""
+
+    def __init__(self, min_value=None):
+        self.min_value = min_value
+
+    def validate(self, value: int):
+        """Check if characteristic is a valid number and is not below `min_value`
+
+        :param value: value to validate
+        :type value: int
+        :raises cochar.error.CharacteristicValueNotAnInt: raise if value is not an integer
+        :raises cochar.error.CharacteristicPointsBelowZero: raise if value is below min_value
+        """
+        if not isinstance(value, int):
+            raise cochar.error.CharacteristicValueNotAnInt(self.public_name, value)
+        if value < self.min_value:
+            raise cochar.error.CharacteristicPointsBelowMinValue(value, self.min_value)
+
+
+class Name(Validator):
+    """Character's name"""
+
+    def validate(self, new_name: str):
+        """Check if name is a valid name.
+
+        :param new_name: new character name
+        :type new_name: str
+        :raises cochar.error.EmptyName: raise if `new_name` is empty
+        """
+        if new_name == "":
+            raise cochar.error.EmptyName()
+        self._first_name = str(new_name)
+
+
+class Year(Validator):
+    """Year in game.
+
+    Technically any integer is a valid year. But practically that depends
+    on database with names used to generate names.
+
+    Besides name, also character's age depends on the year. Probability of
+    generating certain year is related with the population age pyramid at the
+    certain year.
+
+    Lowest and highest year in the data defines effective range for year. Years
+    below or above are treated the same as in the lowest or highest years in data.
+    That means for example if data for names ends on the year 2010, than setting
+    higher year will give same results as 2010.
+    """
+
+    def validate(self, new_year: int) -> None:
+        """Validate if year is an integer.
+
+        :param new_year: new year of the game
+        :type new_year: int
+        :raises cochar.error.InvalidYearValue: raise when `new_year` is not an integer
+
+        >>> character = create_character()
+        >>> character.year = 1800
+        """
+        if not isinstance(new_year, int):
+            raise cochar.error.InvalidYearValue(new_year)
+        self._year = new_year
+
+
+class Sex(Validator):
+    """Character's sex.
+
+    Available sex options:
+    - M: male
+    - F: female
+    - None: for non binary
+
+    As there are not any data for non binary names.
+    When ``None`` is selected sex will be randomly drawn from M or F
+
+    >>> c = Character(year=1925, country="US", sex="F")
+    >>> c.sex
+    'F'
+    """
+
+    def validate(self, new_sex: Union[str, None]) -> None:
+        """
+        Validate character's sex.
+
+        :param new_sex: character's new sex
+        :type new_sex: str | None
+        :raises InvalidSexValue: Incorrect sex value: sex -> ['M', 'F', None']
+        """
+        if new_sex in cochar.SEX_OPTIONS:
+            self._sex = cochar.cochar.generate_sex(new_sex)
+        else:
+            raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
+
+
+class Age(Validator):
+    """Character's age.
+
+    :param min_age: minimal character's age
+    :type min_age: int
+    :param max_age: maximal character's age
+    :type max_age: int
+    """
+
+    def __init__(self, min_age: int, max_age: int) -> None:
+        self.min_age = min_age
+        self.max_age = max_age
+
+    def validate(self, new_age: int) -> None:
+        """
+        Validate character's age.
+
+        :param new_age: character's new age
+        :type new_age: int
+        :raises InvalidAgeValue: raise when age is not an integer
+        :raises AgeNotInRange: age must be between min and max age
+        """
+        if not isinstance(new_age, int):
+            raise cochar.error.InvalidAgeValue(new_age)
+
+        if self.min_age <= new_age <= self.max_age:
+            self._age = new_age
+        else:
+            raise cochar.error.AgeNotInRange(new_age, self.min_age, self.max_age)
+
+
+class Country(Validator):
+    """Character's country.
+
+    Country depends on available data. By default database from
+    external ``randname`` package is taken.
+    Country also defines what dataset will be used for generating character's
+    name.
+
+    See ``randname.available_countries()``.
+    """
+
+    def validate(self, new_country: str) -> None:
+        """
+        Validate character's country.
+
+        :param new_country: character's new country
+        :type new_country: str
+        :raises InvalidCountryValue: "Country not available: {new_country} -> {randname.available_countries()}
+        """
+
+        available_countries = randname.available_countries()
+        if new_country in available_countries:
+            self._country = new_country
+        else:
+            raise cochar.error.InvalidCountryValue(new_country, available_countries)
+
+
+class Occupation(Validator):
+    """Character's occupation.
+
+    Available occupations are defined in occupation database.
+    """
+
+    def __init__(self, available_occupations):
+        self.available_occupations = available_occupations
+
+    def validate(self, new_occupation: str) -> None:
+        """
+        Validate character's occupation.
+
+        :param new_occupation: character's new occupation
+        :type new_occupation: str
+        :raises InvalidOccupationValue: raise when `new_occupation` is not in `OCCUPATION_LIST`
+        """
+        if new_occupation in self.available_occupations:
+            self._occupation = new_occupation
+        else:
+            raise cochar.error.InvalidOccupationValue(
+                new_occupation, self.available_occupations
+            )
+
+
+class DamageBonus(Validator):
+    """Character damage bonus.
+
+    ``correct_values = ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6']``
+
+    """
+
+    def validate(self, new_damage_bonus: str) -> None:
+        """
+        Validate character's damage bonus.
+
+        :param new_damage_bonus: character's new damage bonus
+        :type new_damage_bonus: str
+        :raises InvalidDamageBonusValue: Invalid damage bonus. {new_damage_bonus} not in {correct_values}
+        """
+        # TODO: Increase range. +1 for each 80 point above STR+SIZ
+        correct_values = [
+            "-2",
+            "-1",
+            "0",
+            "+1K4",
+            "+1K6",
+            "+2K6",
+            "+3K6",
+            "+4K6",
+            "+5K6",
+        ]
+        new_damage_bonus = str(new_damage_bonus).upper()
+        if new_damage_bonus in correct_values:
+            self._damage_bonus = new_damage_bonus
+        else:
+            raise cochar.error.InvalidDamageBonusValue(new_damage_bonus, correct_values)
+
+
+class Build(Validator):
+    """Character's build.
+
+    ``correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]``
+
+    TODO: increase range. +1 for each 80 point above STR+SIZ.
+    """
+
+    def validate(self, new_build: int) -> None:
+        """
+        Validate character's build.
+
+        :param new_build: character's new build
+        :type new_build: int
+        :raises InvalidBuildValue: Invalid build. {new_build} not in {correct_values}
+        """
+        correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]
+        if new_build in correct_values:
+            self._build = new_build
+        else:
+            raise cochar.error.InvalidBuildValue(new_build, correct_values)
 
 
 class Character:
-    """Character class works as a container for character
+    """Container for character.
 
     .. warning:
-        Instead of instantiating Character class use
-        create_character() function
-
+        Although this class can be used as standalone class,
+        it is advised to use `cochar.create_character()` function
+        to generate character.
     """
+
+    strength = Characteristic(min_value=0)
+    condition = Characteristic(min_value=0)
+    size = Characteristic(min_value=0)
+    dexterity = Characteristic(min_value=0)
+    appearance = Characteristic(min_value=0)
+    education = Characteristic(min_value=0)
+    intelligence = Characteristic(min_value=0)
+    power = Characteristic(min_value=0)
+    luck = Characteristic(min_value=0)
+    power = Characteristic(min_value=0)
+    move_rate = Characteristic(min_value=0)
+    sanity_points = Characteristic(min_value=0)
+    magic_points = Characteristic(min_value=0)
+    hit_points = Characteristic(min_value=0)
+    doge = Characteristic(min_value=0)
+
+    first_name = Name()
+    last_name = Name()
+
+    year = Year()
+    sex = Sex()
+    age = Age(min_age=cochar.MIN_AGE, max_age=cochar.MAX_AGE)
+    country = Country()
+    occupation = Occupation(available_occupations=cochar.OCCUPATIONS_LIST)
+    damage_bonus = DamageBonus()
+    build = Build()
 
     def __init__(
         self,
@@ -77,393 +362,12 @@ class Character:
         self.hit_points = hit_points
 
     @property
-    def year(self) -> int:
-        """**Year of born**
-
-        :raises ValueError: Invalid year. year must be integer
-        :return: year
-        :rtype: int
-
-        >>> character = create_character()
-        >>> character.year = 1800
-        """
-        return self._year
-
-    @year.setter
-    def year(self, new_year: int) -> None:
-        if not isinstance(new_year, int):
-            raise cochar.error.InvalidYearValue(new_year)
-        self._year = new_year
-
-    @property
-    def sex(self) -> Union[str, None]:
-        """Character sex
-
-        **legend**
-
-        - M: male
-        - F: female
-        - None: for non binary
-
-        As there is not data for non binary names. When ``None`` is selected sex will be randomly drawn from [M, F]
-
-        :raises InvalidSexValue: Incorrect sex value: sex -> ['M', 'F', None']
-        :return: sex
-        :rtype: Union[str, None]
-
-        >>> c = Character()
-        >>> c.sex
-        'F'
-        """
-        return self._sex
-
-    @sex.setter
-    def sex(self, new_sex: Union[str, None]) -> None:
-        if new_sex in cochar.SEX_OPTIONS:
-            self._sex = cochar.cochar.generate_sex(new_sex)
-        else:
-            raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
-
-    @property
-    def age(self) -> int:
-        """**Character age**
-
-        Age has to be between MIN_AGE and MAX_AGE.
-
-        :raises InvalidAgeValue: Invalid age. Age must be an integer
-        :raises AgeNotInRange: Age not in range: {new_age} -> [{MIN_AGE}, {MAX_AGE}]
-        :return: Character age
-        :rtype: int
-        """
-        return self._age
-
-    @age.setter
-    def age(self, new_age: int) -> None:
-        if not isinstance(new_age, int):
-            raise cochar.error.InvalidAgeValue(new_age)
-
-        if cochar.MIN_AGE <= new_age <= cochar.MAX_AGE:
-            self._age = new_age
-        else:
-            raise cochar.error.AgeNotInRange(new_age, cochar.MIN_AGE, cochar.MAX_AGE)
-
-    @property
-    def country(self) -> str:
-        """**Character country**
-
-        Country must bu in available countries.
-
-        See ``randname.available_countries()``
-
-        :raises InvalidCountryValue: "Country not available: {new_country} -> {randname.available_countries()}
-        :return: character country
-        :rtype: str
-        """
-        return self._country
-
-    @country.setter
-    def country(self, new_country: str) -> None:
-        available_countries = randname.available_countries()
-        if new_country in available_countries:
-            self._country = new_country
-        else:
-            raise cochar.error.InvalidCountryValue(new_country, available_countries)
-
-    @property
-    def occupation(self) -> str:
-        """Character occupation.
-
-        Occupation must be in ``OCCUPATION_LIST``
-
-        :raises InvalidOccupationValue: {new_occupation} not in -> {OCCUPATIONS_LIST}
-        :return: [description]
-        :rtype: str
-        """
-        return self._occupation
-
-    @occupation.setter
-    def occupation(self, new_occupation: str) -> None:
-        if new_occupation in cochar.OCCUPATIONS_LIST:
-            self._occupation = new_occupation
-        else:
-            raise cochar.error.InvalidOccupationValue(
-                new_occupation, cochar.OCCUPATIONS_LIST
-            )
-
-    @property
-    def strength(self) -> int:
-        """Character strength
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character strength
-        :rtype: int
-        """
-        return self._str
-
-    @strength.setter
-    def strength(self, new_strength: int) -> None:
-        self.__validate_character_properties(new_strength, "strength")
-        self._str = new_strength
-
-    @property
-    def condition(self) -> int:
-        """Character condition.
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character condition
-        :rtype: int
-        """
-        return self._con
-
-    @condition.setter
-    def condition(self, new_condition: int) -> None:
-        self.__validate_character_properties(new_condition, "condition")
-        self._con = new_condition
-
-    @property
-    def size(self) -> int:
-        """Character size
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character size
-        :rtype: int
-        """
-        return self._siz
-
-    @size.setter
-    def size(self, new_size: int) -> None:
-        self.__validate_character_properties(new_size, "size")
-        self._siz = new_size
-
-    @property
-    def dexterity(self) -> int:
-        """Character dexterity
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character dexterity
-        :rtype: int
-        """
-        return self._dex
-
-    @dexterity.setter
-    def dexterity(self, new_dexterity: int) -> None:
-        self.__validate_character_properties(new_dexterity, "dexterity")
-        self._dex = new_dexterity
-
-    @property
-    def appearance(self) -> int:
-        """Character appearance
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character appearance
-        :rtype: int
-        """
-        return self._app
-
-    @appearance.setter
-    def appearance(self, new_appearance: int) -> None:
-        self.__validate_character_properties(new_appearance, "appearance")
-        self._app = new_appearance
-
-    @property
-    def education(self) -> int:
-        """Character education
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character education
-        :rtype: int
-        """
-        return self._edu
-
-    @education.setter
-    def education(self, new_education: int) -> None:
-        self.__validate_character_properties(new_education, "education")
-        self._edu = new_education
-
-    @property
-    def intelligence(self) -> int:
-        """Character intelligence
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character intelligence
-        :rtype: int
-        """
-        return self._int
-
-    @intelligence.setter
-    def intelligence(self, new_intelligence: int) -> None:
-        self.__validate_character_properties(new_intelligence, "intelligence")
-        self._int = new_intelligence
-
-    @property
-    def power(self) -> int:
-        """Character power
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character power
-        :rtype: int
-        """
-        return self._pow
-
-    @power.setter
-    def power(self, new_power: int) -> None:
-        self.__validate_character_properties(new_power, "power")
-        self._pow = new_power
-
-    @property
-    def move_rate(self) -> int:
-        """Character move rate
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: character move rate
-        :rtype: int
-        """
-        return self._move_rate
-
-    @move_rate.setter
-    def move_rate(self, new_move_rate: int) -> None:
-        self.__validate_character_properties(new_move_rate, "move rate")
-        self._move_rate = new_move_rate
-
-    @property
-    def first_name(self) -> str:
-        """Character first name
-
-        :raises ValueError: Invalid first name. Name cannot be an empty string
-        :return: first name
-        :rtype: str
-        """
-        return self._first_name
-
-    @first_name.setter
-    def first_name(self, new_first_name: str) -> None:
-        if new_first_name == "":
-            raise cochar.error.EmptyName()
-        self._first_name = str(new_first_name)
-
-    @property
-    def last_name(self) -> str:
-        """Character last name
-
-        :raises ValueError: Invalid last name. Name cannot be an empty string
-        :return: last name
-        :rtype: str
-        """
-        return self._last_name
-
-    @last_name.setter
-    def last_name(self, new_last_name: str) -> None:
-        if new_last_name == "":
-            raise cochar.error.EmptyName()
-        self._last_name = str(new_last_name)
-
-    @property
-    def occupation_points(self) -> int:
-        """Character occupation points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: occupation points
-        :rtype: int
-        """
-        return self._occupation_points
-
-    @occupation_points.setter
-    def occupation_points(self, new_occupation_points: int) -> None:
-        self.__validate_character_properties(new_occupation_points, "occupation")
-        self._occupation_points = new_occupation_points
-
-    @property
-    def hobby_points(self) -> int:
-        """Character hobby points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: hobby points
-        :rtype: int
-        """
-        return self._hobby_points
-
-    @hobby_points.setter
-    def hobby_points(self, new_hobby_points: int) -> None:
-        self.__validate_character_properties(new_hobby_points, "hobby")
-        self._hobby_points = new_hobby_points
-
-    @property
-    def sanity_points(self) -> int:
-        """Character sanity points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: sanity points
-        :rtype: int
-        """
-        return self._sanity_points
-
-    @sanity_points.setter
-    def sanity_points(self, new_sanity_points: int) -> None:
-        self.__validate_character_properties(new_sanity_points, "sanity")
-        self._sanity_points = new_sanity_points
-
-    @property
-    def magic_points(self) -> int:
-        """Character magic points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: magic points
-        :rtype: int
-        """
-        return self._magic_points
-
-    @magic_points.setter
-    def magic_points(self, new_magic_points: int) -> None:
-        self.__validate_character_properties(new_magic_points, "magic")
-        self._magic_points = new_magic_points
-
-    @property
-    def hit_points(self) -> int:
-        """Character hit points
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: hit points
-        :rtype: int
-        """
-        return self._hit_points
-
-    @hit_points.setter
-    def hit_points(self, new_hit_points: int) -> None:
-        self.__validate_character_properties(new_hit_points, "hit")
-        self._hit_points = new_hit_points
-
-    @property
-    def luck(self) -> int:
-        """Character luck
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: luck
-        :rtype: int
-        """
-        return self._luck
-
-    @luck.setter
-    def luck(self, new_luck: int) -> None:
-        self.__validate_character_properties(new_luck, "luck")
-        self._luck = new_luck
-
-    @property
     def skills(self) -> cochar.skill.Skills:
+        """Character's skills.
+
+        :return: character's skills
+        :rtype: cochar.skill.Skills
+        """
         return self._skills
 
     @skills.setter
@@ -475,310 +379,54 @@ class Character:
         else:
             raise cochar.error.SkillsNotADict("Invalid skills. Skills must be a dict")
 
-    @property
-    def damage_bonus(self) -> str:
-        """Character damage bonus
-
-        ``correct_values = ['-2', '-1', '0', '+1K4', '+1K6', '+2K6', '+3K6', '+4K6', '+5K6']``
-
-        :raises InvalidDamageBonusValue: Invalid damage bonus. {new_damage_bonus} not in {correct_values}
-        :return: damage bonus
-        :rtype: str
-        """
-        return self._damage_bonus
-
-    @damage_bonus.setter
-    def damage_bonus(self, new_damage_bonus: str) -> None:
-        # TODO: Increase range. +1 for each 80 point above STR+SIZ
-        correct_values = [
-            "-2",
-            "-1",
-            "0",
-            "+1K4",
-            "+1K6",
-            "+2K6",
-            "+3K6",
-            "+4K6",
-            "+5K6",
-        ]
-        new_damage_bonus = str(new_damage_bonus).upper()
-        if new_damage_bonus in correct_values:
-            self._damage_bonus = new_damage_bonus
-        else:
-            raise cochar.error.InvalidDamageBonusValue(new_damage_bonus, correct_values)
-
-    @property
-    def build(self) -> int:
-        """Character build
-
-        ``correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]``
-
-        TODO: increase range. +1 for each 80 point above STR+SIZ
-
-        :raises InvalidBuildValue: Invalid build. {new_build} not in {correct_values}
-        :return: build
-        :rtype: int
-        """
-        return self._build
-
-    @build.setter
-    def build(self, new_build: int) -> None:
-        correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]
-        if new_build in correct_values:
-            self._build = new_build
-        else:
-            raise cochar.error.InvalidBuildValue(new_build, correct_values)
-
-    @property
-    def doge(self) -> int:
-        """Character doge
-
-        Doge is also one of the character skills.
-        Changing this value changes also ``skills['doge']``.
-        But it doesn't work vice versa.
-
-        :raises ValueError: if variable is not an integer
-        :raises ValueError: if variable is below 0
-        :return: doge
-        :rtype: int
-        """
-        return self._doge
-
-    @doge.setter
-    def doge(self, new_doge: int) -> None:
-        self.__validate_character_properties(new_doge, "doge")
-        self._skills["doge"] = new_doge
-        self._doge = new_doge
-
-    @staticmethod
-    def __validate_character_properties(new_variable: int, variable_name: str) -> None:
-        """Private function to validate in setters whether new_variable
-        is a correct one.
-
-        :param new_variable: variable to check
-        :type new_variable: int
-        :param variable_name: name of that variable
-        :type variable_name: str
-        :raises CharacteristicValueNotAnInt: if variable is not an integer
-        :raises CharacteristicPointsBelowZero: if variable is below 0
-
-        >>> Character._Character__validate_character_properties("a", 'luck')
-        errors.SkillValueNotAnInt: Invalid luck points. Luck points must be an integer
-        >>> Character._Character__validate_character_properties(-1, 'luck')
-        errors.SkillValueNotAnInt: Luck points cannot be less than 0
-        """
-        variable_name = str(variable_name)
-        if not isinstance(new_variable, int):
-            raise cochar.error.CharacteristicValueNotAnInt(variable_name, new_variable)
-        if new_variable < 0:
-            raise cochar.error.CharacteristicPointsBelowZero(new_variable)
-
-    # TODO: write unit test
-    def get_full_characteristics(self) -> dict:
-        """Return character's full characteristics as a dictionary
-
-        .. code-block:: python
-            :linenos:
-
-            {
-                "first_name": self.first_name,
-                "last_name": self.last_name,
-                "age": self.age,
-                "sex": self.sex,
-                "country": self.country,
-                "occupation": self.occupation,
-                "strength": self.strength,
-                "condition": self.condition,
-                "size": self.size,
-                "dexterity": self.dexterity,
-                "appearance": self.appearance,
-                "education": self.education,
-                "intelligence": self.intelligence,
-                "power": self.power,
-                "move_rate": self.move_rate,
-                "luck": self.luck,
-                "damage_bonus": self.damage_bonus,
-                "build": self.build,
-                "doge": self.doge,
-                "sanity_points": self.sanity_points,
-                "magic_points": self.magic_points,
-                "hit_points": self.hit_points,
-                "skills": self.skills
-            }
+    def get_json_format(self) -> dict:
+        """Return character's full characteristics as a dictionary.
 
         :return: full characteristics
         :rtype: dict
         """
-        return {
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "age": self.age,
-            "sex": self.sex,
-            "country": self.country,
-            "occupation": self.occupation,
-            "strength": self.strength,
-            "condition": self.condition,
-            "size": self.size,
-            "dexterity": self.dexterity,
-            "appearance": self.appearance,
-            "education": self.education,
-            "intelligence": self.intelligence,
-            "power": self.power,
-            "move_rate": self.move_rate,
-            "luck": self.luck,
-            "damage_bonus": self.damage_bonus,
-            "build": self.build,
-            "doge": self.doge,
-            "sanity_points": self.sanity_points,
-            "magic_points": self.magic_points,
-            "hit_points": self.hit_points,
-            "skills": self.skills.get_json_format(),
-        }
-
-    # TODO: write unit test
-    def get_main_characteristics(self) -> dict:
-        """Return character's main characteristics:
-
-        .. code-block:: python
-            :linenos:
-
-            {
-                "strength": self.strength,
-                "condition": self.condition,
-                "size": self.size,
-                "dexterity": self.dexterity,
-                "appearance": self.appearance,
-                "education": self.education,
-                "intelligence": self.intelligence,
-                "power": self.power,
-                "move_rate": self.move_rate,
-                "luck": self.luck
-            }
-
-        :return: main characteristics
-        :rtype: dict
-        """
-        # TODO: main characteristics
-        return {
-            "strength": self.strength,
-            "condition": self.condition,
-            "size": self.size,
-            "dexterity": self.dexterity,
-            "appearance": self.appearance,
-            "education": self.education,
-            "intelligence": self.intelligence,
-            "power": self.power,
-            "move_rate": self.move_rate,
-            "luck": self.luck,
-        }
-
-    # TODO: write unit test
-    def get_personal_info(self) -> dict:
-        """Return character's personal information:
-
-        .. code-block:: python
-            :linenos:
-
-            {
-                "first_name": self.first_name,
-                "last_name": self.last_name,
-                "age": self.age,
-                "country": self.country,
-                "occupation": self.occupation
-            }
-
-        :return: personal information
-        :rtype: dict
-        """
-        return {
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "age": self.age,
-            "country": self.country,
-            "occupation": self.occupation,
-        }
-
-    # TODO: write unit test
-    def get_json_format(self, mode="full") -> dict:
-        """Return Character in json format.
-
-        Accept 3 modes:
-        1. full - full characteristics
-        2. main - main characteristics
-        3. personal - personal info
-
-        :param mode: mode, defaults to "full"
-        :type mode: str, optional
-        :return: characteristics in json format
-        :rtype: dict
-        """
-        # TODO: character in JSON format
-        # TODO: case when incorrect mode is provided
-        if mode == "full":
-            results = self.get_full_characteristics()
-        if mode == "main":
-            results = self.get_main_characteristics()
-        if mode == "personal":
-            results = self.get_personal_info()
-
-        return results
-
-    # TODO: write unit test
-    def get_csv_format(self, mode="full"):
-        """Return Character in csv format.
-
-        .. warning
-            Method is not implemented yet
-
-        TODO: implement csv format
-
-        Accept 3 modes:
-        1. full - full characteristics
-        2. main - main characteristics
-        3. personal - personal info
-
-        :param mode: mode, defaults to "full"
-        :type mode: str, optional
-        :return: characteristics in json format
-        :rtype: dict
-        """
-        # TODO: character in JSON format
-        if mode == "full":
-            results = self.get_full_characteristics()
-        if mode == "main":
-            results = self.get_main_characteristics()
-        if mode == "personal":
-            results = self.get_personal_info()
-
-        return results
+        return {str(key)[1:]: value for key, value in vars(self).items()}
 
     def __eq__(self, o: object) -> bool:
         return True if self.__dict__ == o.__dict__ else False
 
     def __repr__(self) -> str:
-        return f"Character(year={self._year}, country='{self._country}', first_name='{self._first_name}', last_name='{self._last_name}', age={self._age}, sex='{self._sex}', occupation='{self._occupation}', strength={self._str}, condition={self._con}, size={self._siz}, dexterity={self._dex}, appearance={self._app}, education={self._edu}, intelligence={self._int}, power={self._pow}, move_rate={self._move_rate}, luck={self._luck}, skills={self._skills}, damage_bonus='{self._damage_bonus}', build={self._build}, doge={self._doge}, sanity_points={self._sanity_points}, magic_points={self._magic_points}, hit_points={self._hit_points})"
+        return (
+            f"Character(year={self._year}, country='{self._country}', "
+            f"first_name='{self._first_name}', last_name='{self._last_name}', "
+            f"age={self._age}, sex='{self._sex}', occupation='{self._occupation}', "
+            f"strength={self._strength}, condition={self._condition}, size={self._size}, "
+            f"dexterity={self._dexterity}, appearance={self._appearance}, education={self._education}, "
+            f"intelligence={self._intelligence}, power={self._power}, move_rate={self._move_rate}, "
+            f"luck={self._luck}, skills={self._skills}, damage_bonus='{self._damage_bonus}', "
+            f"build={self._build}, doge={self._doge}, sanity_points={self._sanity_points}, "
+            f"magic_points={self._magic_points}, hit_points={self._hit_points})"
+        )
 
     def __str__(self) -> str:
         skills = ""
         max_items_in_row = 3
         current_number_of_items_in_row = 0
+
         for skill, value in self._skills.items():
             if current_number_of_items_in_row == max_items_in_row:
                 skills += "\n"
                 current_number_of_items_in_row = 0
             skills += f"| {skill.capitalize()}: {value} |"
             current_number_of_items_in_row += 1
-        return f"""Character
-Name: {self._first_name} {self._last_name} 
-Sex: {self._sex}, Age: {self._age}, Country: {self._country} 
-Occupation: {self._occupation.capitalize()} 
-STR: {self._str} CON: {self._con} SIZ: {self._siz} 
-DEX: {self._dex} APP: {self._app} EDU: {self._edu}
-INT: {self._int} POW: {self._pow} Luck: {self._luck}
-Damage bonus: {self._damage_bonus}
-Build: {self._build}
-Doge: {self._doge}
-Move rate: {self._move_rate}
-Skills:
-{skills}
-"""
+
+        return (
+            f"Character\n"
+            f"Name: {self._first_name} {self._last_name}\n"
+            f"Sex: {self._sex}, Age: {self._age}, Country: {self._country}\n"
+            f"Occupation: {self._occupation.capitalize()}\n"
+            f"STR: {self._strength} CON: {self._condition} SIZ: {self._size}\n"
+            f"DEX: {self._dexterity} APP: {self._appearance} EDU: {self._education}\n"
+            f"INT: {self._intelligence} POW: {self._power} Luck: {self._luck}\n"
+            f"Damage bonus: {self._damage_bonus}\n"
+            f"Build: {self._build}\n"
+            f"Doge: {self._doge}\n"
+            f"Move rate: {self._move_rate}\n"
+            f"Skills:\n"
+            f"{skills}"
+        )
