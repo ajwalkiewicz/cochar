@@ -127,10 +127,6 @@ class Sex(Validator):
         :type new_sex: str | None
         :raises InvalidSexValue: Incorrect sex value: sex -> ['M', 'F', None']
         """
-        if new_sex in cochar.SEX_OPTIONS:
-            self._sex = cochar.cochar.generate_sex(new_sex)
-        else:
-            raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
 
 
 class Age(Validator):
