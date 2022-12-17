@@ -9,12 +9,13 @@ from typing import Dict, List
 
 import cochar
 import cochar.error
+import cochar.interface
 import cochar.utils
 
 Skill = Dict[str, int]
 
 # TODO: write unit test
-class Skills(UserDict):
+class SkillsDict(UserDict):
     """Dictionary like object to store character's skills.
     Override __setitem__ to validate skills data.
 
@@ -26,7 +27,6 @@ class Skills(UserDict):
         """Return Skills as a dictionary"""
         return {k: v for k, v in self.items()}
 
-    # all_skills = ALL_SKILLS.copy()
     def __setitem__(self, key: str, value: int) -> None:
         """Add validation for skill values
 
@@ -38,8 +38,6 @@ class Skills(UserDict):
         :raises SkillPointsBelowZero: when value is less than 0
         """
         key = str(key)
-        # if key not in ALL_SKILLS:
-        #     raise ValueError(f"Skill: {key}, doesn't exist")
         if not isinstance(value, int):
             raise cochar.error.SkillValueNotAnInt(
                 f"Invalid {key.lower()} points. {key.capitalize()} points must be an integer"
@@ -48,89 +46,234 @@ class Skills(UserDict):
             raise cochar.error.SkillPointsBelowZero(
                 f"{key.capitalize()} points cannot be less than 0"
             )
-        # self.all_skills.setdefault()
         self.data[key] = value
 
 
-# TODO: write unit test
-def generate_skills(
-    occupation: str,
-    occupation_points: int,
-    hobby_points: int,
-    dexterity: int,
-    education: int,
-    skills: Skills = None,
-) -> Skills:
-    """Return skills based on:
-    occupation, occupation_points, hobby_points, dexterity and education
+class SkillsGenerator:
+    def __init__(self, interface: cochar.interface.SkillsDataInterface):
+        self.set_interface(interface)
 
-    If `skills` provided, return `skills`
+    def set_interface(self, interface: cochar.interface.SkillsDataInterface) -> None:
+        self.interface = interface
+        self.skills_data = self.interface.get_skills()
+        self.skills_all = self.interface.get_all_skills_names()
+        self.skills_basic = self.interface.get_basic_skills_names()
+        self.skills_categories = self.interface.get_categories_names()
 
-    Each occupation has related skills, that are chosen randomly. Then
-    each skill has randomly assigned skill level - number of points related
-    with that skill.
+    def generate_skills(
+        self,
+        occupation: str,
+        occupation_points: int,
+        hobby_points: int,
+        dexterity: int,
+        education: int,
+        skills: SkillsDict = None,
+    ) -> SkillsDict:
+        """Return skills based on:
+        occupation, occupation_points, hobby_points, dexterity and education
 
-    Dexterity is required for `doge` skill.
-    Education is required for `language(own)` skill.
+        If `skills` provided, return `skills`
 
-    :param occupation: occupation
-    :type occupation: str
-    :param occupation_points: occupation_points
-    :type occupation_points: int
-    :param hobby_points: hobby_points
-    :type hobby_points: int
-    :param dexterity: dexterity
-    :type dexterity: int
-    :param education: education
-    :type education: int
-    :param skills: skills, defaults to None
-    :type skills: Skills, optional
-    :return: skills with assigned skill level
-    :rtype: Skills
-    """
-    if skills:
-        skills = Skills(skills)
-    else:
-        # Order of following instructions is very important!
-        skills = Skills()
+        Each occupation has related skills, that are chosen randomly. Then
+        each skill has randomly assigned skill level - number of points related
+        with that skill.
 
-        # self.occupation_skills_list: list[str] = []
-        # self.hobby_skills_list: list[str] = []
+        Dexterity is required for `doge` skill.
+        Education is required for `language(own)` skill.
 
-        cochar.utils.ALL_SKILLS.update(
-            {"doge": dexterity // 2, "language (own)": education}
+        :param occupation: occupation
+        :type occupation: str
+        :param occupation_points: occupation_points
+        :type occupation_points: int
+        :param hobby_points: hobby_points
+        :type hobby_points: int
+        :param dexterity: dexterity
+        :type dexterity: int
+        :param education: education
+        :type education: int
+        :param skills: skills, defaults to None
+        :type skills: Skills, optional
+        :return: skills with assigned skill level
+        :rtype: Skills
+        """
+        if skills:
+            skills = SkillsDict(skills)
+        else:
+            skills = SkillsDict()
+
+            self.skills_data["doge"] = dexterity // 2
+            self.skills_data["language (own)"] = education
+
+            # Assigning points to credit rating
+            credit_rating_points = generate_credit_rating_points(
+                occupation, occupation_points
+            )
+
+            occupation_points_to_distribute = occupation_points - credit_rating_points
+
+            if occupation_points_to_distribute < 0:
+                occupation_points_to_distribute = 0
+
+            default_occupations_skills: list = cochar.OCCUPATIONS_DATA[occupation][
+                "skills"
+            ].copy()
+            occupation_skills_list = self._get_skills_list(default_occupations_skills)
+
+            hobby_skills_list = self._get_skills_list(self.skills_basic)
+
+            skills = self._assign_skill_points(
+                occupation_points, occupation_skills_list, skills
+            )
+            skills = self._assign_skill_points(hobby_points, hobby_skills_list, skills)
+            skills = self._filter_skills(skills)
+
+            skills.setdefault("credit rating", credit_rating_points)
+
+        return skills
+
+    def _get_skills_list(self, input_list: list) -> List[str]:
+        """Parse an input list taken from `occupations.json` and
+        return list of skills
+
+        :param input_list: list of skills from `occupations.json`
+        :type input_list: list
+        :return: list of skills
+        :rtype: List[str]
+        """
+        skills_list = []
+        skills_list += list(
+            filter(
+                lambda x: len(x) > 2
+                and isinstance(x, str)
+                and x not in self.skills_categories,
+                input_list,
+            )
         )
+        skills_list += self._get_choice_skills(input_list)
+        skills_list += self._get_category_skills(input_list)
+        return skills_list
 
-        # Assigning points to credit rating
-        credit_rating_points = generate_credit_rating_points(
-            occupation, occupation_points
-        )
+    def _get_choice_skills(self, skills_list: list) -> List[str]:
+        """Parse a choice option from skills in `occupation.json` and
+        return list of skills
 
-        occupation_points_to_distribute = occupation_points - credit_rating_points
+        Example:
+        [1, "occult", "natural world"] -> ["occult"]
+        It means, return randomly one skills from the following options
 
-        if occupation_points_to_distribute < 0:
-            occupation_points_to_distribute = 0
+        :param skills_list: list of skills to choose
+        :type skills_list: list
+        :return: list of skills
+        :rtype: List[str]
+        """
+        result = []
+        for item in skills_list:
+            if isinstance(item, list):
+                population = item[1:]
+                k = item[0]
+                result.extend(random.sample(population, k=k))
+                result.extend(self._get_category_skills(result))
+                result = list(
+                    filter(
+                        lambda x: x not in self.interface.get_categories_names()
+                        and len(x) > 2,
+                        result,
+                    )
+                )
 
-        default_occupations_skills: list = cochar.OCCUPATIONS_DATA[occupation][
-            "skills"
-        ].copy()
-        occupation_skills_list = _get_skills_list(default_occupations_skills)
+        return result
 
-        # categories = [f"1{cat}" for cat in TRANSLATION_DICT.keys()]
-        # hobby_input_list = list(BASIC_SKILLS.keys()) + categories
-        default_hobby_skills: list = list(cochar.utils.BASIC_SKILLS.keys())
-        hobby_skills_list = _get_skills_list(default_hobby_skills)
+    def _get_category_skills(self, skills_list: list) -> List[str]:
+        """Parse a category skills, and return list of skills.
 
-        skills = _assign_skill_points(occupation_points, occupation_skills_list, skills)
-        skills = _assign_skill_points(hobby_points, hobby_skills_list, skills)
-        skills = filter_skills(skills)
+        Example:
+        "1l" -> ["language (german)"]
+        It means, one random language from language group.
+        "2*" -> ["first aid", "listen"]
+        It means, two random skills of all available skills.
 
-        skills.setdefault("credit rating", credit_rating_points)
+        :param skills_list: list of category skill options
+        :type skills_list: list
+        :return: list of skills
+        :rtype: List[str]
+        """
+        result = []
+        for item in skills_list:
+            if len(item) == 2 and isinstance(item, str):
+                k = int(item[0])
+                if item[1] == "*":
+                    population = self.skills_basic
+                else:
+                    population = self.interface.get_skills_from_category(
+                        cochar.utils.TRANSLATION_DICT.get(item[1])
+                    )
+                result.extend(random.sample(population, k=k))
 
-    return skills
+            elif item in self.skills_categories:
+                population = self.interface.get_skills_from_category(item)
+                result.extend([random.choice(population)])
+
+        return result
+
+    def _assign_skill_points(
+        self, points: int, skills_list: list, skills: SkillsDict
+    ) -> SkillsDict:
+        """Allocate randomly points to the skills from skills_list
+        and store it in Skills object
+
+        :param points: points to allocate
+        :type points: int
+        :param skills_list: list of skills
+        :type skills_list: list
+        :param skills: Skills object
+        :type skills: Skills
+        :return: None
+        :rtype: None
+        """
+        for skill in skills_list:
+            if skill in self.skills_all:
+                skills.setdefault(skill, self.skills_data[skill])
+            else:
+                skills.setdefault(skill, 1)
+
+        while points:
+            skill = random.choice(skills_list)
+            if points <= cochar.MAX_SKILL_LEVEL - skills[skill]:
+                points_allocation = random.randint(0, points)
+            elif sum(list(skills.values())) % 90 == 0:
+                break
+            elif skills[skill] >= cochar.MAX_SKILL_LEVEL:
+                continue
+            else:
+                points_allocation = random.randint(
+                    0, cochar.MAX_SKILL_LEVEL - skills[skill]
+                )
+            skills[skill] += points_allocation
+            points -= points_allocation
+
+        return skills
+
+    def _filter_skills(self, skills: Dict) -> SkillsDict:
+        """Filter out all skills with basic value form given dict.
+
+        >>> example_dict = {'psychoanalysis': 1, 'language (spanish)': 66}
+        >>> SkillsGenerator(skills_interface)._filter_skills(example_dict)
+        {'language (spanish)': 66}
+        """
+
+        def has_skill_default_value(item) -> bool:
+            skill, value = item
+            default_value = self.skills_data.get(skill)
+            if default_value is not None:
+                return default_value != value
+
+            return False
+
+        skills = filter(has_skill_default_value, skills.items())
+
+        return SkillsDict(skills)
 
 
-# TODO: write unit test
 def generate_credit_rating_points(occupation: str, occupation_points: int) -> int:
     """For provided occupation, and it occupation points, return
     credit rating points.
@@ -150,7 +293,6 @@ def generate_credit_rating_points(occupation: str, occupation_points: int) -> in
     return random.randint(*credit_rating_range)
 
 
-# TODO: write unit test
 def calc_skill_points(
     occupation: str,
     education: int,
@@ -196,157 +338,6 @@ def calc_skill_points(
     return max(points)
 
 
-# TODO: write unit test
-def _get_skills_list(input_list: list) -> List[str]:
-    """Parse an input list taken from `occupation.json` and
-    return list of skills
-
-    :param input_list: list of skills from `occupation.json`
-    :type input_list: list
-    :return: list of skills
-    :rtype: List[str]
-    """
-    skills_list = []
-    skills_list += list(
-        filter(
-            lambda x: len(x) > 2
-            and isinstance(x, str)
-            and x not in cochar.utils.CATEGORY_SKILLS_LIST,
-            input_list,
-        )
-    )
-    skills_list += _get_choice_skills(input_list)
-    skills_list += _get_category_skills(input_list)
-    return skills_list
-
-
-# TODO: write unit test
-def _get_choice_skills(skills_list: list) -> List[str]:
-    """Parse a choice option from skills in `occupation.json` and
-    return list of skills
-
-    Example:
-    [1, "occult", "natural world"] -> ["occult"]
-    It means, return randomly one skills from the following options
-
-    :param skills_list: list of skills to choose
-    :type skills_list: list
-    :return: list of skills
-    :rtype: List[str]
-    """
-    result = []
-    for item in skills_list:
-        if isinstance(item, tuple):
-            population = item[1:]
-            k = item[0]
-            result.extend(random.choices(population, k=k))
-            result.extend(_get_category_skills(result))
-            result = list(filter(lambda x: len(x) > 2, result))
-    return result
-
-
-# TODO: write unit test
-def _get_category_skills(skills_list: list) -> List[str]:
-    """Parse a category skills, and return list of skills.
-
-    Example:
-    "1l" -> ["language (german)"]
-    It means, one random language from language group.
-    "2*" -> ["first aid", "listen"]
-    It means, two random skills of all available skills.
-
-    :param skills_list: list of category skill options
-    :type skills_list: list
-    :return: list of skills
-    :rtype: List[str]
-    """
-    result = []
-    for item in skills_list:
-        if len(item) == 2:
-            k = int(item[0])
-            if item[1] == "*":
-                population = list(cochar.utils.BASIC_SKILLS.keys())
-            else:
-                population = list(
-                    cochar.utils.CATEGORY_SKILLS[
-                        cochar.utils.TRANSLATION_DICT.get(item[1])
-                    ].keys()
-                )
-            result.extend(random.choices(population, k=k))
-
-        elif item in cochar.utils.CATEGORY_SKILLS_LIST:
-            population = list(cochar.utils.CATEGORY_SKILLS[item].keys())
-            result.extend([random.choice(population)])
-
-    return result
-
-
-# TODO: write unit test
-def _assign_skill_points(points: int, skills_list: list, skills: Skills) -> None:
-    """Allocate randomly points to the skills from skills_list
-    and store it in Skills object
-
-    :param points: points to allocate
-    :type points: int
-    :param skills_list: list of skills
-    :type skills_list: list
-    :param skills: Skills object
-    :type skills: Skills
-    :return: None
-    :rtype: None
-    """
-    for skill in skills_list:
-        if skill in cochar.utils.ALL_SKILLS:
-            skills.setdefault(skill, cochar.utils.ALL_SKILLS[skill])
-        else:
-            skills.setdefault(skill, 1)
-
-    while points:
-        skill = random.choice(skills_list)
-        if points <= cochar.MAX_SKILL_LEVEL - skills[skill]:
-            points_allocation = random.randint(0, points)
-        elif sum(list(skills.values())) % 90 == 0:
-            break
-        elif skills[skill] >= cochar.MAX_SKILL_LEVEL:
-            continue
-        else:
-            points_allocation = random.randint(
-                0, cochar.MAX_SKILL_LEVEL - skills[skill]
-            )
-        skills[skill] += points_allocation
-        points -= points_allocation
-
-    return skills
-
-
-# TODO: write unit test
-def filter_skills(skills: Dict) -> Dict[str, int]:
-    """Filter out all skills with basic value form given dict.
-
-    >>> example_dict = {'psychoanalysis': 1, 'language (spanish)': 66}
-    >>> filter_skills(example_dict)
-    {'language (spanish)': 66}
-    """
-
-    def has_skill_default_value(item) -> bool:
-        skill, value = item
-        return cochar.utils.ALL_SKILLS.get(skill, 1) != value
-
-    skills = filter(has_skill_default_value, skills.items())
-
-    return Skills(skills)
-    # return Skills(
-    #     filter(
-    #         lambda item: cochar.utils.ALL_SKILLS.get(
-    #             item[0], cochar.utils.ALL_SKILLS.setdefault(item[0], 1)
-    #         )
-    #         != item[1],
-    #         skills.items(),
-    #     )
-    # )
-
-
-# TODO: write unit test
 def skill_test(tested_value: int, repetition: int = 1) -> int:
     """Perform skill test.
 

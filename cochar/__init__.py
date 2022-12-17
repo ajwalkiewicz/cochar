@@ -2,6 +2,7 @@
 import os
 import json
 import logging
+from pathlib import Path
 from typing import Dict, List, Union, Set
 
 import randname
@@ -98,5 +99,7 @@ with open(
     DATABASE: str = settings["database"]
     if not DATABASE:
         DATABASE = randname.DATABASE
+
+SKILLS_DATABASE = Path() / _THIS_FOLDER / "data" / "skills.json"
 
 from cochar.cochar import *

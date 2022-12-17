@@ -240,3 +240,9 @@ class NoneOccupationMeetsCriteria(CocharError):
     """Raise when searching criteria are not met by any occupation"""
 
     pass
+
+
+class OccupationPointsBelowZero(CocharError):
+    """Raise when provided occupation points are below 0"""
+
+    pass

@@ -260,7 +260,13 @@
         "tags": ["lovecraftian"],
         "groups": ["edu"],
         "credit_rating": [20, 70],
-        "skills": ["library use", "1l", "language (own)", "psychology", "4p"]
+        "skills": ["library use", "1l", "language (own)", "psychology", 
+        [4, "anthropology", "medicine", "occult", "psychoanalysis", "science (astronomy)",
+        "science (biology)", "science (botany)", "science (chemistry)", "science (cryptography)",
+        "science (forensics)", "science (geology)", "science (mathematics)", "science (meteorology)",
+        "science (pharmacy)", "science (physics)", "science (zoology)", "language (own)",
+        "language (german)", "language (spanish)", "language (french)", "language (latin)",
+        "language (ancient greek)", "language (egyptian)", "language (other)"]]
     },
     "tribe member": {
         "type": "classic",
@@ -401,7 +407,7 @@
         "groups": ["edu"],
         "credit_rating": [20, 60],
         "skills": [
-            "fighting (brawl)", "firearms", "law", "listen", "2i", "psychology", "spot hidden"
+            "computer use", "fighting (brawl)", "firearms", "listen", "2i", "psychology", "spot hidden"
         ]
     }
 }

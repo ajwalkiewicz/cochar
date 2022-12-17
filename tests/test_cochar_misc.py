@@ -9,7 +9,6 @@ import cochar.occup
 from randname import randname
 from cochar import create_character, generate_first_name, generate_last_name
 from cochar.character import Character
-from cochar.utils import ALL_SKILLS
 from cochar.error import *
 
 

@@ -11,9 +11,14 @@ import cochar.occup
 import cochar.skill
 import cochar.utils
 import cochar.error
+import cochar.interface
 
 cochar.set_logging_level("debug")
 
+SKILLS_INTERFACE = cochar.interface.SkillsJSONInterface(
+    cochar.SKILLS_DATABASE, cochar.ERA
+)
+SKILLS_GENERATOR = cochar.skill.SkillsGenerator(SKILLS_INTERFACE)
 
 # TODO: write unit test
 def create_character(
@@ -25,10 +30,11 @@ def create_character(
     sex: str = cochar.SEX,
     random_mode: bool = False,
     occupation: str = cochar.OCCUPATION,
-    skills: cochar.skill.Skills = {},
+    skills: cochar.skill.SkillsDict = {},
     occup_type: str = cochar.OCCUPATION_TYPE,
     era: str = cochar.ERA,
     tags: List[str] = cochar.TAGS,
+    skills_generator: cochar.skill.SkillsGenerator = SKILLS_GENERATOR,
 ) -> cochar.character.Character:
     """Main function for creating Character.
     Use this function instead of instantiating Character class.
@@ -113,7 +119,8 @@ def create_character(
         occupation, education, power, dexterity, appearance, strength
     )
     hobby_points = cochar.occup.calc_hobby_points(intelligence)
-    skills = cochar.skill.generate_skills(
+
+    skills = skills_generator.generate_skills(
         occupation, occupation_points, hobby_points, dexterity, education, skills
     )
 
@@ -506,9 +513,6 @@ def subtract_points_from_str_con_dex(
     :return: (strength, condition, dexterity)
     :rtype: Tuple[int, int, int]
     """
-    strength = strength
-    condition = condition
-    dexterity = dexterity
     for _ in range(subtract_points):
         characteristic_to_subtract = [
             characteristic
