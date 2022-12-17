@@ -331,7 +331,7 @@ class Character:
         damage_bonus: str = 0,
         build: int = 0,
         doge: int = 0,
-        skills: cochar.skill.Skills() = {},
+        skills: cochar.skill.SkillsDict = {},
         sanity_points: int = 0,
         magic_points: int = 0,
         hit_points: int = 0,
@@ -355,14 +355,14 @@ class Character:
         self.luck = luck
         self.damage_bonus = damage_bonus
         self.build = build
-        self.skills = cochar.skill.Skills(skills)
+        self.skills = cochar.skill.SkillsDict(skills)
         self.doge = doge
         self.sanity_points = sanity_points
         self.magic_points = magic_points
         self.hit_points = hit_points
 
     @property
-    def skills(self) -> cochar.skill.Skills:
+    def skills(self) -> cochar.skill.SkillsDict:
         """Character's skills.
 
         :return: character's skills
@@ -371,11 +371,11 @@ class Character:
         return self._skills
 
     @skills.setter
-    def skills(self, new_skills: Union[dict, cochar.skill.Skills]) -> None:
-        if isinstance(new_skills, cochar.skill.Skills):
+    def skills(self, new_skills: Union[dict, cochar.skill.SkillsDict]) -> None:
+        if isinstance(new_skills, cochar.skill.SkillsDict):
             self._skills = new_skills
         elif isinstance(new_skills, dict):
-            self._skills = cochar.skill.Skills(new_skills)
+            self._skills = cochar.skill.SkillsDict(new_skills)
         else:
             raise cochar.error.SkillsNotADict("Invalid skills. Skills must be a dict")
 

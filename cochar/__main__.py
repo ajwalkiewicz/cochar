@@ -62,7 +62,7 @@ def pars_arguments():
         type=str,
         required=False,
         default=cochar.OCCUPATION_TYPE,
-        choices=["classic", "expansion"],
+        choices=["classic", "expansion", "custom"],
         help="Occupation type",
     )
     parser.add_argument(
