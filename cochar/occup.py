@@ -22,7 +22,7 @@ def generate_occupation(
     random_mode: bool = False,
     occupation: str = None,
     occup_type: str = None,
-    era: str = None,
+    era: List[str] = None,
     tags: List[str] = None,
 ) -> str:
     """Return occupation based on:
@@ -83,7 +83,7 @@ def generate_occupation(
     if era:
         for i, group in enumerate(occupation_groups):
             occupation_groups[i] = [
-                occup for occup in group if cochar.OCCUPATIONS_DATA[occup]["era"] == era
+                occup for occup in group if cochar.OCCUPATIONS_DATA[occup]["era"] in era
             ]
 
     if tags:
@@ -161,7 +161,6 @@ def calc_occupation_points(
     )
 
 
-# TODO: write unit test
 def calc_hobby_points(intelligence: int, hobby_points: int = None) -> int:
     """Return hobby points, based on intelligence.
 

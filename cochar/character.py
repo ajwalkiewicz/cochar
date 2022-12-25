@@ -60,6 +60,10 @@ class Characteristic(Validator):
 class Name(Validator):
     """Character's name"""
 
+    def __set__(self, obj, value):
+        self.validate(value)
+        setattr(obj, self.private_name, str(value))
+
     def validate(self, new_name: str):
         """Check if name is a valid name.
 
@@ -100,7 +104,6 @@ class Year(Validator):
         """
         if not isinstance(new_year, int):
             raise cochar.error.InvalidYearValue(new_year)
-        self._year = new_year
 
 
 class Sex(Validator):
@@ -127,9 +130,7 @@ class Sex(Validator):
         :type new_sex: str | None
         :raises InvalidSexValue: Incorrect sex value: sex -> ['M', 'F', None']
         """
-        if new_sex in cochar.SEX_OPTIONS:
-            self._sex = cochar.cochar.generate_sex(new_sex)
-        else:
+        if new_sex not in cochar.SEX_OPTIONS:
             raise cochar.error.InvalidSexValue(new_sex, cochar.SEX_OPTIONS)
 
 
@@ -158,9 +159,7 @@ class Age(Validator):
         if not isinstance(new_age, int):
             raise cochar.error.InvalidAgeValue(new_age)
 
-        if self.min_age <= new_age <= self.max_age:
-            self._age = new_age
-        else:
+        if not self.min_age <= new_age <= self.max_age:
             raise cochar.error.AgeNotInRange(new_age, self.min_age, self.max_age)
 
 
@@ -185,9 +184,7 @@ class Country(Validator):
         """
 
         available_countries = randname.available_countries()
-        if new_country in available_countries:
-            self._country = new_country
-        else:
+        if new_country not in available_countries:
             raise cochar.error.InvalidCountryValue(new_country, available_countries)
 
 
@@ -208,9 +205,7 @@ class Occupation(Validator):
         :type new_occupation: str
         :raises InvalidOccupationValue: raise when `new_occupation` is not in `OCCUPATION_LIST`
         """
-        if new_occupation in self.available_occupations:
-            self._occupation = new_occupation
-        else:
+        if new_occupation not in self.available_occupations:
             raise cochar.error.InvalidOccupationValue(
                 new_occupation, self.available_occupations
             )
@@ -244,9 +239,7 @@ class DamageBonus(Validator):
             "+5K6",
         ]
         new_damage_bonus = str(new_damage_bonus).upper()
-        if new_damage_bonus in correct_values:
-            self._damage_bonus = new_damage_bonus
-        else:
+        if new_damage_bonus not in correct_values:
             raise cochar.error.InvalidDamageBonusValue(new_damage_bonus, correct_values)
 
 
@@ -267,9 +260,7 @@ class Build(Validator):
         :raises InvalidBuildValue: Invalid build. {new_build} not in {correct_values}
         """
         correct_values = [-2, -1, 0, 1, 2, 3, 4, 5, 6]
-        if new_build in correct_values:
-            self._build = new_build
-        else:
+        if new_build not in correct_values:
             raise cochar.error.InvalidBuildValue(new_build, correct_values)
 
 
@@ -385,7 +376,9 @@ class Character:
         :return: full characteristics
         :rtype: dict
         """
-        return {str(key)[1:]: value for key, value in vars(self).items()}
+        result = {str(key)[1:]: value for key, value in vars(self).items()}
+        result.update({"skills": self.skills.get_json_format()})
+        return result
 
     def __eq__(self, o: object) -> bool:
         return True if self.__dict__ == o.__dict__ else False
