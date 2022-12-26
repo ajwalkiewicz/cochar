@@ -1,4 +1,10 @@
-# **C**all **O**f **C**thulhu C**har**acter Generator
+[![PyPI version](https://badge.fury.io/py/cochar.svg)](https://badge.fury.io/py/cochar)
+[![License: GNU GPL v3](https://img.shields.io/badge/License-GNU%20GPL%20v3-red.svg)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Language: Python](https://img.shields.io/badge/Language-Python-blue.svg)](https://shields.io/)
+[![Author: Walu](https://img.shields.io/badge/Aurhor-Walu-gray.svg)](https://shields.io/)
+
+# <u>**C**</u>all <u>**O**</u>f <u>**C**</u>thulhu C<u>**har**</u>acter Generator
 
 Fast way of creating a random character for Call of Cthulhu RPG 7th ed.
 
@@ -77,7 +83,7 @@ Detailed documentation of module can by found here:
 
 ## Contribution
 
-If you want to contribute to `cochar` projcet read [contribution](CONTRIBUTION.md) for more information.
+If you want to contribute to `cochar` project read [contribution](CONTRIBUTION.md) for more information.
 
 ## Authors & Contributors
 
@@ -102,4 +108,4 @@ List of things that I'd like to add or improve. Those are rather long term goals
 
 ## License
 
-Cochar is licensed under the terms of the [GNU GPLv3](LICENSE)
+Cochar is licensed under the terms of the [GNU GPL v3](LICENSE)
