@@ -27,11 +27,11 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 
 Look at the [To Do](README#to-do) list in [README](README).
 
-Right now moste important are:
+Right now most important are:
 
 1. Unit Tests
 
-If you have any other suggestions feel wellcome to open new [issue](https://github.com/ajwalkiewicz/cochar/issues).
+If you have any other suggestions feel welcome to open new [issue](https://github.com/ajwalkiewicz/cochar/issues).
 
 ## Any contributions you make will be under the GNU General Public License v3.0
 
@@ -50,7 +50,7 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 - A quick summary and/or background
 - Steps to reproduce
   - Be specific!
-  - Give sample code if you can. [My stackoverflow question](http://stackoverflow.com/q/12488905/180626) includes sample code that _anyone_ with a base pytohn setup can run to reproduce what I was seeing
+  - Give sample code if you can. [My stackoverflow question](http://stackoverflow.com/q/12488905/180626) includes sample code that _anyone_ with a base python setup can run to reproduce what I was seeing
 - What you expected would happen
 - What actually happens
 - Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
