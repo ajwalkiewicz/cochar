@@ -11,8 +11,7 @@ import cochar
 import cochar.skill
 import cochar.error
 
-# TODO: Think about creating occupation class, to store occupations.
-# TODO: write unit test
+
 def generate_occupation(
     education: int = 1,
     power: int = 1,
@@ -120,7 +119,6 @@ def generate_occupation(
     return random.choice(candidates_for_occupation)
 
 
-# TODO: write unit test
 def calc_occupation_points(
     occupation: str,
     education: int,
@@ -147,14 +145,14 @@ def calc_occupation_points(
     :type appearance: int
     :param strength: strength points
     :type strength: int
-    :param occupation_points: occupation_points, defaults to None
+    :param occupation_points: occupation points, if provided function returns that value instead of calculating it, defaults to None
     :type occupation_points: int, optional
     :return: occupation points for provided occupation
     :rtype: int
     """
     return (
         occupation_points
-        if occupation_points
+        if occupation_points is not None
         else cochar.skill.calc_skill_points(
             occupation, education, power, dexterity, appearance, strength
         )
