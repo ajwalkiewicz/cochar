@@ -20,7 +20,7 @@ SKILLS_INTERFACE = cochar.interface.SkillsJSONInterface(
 )
 SKILLS_GENERATOR = cochar.skill.SkillsGenerator(SKILLS_INTERFACE)
 
-# TODO: write unit test
+
 def create_character(
     year: int,
     country: str,
@@ -150,15 +150,22 @@ def create_character(
     )
 
 
-# TODO: write unit test
-def generate_age(year, sex, age: int = False) -> int:
-    """Set age
+def generate_age(year: int, sex: str, age: int = False) -> int:
+    """Generate characters age, based on year and sex.
+    Return age if age is provided.
 
-    :param age: new age, defaults to None
+    :param year: year of the game
+    :type year: int
+    :param sex: character's sex
+    :type sex: str
+    :param age: character's age, defaults to False
     :type age: int, optional
-    :return: new age
+    :return: character's age
     :rtype: int
     """
+    if not isinstance(year, int):
+        raise cochar.error.InvalidYearValue(year)
+
     if age:
         return age
 
@@ -189,7 +196,6 @@ def generate_age(year, sex, age: int = False) -> int:
     return age
 
 
-# TODO: write unit test
 def generate_base_characteristics(
     age,
     strength: int = 0,

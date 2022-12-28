@@ -94,8 +94,7 @@ def test_calc_skill_points(
         ({"electrical repair": 10}, {}),  # skills == default
         ({"library use": 100}, {"library use": 100}),  # skills > default
         ({"language (own)": 60}, {"language (own)": 60}),
-        ({"language (german)": 1}, {"language (german)": 1}),
-        ({"language (german)": 0}, {}),
+        ({"language (german)": 1}, {}),
     ],
 )
 def test_filter_skills(input_skills, output_skills, skills_interface):

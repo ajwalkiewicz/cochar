@@ -86,6 +86,70 @@ def test_create_character_occup_era(year, country, tags):
     assert cochar.OCCUPATIONS_DATA[c.occupation]["tags"] == tags
 
 
+# TODO: write better test
+@pytest.mark.parametrize(
+    "param,value",
+    [
+        ("first_name", "Adam"),
+        ("last_name", "Walkiewicz"),
+        ("age", 30),
+        ("sex", "M"),
+        ("sex", "F"),
+        ("occupation", "software tester"),
+    ],
+)
+def test_create_character(param, value):
+    assert (
+        cochar.create_character(1925, "US", **{param: value}).__getattribute__(param)
+        == value
+    )
+
+
+# TODO: improve this test
+@pytest.mark.parametrize(
+    "year,sex,age,result",
+    [
+        (1949, "M", 1, 1),
+        (1949, "M", 50, 50),
+    ],
+)
+def test_generate_age(year, sex, age, result):
+    assert cochar.generate_age(year, sex, age) == result
+
+
+def test_generate_age_invalid_year():
+    with pytest.raises(cochar.error.InvalidYearValue):
+        cochar.generate_age("invalid", "F")
+
+
+# TODO: write better unit test
+def test_generate_base_characteristics():
+    data = {
+        "age": 39,
+        "strength": 0,
+        "condition": 0,
+        "size": 0,
+        "dexterity": 0,
+        "appearance": 0,
+        "education": 0,
+        "intelligence": 0,
+        "power": 0,
+        "luck": 0,
+        "move_rate": 0,
+    }
+    c = cochar.generate_base_characteristics(**data)
+    assert 15 <= c[0] <= 90
+    assert 15 <= c[1] <= 90
+    assert 40 <= c[2] <= 90
+    assert 15 <= c[3] <= 90
+    assert 15 <= c[4] <= 90
+    assert 40 <= c[5] <= 90
+    assert 40 <= c[6] <= 90
+    assert 15 <= c[7] <= 90
+    assert 15 <= c[8] <= 90
+    assert 7 <= c[9] <= 9
+
+
 @pytest.mark.parametrize(
     "power,size,condition,sanity_points,magic_points,hit_points,result",
     [
