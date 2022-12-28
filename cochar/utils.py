@@ -13,7 +13,7 @@
 - g: firearms
 - i: interpersonal
 - l: language
-- \*: any
+- *: any
 
 """
 from bisect import bisect_left
@@ -87,3 +87,20 @@ def narrowed_bisect(a: Sequence[int], x: int) -> int:
     """
     i = bisect_left(a, x)
     return i if i != len(a) else i - 1
+
+
+def is_skill_valid(skill_value: int) -> bool:
+    """Check if skill value is int type and it is not
+    below 0.
+
+    :param skill_value: skill value to test
+    :type skill_value: int
+    :return: True if value is valid, else False
+    :rtype: bool
+    """
+    if not isinstance(skill_value, int):
+        return False
+    if skill_value < 0:
+        return False
+
+    return True

@@ -38,7 +38,7 @@ def set_logging_level(logging_level=logging_level):
     )
 
 
-SEX_OPTIONS: Set[Union[str, bool]] = {"M", "F", False}
+SEX_OPTIONS: Set[Union[str, bool]] = {"M", "m", "F", "f", None}
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 POP_PYRAMID_PATH = os.path.abspath(
     os.path.join(_THIS_FOLDER, "data", "popPyramid.json")
