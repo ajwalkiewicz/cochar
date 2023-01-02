@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 import pytest
 
@@ -85,6 +86,286 @@ def test_create_character_occup_era(year, country, tags):
     assert cochar.OCCUPATIONS_DATA[c.occupation]["tags"] == tags
 
 
+# TODO: write better test
+@pytest.mark.parametrize(
+    "param,value",
+    [
+        ("first_name", "Adam"),
+        ("last_name", "Walkiewicz"),
+        ("age", 30),
+        ("sex", "M"),
+        ("sex", "F"),
+        ("occupation", "software tester"),
+    ],
+)
+def test_create_character(param, value):
+    assert (
+        cochar.create_character(1925, "US", **{param: value}).__getattribute__(param)
+        == value
+    )
+
+
+# TODO: improve this test
+@pytest.mark.parametrize(
+    "year,sex,age,result",
+    [
+        (1949, "M", 1, 1),
+        (1949, "M", 50, 50),
+    ],
+)
+def test_generate_age(year, sex, age, result):
+    assert cochar.generate_age(year, sex, age) == result
+
+
+def test_generate_age_invalid_year():
+    with pytest.raises(cochar.error.InvalidYearValue):
+        cochar.generate_age("invalid", "F")
+
+
+# TODO: write better unit test
+def test_generate_base_characteristics():
+    data = {
+        "age": 39,
+        "strength": 0,
+        "condition": 0,
+        "size": 0,
+        "dexterity": 0,
+        "appearance": 0,
+        "education": 0,
+        "intelligence": 0,
+        "power": 0,
+        "luck": 0,
+        "move_rate": 0,
+    }
+    c = cochar.generate_base_characteristics(**data)
+    assert 15 <= c[0] <= 90
+    assert 15 <= c[1] <= 90
+    assert 40 <= c[2] <= 90
+    assert 15 <= c[3] <= 90
+    assert 15 <= c[4] <= 90
+    assert 40 <= c[5] <= 90
+    assert 40 <= c[6] <= 90
+    assert 15 <= c[7] <= 90
+    assert 15 <= c[8] <= 90
+    assert 7 <= c[9] <= 9
+
+
+@pytest.mark.parametrize(
+    "power,size,condition,sanity_points,magic_points,hit_points,result",
+    [
+        (0, 0, 0, 1, 1, 1, (1, 1, 1)),
+        (1, 1, 1, 0, 0, 0, (1, 0, 0)),
+        (10, 10, 10, 0, 0, 0, (10, 2, 2)),
+    ],
+)
+def test_calc_derived_attributes(
+    power, size, condition, sanity_points, magic_points, hit_points, result
+):
+    assert (
+        cochar.calc_derived_attributes(
+            power, size, condition, sanity_points, magic_points, hit_points
+        )
+        == result
+    )
+
+
+@pytest.mark.parametrize("power", [-1, 0, 1, 50])
+def test_sanity_points(power):
+    assert cochar.calc_sanity_points(power) == power
+
+
+@pytest.mark.parametrize(
+    "power,result",
+    [
+        (0, 0),
+        (4, 0),
+        (5, 1),
+        (6, 1),
+        (60, 12),
+    ],
+)
+def test_calc_magic_points(power, result):
+    assert cochar.calc_magic_points(power) == result
+
+
+@pytest.mark.parametrize(
+    "size,condition,result",
+    [
+        (0, 0, 0),
+        (50, 51, 10),
+        (50, 50, 10),
+        (50, 49, 9),
+    ],
+)
+def test_calc_hit_points(size, condition, result):
+    assert cochar.calc_hit_points(size, condition) == result
+
+
+@pytest.mark.parametrize(
+    "strength,size,dexterity,damage_bonus,build,doge,result",
+    [
+        (0, 0, 0, "+K4", 1, 1, ("+K4", 1, 1)),
+        (0, 0, 0, "", 0, 0, ("-2", -2, 0)),
+        (62, 62, 50, "", 0, 0, ("0", 0, 25)),
+    ],
+)
+def test_calc_combat_characteristics(
+    strength, size, dexterity, damage_bonus, build, doge, result
+):
+    assert (
+        cochar.calc_combat_characteristics(
+            strength, size, dexterity, damage_bonus, build, doge
+        )
+        == result
+    )
+
+
+# TODO: test for bigger ranges
+@pytest.mark.parametrize(
+    "strength,size,result",
+    [
+        (0, 0, "-2"),
+        (32, 32, "-2"),
+        (42, 42, "-1"),
+        (62, 62, "0"),
+        (82, 82, "+1K4"),
+        (102, 102, "+1K6"),
+        (200, 83, "+2K6"),
+        (300, 64, "+3K6"),
+        (400, 44, "+4K6"),
+        (500, 24, "+5K6"),
+        # (600, 24, "+7K6"),
+    ],
+)
+def test_calc_damage_bonus(strength, size, result):
+    assert cochar.calc_damage_bonus(strength, size) == result
+
+
+# TODO: test for bigger ranges
+@pytest.mark.parametrize(
+    "strength,size,result",
+    [
+        (1, 1, -2),
+        (32, 32, -2),
+        (42, 42, -1),
+        (100, 24, 0),
+        (100, 64, 1),
+        (200, 4, 2),
+        (200, 83, 3),
+        (300, 64, 4),
+        (400, 44, 5),
+        (500, 24, 6),
+        # (600, 24, 6),
+    ],
+)
+def test_calc_build(strength, size, result):
+    assert cochar.calc_build(strength, size) == result
+
+
+@pytest.mark.parametrize(
+    "dexterity,result",
+    [
+        (49, 24),
+        (50, 25),
+        (51, 25),
+        (0, 0),
+    ],
+)
+def test_calc_doge(dexterity, result):
+    assert cochar.calc_doge(dexterity) == result
+
+
+@pytest.mark.parametrize(
+    "characteristic_points,subtract_points,result",
+    [
+        (50, 10, 40),
+        (50, 60, 1),
+        (2, 1, 1),
+        (0, 0, 1),
+        (1, 0, 1),
+        (0, -1, 1),
+    ],
+)
+def test_subtract_points_from_characteristic(
+    characteristic_points, subtract_points, result
+):
+    assert (
+        cochar.subtract_points_from_characteristic(
+            characteristic_points, subtract_points
+        )
+        == result
+    )
+
+
+@pytest.mark.parametrize(
+    "strength,condition,dexterity,subtract_points,result",
+    [
+        (1, 1, 1, 3, (1, 1, 1)),
+        (2, 2, 2, 3, (1, 1, 1)),
+        (2, 2, 2, 9, (1, 1, 1)),
+    ],
+)
+def test_subtract_points_from_str_con_dex(
+    strength, condition, dexterity, subtract_points, result
+):
+    assert (
+        cochar.subtract_points_from_str_con_dex(
+            strength, condition, dexterity, subtract_points
+        )
+        == result
+    )
+
+
+@pytest.mark.parametrize(
+    "tested_value,repetition,result",
+    [
+        (0, 0, 0),
+        (0, 1, 1),
+        (1, 1, 1),
+        (98, 1, 99),
+        (99, 1, 99),
+    ],
+)
+def test_characteristic_test(tested_value, repetition, result):
+    if tested_value > 1:
+
+        def mock_random(*args):
+            return 100
+
+    else:
+
+        def mock_random(*args):
+            return 1
+
+    with patch("random.randint", mock_random):
+        assert cochar.characteristic_test(tested_value, repetition) == result
+
+
+@pytest.mark.parametrize(
+    "strength,dexterity,size,result",
+    [
+        (0, 1, 1, 8),
+        (1, 0, 1, 8),
+        (0, 0, 1, 7),
+        (1, 1, 0, 9),
+        (1, 1, 1, 9),
+    ],
+)
+def test_calc_move_rate(strength, dexterity, size, result):
+    assert cochar.calc_move_rate(strength, dexterity, size) == result
+
+
+@pytest.mark.parametrize("input", ["M", "m", "F", "f", None])
+def test_generate_sex_valid_input(input):
+    assert cochar.generate_sex(input) in ["M", "F"]
+
+
+@pytest.mark.parametrize("input", ["", False, True])
+def test_generate_sex_invalid_input(input):
+    with pytest.raises(ValueError):
+        cochar.generate_sex(input)
+
+
 class TestCharacter(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -93,7 +374,7 @@ class TestCharacter(unittest.TestCase):
         cls.character = cochar.create_character(cls.year, cls.country)
 
     def test_year_bigger_that_range(self):
-        c = cochar.create_character(year=2022, country="US")
+        cochar.create_character(year=2022, country="US")
 
     def test_invalid_country(self):
         with self.assertRaises(cochar.error.InvalidCountryValue):
@@ -106,50 +387,3 @@ class TestCharacter(unittest.TestCase):
     def test_points_assignment_to_doge(self):
         # TODO: Create a proper test
         pass
-
-    def test_sanity_points(self):
-        power = 100
-        sanity_points = cochar.calc_sanity_points(power)
-        self.assertEqual(sanity_points, power)
-
-    def test_calc_magic_points(self):
-        power = 100
-        magic_points = cochar.calc_magic_points(power)
-        self.assertEqual(magic_points, 20)
-
-    def test_calc_hit_points(self):
-        size = 50
-        condition = 50
-        hit_points = cochar.calc_hit_points(size, condition)
-        self.assertEqual(hit_points, 10)
-
-    def test_calc_damage_bonus(self):
-        # TODO: test for bigger ranges
-        self.assertEqual(cochar.calc_damage_bonus(0, 0), "-2")
-        self.assertEqual(cochar.calc_damage_bonus(32, 32), "-2")
-        self.assertEqual(cochar.calc_damage_bonus(42, 42), "-1")
-        self.assertEqual(cochar.calc_damage_bonus(62, 62), "0")
-        self.assertEqual(cochar.calc_damage_bonus(82, 82), "+1K4")
-        self.assertEqual(cochar.calc_damage_bonus(102, 102), "+1K6")
-        self.assertEqual(cochar.calc_damage_bonus(200, 83), "+2K6")
-        self.assertEqual(cochar.calc_damage_bonus(300, 64), "+3K6")
-        self.assertEqual(cochar.calc_damage_bonus(400, 44), "+4K6")
-        self.assertEqual(cochar.calc_damage_bonus(500, 24), "+5K6")
-        # self.assertEqual(cochar.calc_damage_bonus(600, 24), "+7K6")
-
-    def test_calc_build(self):
-        # TODO: test for bigger ranges
-        self.assertEqual(cochar.calc_build(1, 1), -2)
-        self.assertEqual(cochar.calc_build(32, 32), -2)
-        self.assertEqual(cochar.calc_build(42, 42), -1)
-        self.assertEqual(cochar.calc_build(100, 24), 0)
-        self.assertEqual(cochar.calc_build(100, 64), 1)
-        self.assertEqual(cochar.calc_build(200, 4), 2)
-        self.assertEqual(cochar.calc_build(200, 83), 3)
-        self.assertEqual(cochar.calc_build(300, 64), 4)
-        self.assertEqual(cochar.calc_build(400, 44), 5)
-        self.assertEqual(cochar.calc_build(500, 24), 6)
-        # self.assertEqual(cochar.calc_build(600, 24), 6)
-
-    def test_calc_doge(self):
-        self.assertEqual(cochar.calc_doge(51), 25)

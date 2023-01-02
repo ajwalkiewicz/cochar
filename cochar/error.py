@@ -75,7 +75,7 @@ class SkillsNotADict(CocharError):
 
     def __init__(self, skill):
         self.skill = skill
-        self.message = f"'{self.skill}' Skills must be an dictionary"
+        self.message = f"Invalid skills: '{self.skill}'. Skills must be an dictionary"
         super().__init__(self.message)
 
     def __str__(self):
@@ -87,7 +87,7 @@ class InvalidYearValue(CocharError):
 
     def __init__(self, year: int):
         self.year = year
-        self.message = f"'{self.year}' Year must be an integer number"
+        self.message = f"Invalid year: '{self.year}'. Year must be an integer number"
         super().__init__(self.message)
 
     def __str__(self):

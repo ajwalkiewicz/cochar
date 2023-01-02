@@ -20,7 +20,7 @@ SKILLS_INTERFACE = cochar.interface.SkillsJSONInterface(
 )
 SKILLS_GENERATOR = cochar.skill.SkillsGenerator(SKILLS_INTERFACE)
 
-# TODO: write unit test
+
 def create_character(
     year: int,
     country: str,
@@ -69,10 +69,7 @@ def create_character(
     """
     weights = cochar.WEIGHTS
 
-    if is_sex_valid(sex):
-        sex = generate_sex(sex)
-    else:
-        raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None']")
+    sex = generate_sex(sex)
 
     age: int = generate_age(year, sex, age)
 
@@ -112,7 +109,6 @@ def create_character(
         power, size, condition
     )
 
-    # TODO: analyze doge flow
     damage_bonus, build, doge = calc_combat_characteristics(strength, size, dexterity)
 
     occupation_points = cochar.occup.calc_occupation_points(
@@ -154,15 +150,22 @@ def create_character(
     )
 
 
-# TODO: write unit test
-def generate_age(year, sex, age: int = False) -> int:
-    """Set age
+def generate_age(year: int, sex: str, age: int = False) -> int:
+    """Generate characters age, based on year and sex.
+    Return age if age is provided.
 
-    :param age: new age, defaults to None
+    :param year: year of the game
+    :type year: int
+    :param sex: character's sex
+    :type sex: str
+    :param age: character's age, defaults to False
     :type age: int, optional
-    :return: new age
+    :return: character's age
     :rtype: int
     """
+    if not isinstance(year, int):
+        raise cochar.error.InvalidYearValue(year)
+
     if age:
         return age
 
@@ -193,7 +196,6 @@ def generate_age(year, sex, age: int = False) -> int:
     return age
 
 
-# TODO: write unit test
 def generate_base_characteristics(
     age,
     strength: int = 0,
@@ -296,7 +298,6 @@ def generate_base_characteristics(
     )
 
 
-# TODO: write unit test
 def calc_derived_attributes(
     power: int,
     size: int,
@@ -368,7 +369,6 @@ def calc_hit_points(size: int, condition: int) -> int:
     return (size + condition) // 10
 
 
-# TODO: write unit test
 def calc_combat_characteristics(
     strength: int,
     size: int,
@@ -400,7 +400,6 @@ def calc_combat_characteristics(
     return damage_bonus, build, doge
 
 
-# TODO: write unit test
 def calc_damage_bonus(strength: int, size: int) -> str:
     """Return damage bonus, based on sum of strength and size.
 
@@ -426,7 +425,6 @@ def calc_damage_bonus(strength: int, size: int) -> str:
     return damage_bonus
 
 
-# TODO: write unit test
 def calc_build(strength: int, size: int) -> int:
     """Return build based on sum od strength and size.
 
@@ -465,7 +463,6 @@ def calc_doge(dexterity: int) -> int:
     return dexterity // 2
 
 
-# TODO: write unit test
 def subtract_points_from_characteristic(
     characteristic_points: int, subtract_points: int
 ) -> int:
@@ -494,12 +491,11 @@ def subtract_points_from_characteristic(
     )
 
 
-# TODO: write unit test
 def subtract_points_from_str_con_dex(
     strength: int, condition: int, dexterity: int, subtract_points: int
 ) -> Tuple[int, int, int]:
     """Subtract certain amount of points from strength, condition and
-    dexterity, but but prevent each of the characteristics to be
+    dexterity, but prevent each of the characteristics to be
     lower than 1.
 
     :param strength: character's strength
@@ -513,32 +509,38 @@ def subtract_points_from_str_con_dex(
     :return: (strength, condition, dexterity)
     :rtype: Tuple[int, int, int]
     """
+    characteristics = {
+        "strength": strength,
+        "condition": condition,
+        "dexterity": dexterity,
+    }
     for _ in range(subtract_points):
         characteristic_to_subtract = [
             characteristic
-            for characteristic in (strength, condition, dexterity)
-            if characteristic != 1
+            for characteristic, value in characteristics.items()
+            if value != 1
         ]
         if characteristic_to_subtract:
             characteristic = random.choice(characteristic_to_subtract)
-            characteristic = characteristic - 1
+            characteristics[characteristic] -= 1
         else:
             break
 
-    return strength, condition, dexterity
+    return (
+        characteristics["strength"],
+        characteristics["condition"],
+        characteristics["dexterity"],
+    )
 
 
-# TODO: write unit test
 def characteristic_test(tested_value: int, repetition: int = 1) -> int:
     """Perform characteristic test.
 
-    TODO: Double check if that works this way for characteristics.
-    Works like improvement test. Roll number between 1 to 100,
-    If that number is higher than tested value or higher
-    then 95, than increase tested value with random number,
+    Roll number between 1 to 100,
+    If that number is higher than tested value, than increase tested value with random number,
     between 1 to 10.
-
-    Repeat repetition times.
+    Repeat `repetition` times.
+    If result would be higher than 99, return 99
 
     .. note:
         for skills use skill_test()
@@ -547,17 +549,16 @@ def characteristic_test(tested_value: int, repetition: int = 1) -> int:
     :type tested_value: int
     :param repetition: how many test to perform
     :type repetition: int
-    :return: unchanged or increased tested value
+    :return: unchanged or increased tested value, but not higher than 99
     :rtype: int
     """
     for _ in range(repetition):
         test = random.randint(1, 100)
         if tested_value < test:
             tested_value += random.randint(1, 10)
-    return tested_value
+    return tested_value if tested_value <= 99 else 99
 
 
-# TODO: write unit test
 def calc_move_rate(strength: int, dexterity: int, size: int) -> int:
     """Return move rate base on relations between
     strength, dexterity and size
@@ -588,24 +589,6 @@ def calc_move_rate(strength: int, dexterity: int, size: int) -> int:
 
 
 # TODO: write unit test
-def is_skill_valid(skill_value: int) -> bool:
-    """Check if skill value is int type and it is not
-    below 0.
-
-    :param skill_value: skill value to test
-    :type skill_value: int
-    :return: True if value is valid, else False
-    :rtype: bool
-    """
-    if not isinstance(skill_value, int):
-        return False
-    if skill_value < 0:
-        return False
-
-    return True
-
-
-# TODO: write unit test
 def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random last name based on the given parameters
 
@@ -623,7 +606,7 @@ def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     :return: last name
     :rtype: str
     """
-    sex = verify_and_return_sex(sex, country, name="last_names")
+    sex = _verify_and_return_sex(sex, country, name="last_names")
     return randname.last_name(
         year,
         sex,
@@ -652,8 +635,7 @@ def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str
     :return: first name
     :rtype: str
     """
-    # TODO: Fix capitalization for Spanish first names
-    sex = verify_and_return_sex(sex, country, name="first_names")
+    sex = _verify_and_return_sex(sex, country, name="first_names")
     return randname.first_name(
         year,
         sex,
@@ -665,8 +647,7 @@ def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str
 
 
 # TODO: write unit test
-# TODO: investigate sex flow
-def verify_and_return_sex(sex: str, country: str, name: str) -> str:
+def _verify_and_return_sex(sex: str, country: str, name: str) -> str:
     """Return valid sex, based on sex, country and name.
     if provided sex is invalid, it will be overridden, and
     function return valid sex.
@@ -689,29 +670,16 @@ def verify_and_return_sex(sex: str, country: str, name: str) -> str:
     return sex
 
 
-# TODO: consider refactoring sex functions
-# TODO: write unit test
-def is_sex_valid(sex: str) -> bool:
-    """Return True if sex is valid, else False
+def generate_sex(sex: Union[str, bool] = None) -> str:
+    """Generate character's sex
 
-    :param sex: character's sex
-    :type sex: str
-    :return: True|False
-    :rtype: bool
-    """
-    return True if sex in cochar.SEX_OPTIONS else False
-
-
-# TODO: write unit test
-def generate_sex(sex: Union[str, bool]) -> str:
-    """Get sex
-
-    TODO: investigate sex workflow. Why there is no sex verification here
-    TODO: add unit tests for sex
-
-    :param sex: character's sex
+    :param sex: Character's sex, if provided return that value
     :type sex: Union[str, bool]
-    :return: sex
+    :raises ValueError: If provided sex is not in {"M", "F", None}, raise this error
+    :return: Character's sex as "M" or "F"
     :rtype: str
     """
-    return random.choice(("M", "F")) if sex is False else sex.upper()
+    if sex not in cochar.SEX_OPTIONS:
+        raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None]")
+
+    return random.choice(("M", "F")) if sex is None else sex.upper()
