@@ -1,6 +1,12 @@
-# **C**all **O**f **C**thulhu **Char**acter Generator
+[![PyPI version](https://badge.fury.io/py/cochar.svg)](https://badge.fury.io/py/cochar)
+[![License: GNU GPL v3](https://img.shields.io/badge/License-GNU%20GPL%20v3-red.svg)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Language: Python](https://img.shields.io/badge/Language-Python-blue.svg)](https://shields.io/)
+[![Author: Walu](https://img.shields.io/badge/Aurhor-Walu-gray.svg)](https://shields.io/)
 
-Fast way of creating a random character for Call of Cthulhu RPG 7th ed. 
+# <u>**C**</u>all <u>**O**</u>f <u>**C**</u>thulhu C<u>**har**</u>acter Generator
+
+Fast way of creating a random character for Call of Cthulhu RPG 7th ed.
 
 ## Summary
 
@@ -17,7 +23,7 @@ Fast way of creating a random character for Call of Cthulhu RPG 7th ed.
 - [Documentation](#documentation)
 - [Contribution](#contribution)
 - [Authors & Contributors](#authors-&-contributors)
-- [To Do](#to-do)
+- [TODO](#todo)
 - [License](#license)
 
 ## Installation
@@ -39,11 +45,34 @@ Example:
 Character(year=1925, country='US', first_name='Anthem', last_name='Pharr', age=22, sex='M', occupation='doctor of medicine', strength=33, condition=30, size=78, dexterity=40, appearance=23, education=87, intelligence=65, power=50, move_rate=7, luck=38, skills={'first aid': 38, 'language [latin]': 9, 'medicine': 73, 'science [biology]': 48, 'ride': 64, 'anthropology': 6, 'charm': 46, 'intimidate': 32, 'art/craft (sculptor)': 9, 'credit rating': 74, 'doge': 20}, damage_bonus='0', build=0, doge=20, sanity_points=50, magic_points=10, hit_points=10)
 ```
 
+### Default settings
+
+Default settings are defined in `./data/settings.json`.
+
+```json
+{
+  "min_age": 15,
+  "max_age": 90,
+  "max_skill_level": 90,
+  "year": 1925,
+  "age": false,
+  "sex": false,
+  "first_name": false,
+  "last_name": false,
+  "country": "US",
+  "occupation": "optimal",
+  "weights": true,
+  "database": "",
+  "show_warnings": false
+}
+```
+
 ## Dependencies
 
 `cochar` depends on [randname](github.com/ajwalkiewicz/randname) module for generating random names.
 
-For more details please see: 
+For more details please see:
+
 - [randname github](github.com/ajwalkiewicz/randname)
 - [randname pypi](https://pypi.org/project/rname/)
 
@@ -54,7 +83,7 @@ Detailed documentation of module can by found here:
 
 ## Contribution
 
-If you want to contribute to `cochar` projcet read [contribution](CONTRIBUTION.md) for more information.
+If you want to contribute to `cochar` project read [contribution](CONTRIBUTION.md) for more information.
 
 ## Authors & Contributors
 
@@ -62,24 +91,21 @@ If you want to contribute to `cochar` projcet read [contribution](CONTRIBUTION.m
 
 **Contributors**: Be first!
 
-## To do
+## TODO
 
-### Basic improvements
+List of things that I'd like to add or improve. Those are rather long term goals, not something that I'm working on.
 
-1. [x] Move occupations to external file
-2. [ ] Write more thorough unit tests
-3. [ ] Save characters feature
-4. [ ] Simple GUI 
-5. [ ] Add custom Errors
-6. [ ] Add more suited occupations for NPC's
+### Module
 
-### Dream improvements
+1. [ ] Move skills to separate json file
+2. [ ] More occupations
+3. [ ] Historically accurate mode: occupations and skills depending on year of the game. Age limit for some professions like fo doctor or professor.
 
-Realistically those improvement probably will never be introduced. 
+### Webapp
 
-1. [ ] Generating PDF's
-2. [ ] Interactive and advance graphical GUI
+1. [ ] Export character to character sheet
+2. [ ] Face generator
 
 ## License
 
-Cochar is licensed under the terms of the [GNU GPLv3](LICENSE)
+Cochar is licensed under the terms of the [GNU GPL v3](LICENSE)
