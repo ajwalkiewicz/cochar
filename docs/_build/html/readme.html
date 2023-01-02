@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Call Of Cthulhu Character Generator &#8212; cochar 1.0.0-alpha.1 documentation</title>
+    <title>Call Of Cthulhu Character Generator &#8212; cochar 1.0.0-alpha.4 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
@@ -17,7 +17,9 @@
     <script src="_static/doctools.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cochar package" href="cochar.html" />
+    <link rel="prev" title="Welcome to cochar’s documentation!" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,8 +30,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cochar 1.0.0-alpha.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href=""><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator</a></li> 
+        <li class="right" >
+          <a href="cochar.html" title="cochar package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to cochar’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 1.0.0-alpha.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><u><strong>C</strong></u>all <u><strong>O</strong></u>f <u><strong>C</strong></u>thulhu C<u><strong>har</strong></u>acter Generator</a></li> 
       </ul>
     </div>  
 
@@ -38,8 +46,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="call-of-cthulhu-character-generator">
-<h1><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator<a class="headerlink" href="#call-of-cthulhu-character-generator" title="Permalink to this heading">¶</a></h1>
+  <p><a class="reference external" href="https://badge.fury.io/py/cochar"><img alt="PyPI version" src="https://badge.fury.io/py/cochar.svg" /></a>
+<span class="xref myst"><img alt="License: GNU GPL v3" src="https://img.shields.io/badge/License-GNU%20GPL%20v3-red.svg" /></span>
+<a class="reference external" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
+<a class="reference external" href="https://shields.io/"><img alt="Language: Python" src="https://img.shields.io/badge/Language-Python-blue.svg" /></a>
+<a class="reference external" href="https://shields.io/"><img alt="Author: Walu" src="https://img.shields.io/badge/Aurhor-Walu-gray.svg" /></a></p>
+<section id="u-c-u-all-u-o-u-f-u-c-u-thulhu-c-u-har-u-acter-generator">
+<h1><u><strong>C</strong></u>all <u><strong>O</strong></u>f <u><strong>C</strong></u>thulhu C<u><strong>har</strong></u>acter Generator<a class="headerlink" href="#u-c-u-all-u-o-u-f-u-c-u-thulhu-c-u-har-u-acter-generator" title="Permalink to this heading">¶</a></h1>
 <p>Fast way of creating a random character for Call of Cthulhu RPG 7th ed.</p>
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">¶</a></h2>
@@ -57,7 +70,7 @@
 <li><p><span class="xref myst">Documentation</span></p></li>
 <li><p><span class="xref myst">Contribution</span></p></li>
 <li><p><span class="xref myst">Authors &amp; Contributors</span></p></li>
-<li><p><span class="xref myst">To Do</span></p></li>
+<li><p><span class="xref myst">TODO</span></p></li>
 <li><p><span class="xref myst">License</span></p></li>
 </ul>
 </section>
@@ -79,6 +92,27 @@
 </pre></div>
 </div>
 </section>
+<section id="default-settings">
+<h3>Default settings<a class="headerlink" href="#default-settings" title="Permalink to this heading">¶</a></h3>
+<p>Default settings are defined in <code class="docutils literal notranslate"><span class="pre">./data/settings.json</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;min_age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;max_age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;max_skill_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1925</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;sex&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;first_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;last_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;country&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;US&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;occupation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;optimal&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;weights&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;show_warnings&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading">¶</a></h2>
@@ -96,38 +130,35 @@
 </section>
 <section id="contribution">
 <h2>Contribution<a class="headerlink" href="#contribution" title="Permalink to this heading">¶</a></h2>
-<p>If you want to contribute to <code class="docutils literal notranslate"><span class="pre">cochar</span></code> projcet read <span class="xref myst">contribution</span> for more information.</p>
+<p>If you want to contribute to <code class="docutils literal notranslate"><span class="pre">cochar</span></code> project read <span class="xref myst">contribution</span> for more information.</p>
 </section>
 <section id="authors-contributors">
 <h2>Authors &amp; Contributors<a class="headerlink" href="#authors-contributors" title="Permalink to this heading">¶</a></h2>
 <p><strong>Author</strong>: Adam Walkiewicz</p>
 <p><strong>Contributors</strong>: Be first!</p>
 </section>
-<section id="to-do">
-<h2>To do<a class="headerlink" href="#to-do" title="Permalink to this heading">¶</a></h2>
-<section id="basic-improvements">
-<h3>Basic improvements<a class="headerlink" href="#basic-improvements" title="Permalink to this heading">¶</a></h3>
+<section id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this heading">¶</a></h2>
+<p>List of things that I’d like to add or improve. Those are rather long term goals, not something that I’m working on.</p>
+<section id="module">
+<h3>Module<a class="headerlink" href="#module" title="Permalink to this heading">¶</a></h3>
 <ol class="arabic simple">
-<li><p>[x] Move occupations to external file</p></li>
-<li><p>[ ] Write more thorough unit tests</p></li>
-<li><p>[ ] Save characters feature</p></li>
-<li><p>[ ] Simple GUI</p></li>
-<li><p>[ ] Add custom Errors</p></li>
-<li><p>[ ] Add more suited occupations for NPC’s</p></li>
+<li><p>[ ] Move skills to separate json file</p></li>
+<li><p>[ ] More occupations</p></li>
+<li><p>[ ] Historically accurate mode: occupations and skills depending on year of the game. Age limit for some professions like fo doctor or professor.</p></li>
 </ol>
 </section>
-<section id="dream-improvements">
-<h3>Dream improvements<a class="headerlink" href="#dream-improvements" title="Permalink to this heading">¶</a></h3>
-<p>Realistically those improvement probably will never be introduced.</p>
+<section id="webapp">
+<h3>Webapp<a class="headerlink" href="#webapp" title="Permalink to this heading">¶</a></h3>
 <ol class="arabic simple">
-<li><p>[ ] Generating PDF’s</p></li>
-<li><p>[ ] Interactive and advance graphical GUI</p></li>
+<li><p>[ ] Export character to character sheet</p></li>
+<li><p>[ ] Face generator</p></li>
 </ol>
 </section>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this heading">¶</a></h2>
-<p>Cochar is licensed under the terms of the <span class="xref myst">GNU GPLv3</span></p>
+<p>Cochar is licensed under the terms of the <span class="xref myst">GNU GPL v3</span></p>
 </section>
 </section>
 
@@ -141,21 +172,22 @@
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#"><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator</a><ul>
+<li><a class="reference internal" href="#"><u><strong>C</strong></u>all <u><strong>O</strong></u>f <u><strong>C</strong></u>thulhu C<u><strong>har</strong></u>acter Generator</a><ul>
 <li><a class="reference internal" href="#summary">Summary</a></li>
 <li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#usage">Usage</a><ul>
 <li><a class="reference internal" href="#basic">Basic</a></li>
+<li><a class="reference internal" href="#default-settings">Default settings</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#contribution">Contribution</a></li>
 <li><a class="reference internal" href="#authors-contributors">Authors &amp; Contributors</a></li>
-<li><a class="reference internal" href="#to-do">To do</a><ul>
-<li><a class="reference internal" href="#basic-improvements">Basic improvements</a></li>
-<li><a class="reference internal" href="#dream-improvements">Dream improvements</a></li>
+<li><a class="reference internal" href="#todo">TODO</a><ul>
+<li><a class="reference internal" href="#module">Module</a></li>
+<li><a class="reference internal" href="#webapp">Webapp</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#license">License</a></li>
@@ -163,6 +195,16 @@
 </li>
 </ul>
 
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Welcome to cochar’s documentation!</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="cochar.html"
+                          title="next chapter">cochar package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -194,8 +236,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">cochar 1.0.0-alpha.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href=""><strong>C</strong>all <strong>O</strong>f <strong>C</strong>thulhu <strong>Char</strong>acter Generator</a></li> 
+        <li class="right" >
+          <a href="cochar.html" title="cochar package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to cochar’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cochar 1.0.0-alpha.4 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><u><strong>C</strong></u>all <u><strong>O</strong></u>f <u><strong>C</strong></u>thulhu C<u><strong>har</strong></u>acter Generator</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

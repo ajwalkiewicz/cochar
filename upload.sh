@@ -60,7 +60,7 @@ main(){
     # install changes locally that to run tests
     pip3 install -e . && \
     # run tests, check packages, uploadd packages
-    python3 -m unittest "$(echo tests/test_*)" && \
+    pytest -q && \
     # change version in all files that contains info about it
     # change_version && \
     # clean dist directory
