@@ -64,7 +64,8 @@ function sendRequest(
   random_mode = "",
   occupation = ""
 ) {
-  const url = new URL("http://127.0.0.1:5000/api/get");
+  const url = new URL("http://0.0.0.0:80/api/get");
+  // const url = new URL("http://127.0.0.1:5000/api/get");
   // const url = new URL("https://cochar.loca.lt/api/get");
 
   if (firstName) url.searchParams.append("first_name", firstName);
@@ -73,7 +74,7 @@ function sendRequest(
   if (year) url.searchParams.append("year", year);
   if (country) url.searchParams.append("country", country);
   if (sex) url.searchParams.append("sex", sex);
-  if (random_mode) url.searchParams.append("random_mode", random_mode)
+  if (random_mode) url.searchParams.append("random_mode", random_mode);
   if (occupation) url.searchParams.append("occupation", occupation);
 
   console.log(url);
@@ -238,23 +239,32 @@ function generateCharacter() {
   let sex = sexForm.value.toLowerCase();
   let year = yearForm.value;
   let occupation = occupationForm.value.toLowerCase();
-  let random_mode
+  let random_mode;
 
   if (sex === "random") sex = "";
   if (sex === "male") sex = "M";
   if (sex === "female") sex = "F";
   if (occupation.split(" ")[0] === "random") {
-    random_mode = true
-    occupation = ""
+    random_mode = true;
+    occupation = "";
   }
-  if (occupation.split(" ")[0] === "optimal") occupation = ""
+  if (occupation.split(" ")[0] === "optimal") occupation = "";
 
   if (validateForm()) {
-    sendRequest(firstName, lastName, country, age, sex, year, random_mode, occupation);
+    sendRequest(
+      firstName,
+      lastName,
+      country,
+      age,
+      sex,
+      year,
+      random_mode,
+      occupation
+    );
   }
 }
 
-document.getElementById('validation-country').value="(US) United States"
+document.getElementById("validation-country").value = "(US) United States";
 
 // Add Event listener to generate button
 generateButton.addEventListener("click", generateCharacter);
@@ -264,4 +274,4 @@ generateCharacter();
 
 // TODO: Disable form submission with invalid data
 // TODO: Sort occupation
-// TODO: Rule out occupations like hacker if year is to low 
+// TODO: Rule out occupations like hacker if year is to low
