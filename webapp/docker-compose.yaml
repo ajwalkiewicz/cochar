@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: cochar-web
+    command: uwsgi --http 0.0.0.0:80 --master -p 4 -w wsgi --py-autoreload 1
+    ports:
+      - 80:80
+    volumes:
+      - .:/webapp
