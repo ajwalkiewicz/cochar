@@ -1,0 +1,373 @@
+{% extends "base.html" %} {% block title %}Cochar - Generator{% endblock %} {%
+block custom_css %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+{% endblock %} {% block content %}
+<div class="container mt-0 px-md-5">
+  <div class="row">
+    <!-- Generator Card -->
+    <div class="col-lg-4">
+      <div class="border rounded bg-light p-3 mt-3 mb-3">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs nav-justified" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#basic"
+              >Basic</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#advanced"
+              >Advanced</a
+            >
+          </li>
+        </ul>
+
+        <!-- Tabs content -->
+        <div class="tab-content">
+          <div id="basic" class="container tab-pane active">
+            <br />
+            <!-- Form Basic-->
+            <form class="row needs-validation" novalidate>
+              <!-- First Name -->
+              <div class="row mb-2 gx-0">
+                <label for="validation-first-name" class="form-label"
+                  >First name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validation-first-name"
+                  value=""
+                  placeholder="Leave empty to be random"
+                  required
+                />
+                <div class="invalid-feedback">First name cannot be empty</div>
+              </div>
+
+              <!-- Last Name -->
+              <div class="row gx-0">
+                <label for="validation-last-name" class="form-label"
+                  >Last name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="validation-last-name"
+                  value=""
+                  placeholder="Leave empty to be random"
+                  required
+                />
+                <div class="invalid-feedback">Last name cannot be empty.</div>
+              </div>
+
+              <!-- Country -->
+              <div class="row gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-country" class="form-label"
+                    >Country</label
+                  >
+                  <div class="input-group has-validation">
+                    <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+                    <select
+                      class="form-select"
+                      id="validation-country"
+                      aria-describedby="inputGroupPrepend"
+                      required
+                    >
+                      <option>(PL) Poland</option>
+                      <option>(ES) Spain</option>
+                      <option selected>(US) United States</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please use valid country.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Age -->
+              <div class="row ml-0 gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-age" class="form-label">Age</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="validation-age"
+                    value=""
+                    placeholder="Age between 15 and 90"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Age must be between 15 and 90.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gender -->
+              <div class="row ml-0 gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-sex" class="form-label">Gender</label>
+                  <div class="input-group has-validation">
+                    <!-- <span class="input-group-text" id="inputGroupPrepend">@</span> -->
+                    <select
+                      class="form-select"
+                      id="validation-sex"
+                      aria-describedby="inputGroupPrepend"
+                      required
+                    >
+                      <option active>Random</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                    </select>
+                    <div class="invalid-feedback">Please use valid gender.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Year -->
+              <div class="row ml-0 gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-year" class="form-label"
+                    >Year in the game</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="validation-year"
+                    value="1925"
+                    placeholder="1925"
+                    required
+                  />
+                  <div class="invalid-feedback">Year must be an Integer</div>
+                </div>
+              </div>
+
+              <!-- Occupation -->
+              <div class="row gx-0 mt-2">
+                <label for="validation-occupation" class="form-label"
+                  >Occupation</label
+                >
+                <select class="form-select" id="validation-occupation" required>
+                  <option selected>optimal (max skill points)</option>
+                  <option>random (ignore characteristics)</option>
+                  <option>antiquarian</option>
+                  <option>artist</option>
+                  <option>athlete</option>
+                  <option>author</option>
+                  <option>bartender</option>
+                  <option>butler/valet</option>
+                  <option>chauffeur</option>
+                  <option>clergy</option>
+                  <option>criminal</option>
+                  <option>dilettante</option>
+                  <option>doctor of medicine</option>
+                  <option>drifter</option>
+                  <option>driver</option>
+                  <option>engineer</option>
+                  <option>entertainer</option>
+                  <option>farmer</option>
+                  <option>gangster boss</option>
+                  <option>hacker</option>
+                  <option>journalist</option>
+                  <option>laborer, unskilled</option>
+                  <option>lawyer</option>
+                  <option>librarian</option>
+                  <option>mechanic</option>
+                  <option>military officer</option>
+                  <option>missionary</option>
+                  <option>musician</option>
+                  <option>nurse</option>
+                  <option>parapsychologist</option>
+                  <option>pilot</option>
+                  <option>police detective</option>
+                  <option>police officer</option>
+                  <option>private investigator</option>
+                  <option>professor</option>
+                  <option>sailor, commercial</option>
+                  <option>sailor, naval</option>
+                  <option>soldier</option>
+                  <option>tribe member</option>
+                  <option>waiter</option>
+                  <option>zealot</option>
+                </select>
+                <div class="invalid-feedback">Please select an occupation.</div>
+              </div>
+
+              <!-- Generate Button -->
+              <button
+                class="btn btn-primary mt-4 btn-lg btn-block"
+                id="generate-btn"
+                type="button"
+              >
+                Generate Character
+              </button>
+            </form>
+          </div>
+
+          <!-- Tab Advanced -->
+          <div id="advanced" class="container tab-pane fade">
+            <br />
+            <form class="row needs-validation" novalidate>
+              <!-- ERA -->
+              <div class="row mb-2 gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-era" class="form-label">Era</label>
+                  <div class="input-group has-validation">
+                    <select
+                      class="form-select"
+                      id="validation-era"
+                      aria-describedby="inputGroupPrepend"
+                      required
+                    >
+                      <option selected>Classic 1920</option>
+                      <option>Modern</option>
+                      <option>All</option>
+                    </select>
+                    <div class="invalid-feedback">Please use valid era</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- OCCUPATION SET -->
+              <div class="row mb-2 gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-occupation-set" class="form-label"
+                    >Occupation set</label
+                  >
+                  <div class="input-group has-validation">
+                    <select
+                      class="form-select"
+                      id="validation-occupation-set"
+                      aria-describedby="inputGroupPrepend"
+                      required
+                    >
+                      <option selected>Keeper Rulebook</option>
+                      <option>Investigators Handbook</option>
+                      <option>Custom</option>
+                      <option>All</option>
+                    </select>
+                    <div class="invalid-feedback">Please use valid era</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAGS -->
+              <div class="row mb-2 gx-0">
+                <div class="col-lg-12 mt-2">
+                  <label for="validation-tags" class="form-label"
+                    >Tag (work in progress)</label
+                  >
+                  <div class="input-group has-validation">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="validation-tags"
+                      value=""
+                      placeholder="Leave empty to not include tags"
+                      required
+                    />
+                    <div class="invalid-feedback">Invalid tags</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reset Button -->
+              <button
+                class="btn btn-danger mt-4 btn-lg btn-block"
+                id="reset-btn"
+                type="button"
+              >
+                Reset form
+              </button>
+              <!-- Generate Button -->
+              <button
+                class="btn btn-primary mt-4 btn-lg btn-block"
+                type="button"
+              >
+                Generate Character
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Character Card -->
+    <div class="col-lg-8" id="character-card">
+      <div class="border rounded bg-light p-5 mt-3 mb-3">
+        <!-- Warning -->
+        <div id="warning-alert" class="alert alert-dark hidden" role="alert">
+          No character meets following criteria:
+        </div>
+        <!-- Character Name -->
+        <div class="row">
+          <h2 id="character-name">Mr John Dow, Doctor, US</h2>
+          <h4 id="character-info">45 yo, Doctor, US</h4>
+          <hr class="mt-3" />
+        </div>
+        <!-- Character Statistics -->
+        <div class="row">
+          <h5>Characteristics</h5>
+          <div class="row text-nowrap">
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="str">
+              <strong>STR:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="con">
+              <strong>CON:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="siz">
+              <strong>SIZ:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="dex">
+              <strong>DEX:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="app">
+              <strong>APP:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="edu">
+              <strong>EDU:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="int">
+              <strong>INT:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="pow">
+              <strong>POW:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="luck">
+              <strong>Luck</strong>:
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="hit-points">
+              <strong>Hit points:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="magic-points">
+              <strong>Magic points</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="doge">
+              <strong>Doge:</strong>
+            </div>
+            <div class="col col-lg-6 col-md-4 col-sm-6" id="damage-bonus">
+              <strong>Damage bonus:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="build">
+              <strong>Build:</strong>
+            </div>
+            <div class="col col-lg-3 col-md-4 col-sm-6" id="move-rate">
+              <strong>Move rate:</strong>
+            </div>
+          </div>
+          <hr class="mt-3" />
+        </div>
+        <!-- Character Skills -->
+        <div class="row">
+          <h5>Skills</h5>
+          <div class="row text-nowrap" id="skills">
+            <!-- <p id="skills"></p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- cochar -->
+<!-- <script src="script.js"></scrip> -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

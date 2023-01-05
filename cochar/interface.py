@@ -34,14 +34,14 @@ class SkillsDataInterface(ABC):
 
 
 class SkillsJSONInterface(SkillsDataInterface):
-    def __init__(self, database: Path, era: list = None):
+    def __init__(self, database: Path, era: set = None):
         super().__init__(database, era)
         self.load_data(database)
         self.database = database
         if not era:
-            self.era = ["classic-1920", "modern"]
+            self.era = {"classic-1920", "modern"}
         else:
-            self.era = era
+            self.era = set(era)
 
     def load_data(self, database) -> None:
         with open(database, "r", encoding="utf-8") as json_file:
@@ -51,12 +51,14 @@ class SkillsJSONInterface(SkillsDataInterface):
         return {
             skill: item["value"]
             for skill, item in self.skills_data.items()
-            if item["era"] in self.era
+            if set(item["era"]).issuperset(self.era)
         }
 
     def get_all_skills_names(self) -> List[str]:
         return [
-            skill for skill, item in self.skills_data.items() if item["era"] in self.era
+            skill
+            for skill, item in self.skills_data.items()
+            if set(item["era"]).issuperset(self.era)
         ]
 
     # TODO: filter out categories that are not in current era
@@ -74,7 +76,7 @@ class SkillsJSONInterface(SkillsDataInterface):
             skill
             for skill, item in self.skills_data.items()
             if "basic" in self.skills_data[skill]["categories"]
-            and item["era"] in self.era
+            and set(item["era"]).issuperset(self.era)
         ]
         return skills_basic
 
@@ -83,7 +85,7 @@ class SkillsJSONInterface(SkillsDataInterface):
             skill
             for skill, item in self.skills_data.items()
             if category in self.skills_data[skill]["categories"]
-            and item["era"] in self.era
+            and set(item["era"]).issuperset(self.era)
         ]
 
 

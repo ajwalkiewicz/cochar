@@ -8,7 +8,7 @@ from typing import Dict, List, Union, Set
 import randname
 
 __title__ = "cochar"
-__version__ = "1.0.0-alpha.4"
+__version__ = "1.0.0-alpha.5"
 __author__ = "Adam Walkiewicz"
 __license__ = "GPL 3.0"
 
