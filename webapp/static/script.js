@@ -1,7 +1,9 @@
 "use strict";
 // Cards and buttons
 const characterCard = document.getElementById("character-card");
-const generateButton = document.getElementById("generate-btn");
+const generateButtons = document.getElementsByClassName("btn-primary");
+const warningAlert = document.getElementById("warning-alert");
+const resetButton = document.getElementById("reset-btn");
 
 // Character card elements
 const characterName = document.getElementById("character-name");
@@ -32,9 +34,22 @@ const yearForm = document.getElementById("validation-year");
 const sexForm = document.getElementById("validation-sex");
 const occupationForm = document.getElementById("validation-occupation");
 
+// Advanced form elements
+const eraForm = document.getElementById("validation-era");
+const occupationSetForm = document.getElementById("validation-occupation-set");
+const tagsForm = document.getElementById("validation-tags");
+
 // Cochar variables
 const availableCountries = new Set(["US", "PL", "ES"]);
 const availableSex = new Set(["Male", "Female", "Random"]);
+const availableEra = new Set(["classic-1920", "modern", "classic-1920,modern"]);
+const availableOccupationSet = new Set([
+  "classic",
+  "expansion",
+  "custom",
+  null,
+]);
+const availableTags = new Set(["lovecraftian", "criminal", null]);
 
 const countriesMap = new Map([
   ["(US) United States", "US"],
@@ -42,16 +57,33 @@ const countriesMap = new Map([
   ["(ES) Spain", "ES"],
 ]);
 
+const eraMap = new Map([
+  ["Modern", "modern"],
+  ["Classic 1920", "classic-1920"],
+  ["All", "classic-1920,modern"],
+]);
+
+const occupationSetMap = new Map([
+  ["Keeper Rulebook", "classic"],
+  ["Investigators Handbook", "expansion"],
+  ["Custom", "custom"],
+  ["All", null],
+]);
+
 // Main Functions
 function loadingSpinnerOn() {
-  generateButton.setAttribute("disabled", "");
-  generateButton.innerHTML =
-    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+  for (let button of generateButtons) {
+    button.setAttribute("disabled", "");
+    button.innerHTML =
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+  }
 }
 
 function loadingSpinnerOff() {
-  generateButton.removeAttribute("disabled");
-  generateButton.innerHTML = "Generate Character";
+  for (let button of generateButtons) {
+    button.removeAttribute("disabled");
+    button.innerHTML = "Generate Character";
+  }
 }
 
 function sendRequest(
@@ -62,10 +94,13 @@ function sendRequest(
   sex = "",
   year = "",
   random_mode = "",
-  occupation = ""
+  occupation = "",
+  era = "",
+  occupationSet = "",
+  tags = ""
 ) {
-  const url = new URL("http://0.0.0.0:80/api/get");
-  // const url = new URL("http://127.0.0.1:5000/api/get");
+  // const url = new URL("http://0.0.0.0:80/api/get");
+  const url = new URL("http://127.0.0.1:5000/api/get");
   // const url = new URL("https://cochar.loca.lt/api/get");
 
   if (firstName) url.searchParams.append("first_name", firstName);
@@ -76,6 +111,9 @@ function sendRequest(
   if (sex) url.searchParams.append("sex", sex);
   if (random_mode) url.searchParams.append("random_mode", random_mode);
   if (occupation) url.searchParams.append("occupation", occupation);
+  if (occupationSet) url.searchParams.append("occup_type", occupationSet);
+  if (era) url.searchParams.append("era", era);
+  if (tags) url.searchParams.append("tags", tags);
 
   console.log(url);
   fetch(url)
@@ -86,7 +124,13 @@ function sendRequest(
     })
     .then((data) => {
       console.log(data);
-      if (data?.status === "fail") throw new Error(data.message);
+      // Here add message about fails
+      if (data?.status === "fail") {
+        warningAlert.classList.remove("hidden");
+        warningAlert.innerText = data?.message;
+        throw new Error(data.message);
+      }
+      warningAlert.classList.add("hidden");
       updateForm(data);
     })
     .catch((e) => console.error(e))
@@ -181,6 +225,27 @@ function validateForm() {
     sexForm.classList.remove("is-invalid");
   }
 
+  if (!validateEra(eraForm.value)) {
+    eraForm.classList.add("is-invalid");
+    return false;
+  } else {
+    eraForm.classList.remove("is-invalid");
+  }
+
+  if (!validateOccupationSet(occupationSetForm.value)) {
+    occupationSetForm.classList.add("is-invalid");
+    return false;
+  } else {
+    occupationSetForm.classList.remove("is-invalid");
+  }
+
+  if (!validateTags(tagsForm.value)) {
+    tagsForm.classList.add("is-invalid");
+    return false;
+  } else {
+    tagsForm.classList.remove("is-invalid");
+  }
+
   // TODO: validate occupation
   // occupationForm
   return true;
@@ -190,20 +255,11 @@ function validateAge(age) {
   if (age.toLowerCase() === "") {
     return true;
   }
-  if (Number(age) >= 15 && Number(age) <= 90) {
-    return true;
-  }
-  return false;
+  return Number(age) >= 15 && Number(age) <= 90;
 }
 
 function validateName(characterName) {
-  if (characterName === " ") {
-    return false;
-  }
-  if (characterName[0] === " ") {
-    return false;
-  }
-  return true;
+  return !(characterName === " " || characterName[0] === " ");
 }
 
 function validateCountry(country) {
@@ -220,12 +276,31 @@ function validateYear(year) {
 }
 
 function validateSex(sex) {
-  // console.log(sex);
   return availableSex.has(sex);
 }
 
+function validateEra(era) {
+  const eraCode = eraMap.get(era);
+  return availableEra.has(eraCode);
+}
+
+function validateOccupationSet(occupationSet) {
+  return true;
+}
+
+function validateTags(tags) {
+  if (!tags) return true;
+
+  const givenTags = tags.split(",");
+  for (let tag of givenTags) {
+    console.log(tag);
+    if (!availableTags.has(tag)) return false;
+  }
+
+  return true;
+}
+
 function generateCharacter() {
-  // console.log(generateButton);
   if (!validateForm()) {
     return false;
   }
@@ -240,6 +315,9 @@ function generateCharacter() {
   let year = yearForm.value;
   let occupation = occupationForm.value.toLowerCase();
   let random_mode;
+  let era = eraMap.get(eraForm.value);
+  let occupationSet = occupationSetMap.get(occupationSetForm.value);
+  let tags = tagsForm.value;
 
   if (sex === "random") sex = "";
   if (sex === "male") sex = "M";
@@ -259,19 +337,40 @@ function generateCharacter() {
       sex,
       year,
       random_mode,
-      occupation
+      occupation,
+      era,
+      occupationSet,
+      tags
     );
   }
 }
 
 document.getElementById("validation-country").value = "(US) United States";
 
-// Add Event listener to generate button
-generateButton.addEventListener("click", generateCharacter);
+function resetForm() {
+  // Form elements
+  firstNameForm.value = "";
+  lastNameForm.value = "";
+  countryForm.value = "(US) United States";
+  ageForm.value = "";
+  yearForm.value = 1925;
+  sexForm.value = "Random";
+  occupationForm.value = "optimal (max skill points)";
+
+  // Advanced form elements
+  eraForm.value = "Classic 1920";
+  occupationSetForm.value = "Keeper Rulebook";
+  tagsForm.value = "";
+}
+
+for (let button of generateButtons) {
+  button.addEventListener("click", generateCharacter);
+}
+
+resetButton.addEventListener("click", resetForm);
 
 // Generate character when page is loaded
 generateCharacter();
 
 // TODO: Disable form submission with invalid data
 // TODO: Sort occupation
-// TODO: Rule out occupations like hacker if year is to low
