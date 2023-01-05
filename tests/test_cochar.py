@@ -138,16 +138,16 @@ def test_generate_base_characteristics():
         "move_rate": 0,
     }
     c = cochar.generate_base_characteristics(**data)
-    assert 15 <= c[0] <= 90
-    assert 15 <= c[1] <= 90
-    assert 40 <= c[2] <= 90
-    assert 15 <= c[3] <= 90
-    assert 15 <= c[4] <= 90
-    assert 40 <= c[5] <= 90
-    assert 40 <= c[6] <= 90
-    assert 15 <= c[7] <= 90
-    assert 15 <= c[8] <= 90
-    assert 7 <= c[9] <= 9
+    assert 15 <= c[0] <= 90  # strength
+    assert 15 <= c[1] <= 90  # condition
+    assert 40 <= c[2] <= 90  # size
+    assert 15 <= c[3] <= 90  # dexterity
+    assert 15 <= c[4] <= 90  # appearance
+    assert 40 <= c[5] <= 100  # education, because of characteristics test
+    assert 40 <= c[6] <= 90  # intelligence
+    assert 15 <= c[7] <= 90  # power
+    assert 15 <= c[8] <= 90  # luck
+    assert 7 <= c[9] <= 9  # move rate
 
 
 @pytest.mark.parametrize(
