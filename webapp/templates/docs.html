@@ -4,19 +4,6 @@
 
 {% block content %}
 <div class="container mt-3 px-md-5">
-  <!-- About Project Card -->
-  <div class="row">
-    <div class="col-12">
-      <div class="border rounded bg-light px-5 pt-3">
-        <h1>About Project</h1>
-        <p>Please support project</p>
-        <h3>Architecture</h3>
-        <p>
-          <img src="{{ url_for('static', filename='architecture.drawio.png') }}" class="img-rounded mx-auto d-block" alt="Architecture"> 
-        </p>
-      </div>
-    </div>
-  </div>
   <!-- Api card -->
   <div class="row">
     <div class="col">
@@ -53,67 +40,10 @@
   <div class="row">
     <div class="col">
       <div class="border rounded bg-light p-5 mt-3 mb-3">
-        <h1>Python Module</h1>
-<p><code>cochar</code> stands fo <code>Call of Cthulhu Character</code>. It's a python module design to create a full characters for Call of Cthulhu RPG 7th ed.</p>
-
-<h3>Installation</h3>
-<p><code>pip3 install cochar</code></p>
-<h3>Usage</h3>
-<h4>Basic</h4>
-<p>Example:</p>
-<pre>
->>> from cochar import create_character
->>> person = create_character(1925, "US")
->>> person
-Character(year=1925, country='US', first_name='Anthem', last_name='Pharr', age=22, sex='M', occupation='doctor of medicine', strength=33, condition=30, size=78, dexterity=40, appearance=23, education=87, intelligence=65, power=50, move_rate=7, luck=38, skills={'first aid': 38, 'language [latin]': 9, 'medicine': 73, 'science [biology]': 48, 'ride': 64, 'anthropology': 6, 'charm': 46, 'intimidate': 32, 'art/craft (sculptor)': 9, 'credit rating': 74, 'doge': 20}, damage_bonus='0', build=0, doge=20, sanity_points=50, magic_points=10, hit_points=10)</pre>
-<h4>Default settings</h4>
-<p>Default settings are defined in <code>./data/settings.json</code>.</p>
-<p><pre>
-{
-  "min_age": 15,
-  "max_age": 90,
-  "max_skill_level": 90,
-  "year": 1925,
-  "age": false,
-  "sex": false,
-  "first_name": false,
-  "last_name": false,
-  "country": "US",
-  "occupation": "optimal",
-  "weights": true,
-  "database": "",
-  "show_warnings": false
-}</pre></p>
-<h3>Dependencies</h3>
-<p><code>cochar</code> depends on <a href="github.com/ajwalkiewicz/randname">randname</a> module for generating random names.</p>
-<p>For more details please see:</p>
-<ul>
-<li><a href="github.com/ajwalkiewicz/randname">randname github</a></li>
-<li><a href="https://pypi.org/project/rname/">randname pypi</a></li>
-</ul>
-<h3>Documentation</h3>
-<p>Detailed documentation of module can by found here:
-<a href="https://ajwalkiewicz.github.io/cochar/_build/html/index.html#">cochar documentation</a></p>
-<h3>Contribution</h3>
-<p>If you want to contribute to <code>cochar</code> projcet read <a href="CONTRIBUTION.md">contribution</a> for more information.</p>
-<h3>Authors &amp; Contributors</h3>
-<p><strong>Author</strong>: Adam Walkiewicz</p>
-<p><strong>Contributors</strong>: Be first!</p>
-<h3>TODO</h3>
-<p>List of things that I'd like to add or improve. Those are rather long term goals, not something that I'm working on.</p>
-<h4>Module</h4>
-<ol>
-<li>[ ] Move skills to separate json file</li>
-<li>[ ] More occupations</li>
-<li>[ ] Historically accurate mode: occupations and skills depending on year of the game. Age limit for some professions like fo doctor or professor.</li>
-</ol>
-<h4>Webapp</h4>
-<ol>
-<li>[ ] Export character to character sheet</li>
-<li>[ ] Face generator</li>
-</ol>
-<h3>License</h3>
-<p>Cochar is licensed under the terms of the <a href="LICENSE">GNU GPLv3</a></p>
+        <div class="alert alert-info" role="alert">
+          Section generated from <a href="https://github.com/ajwalkiewicz/cochar/blob/main/README.md">README.md</a> to html with <a href="https://github.com/Python-Markdown/markdown">this</a> awesome python package.
+        </div>
+        {{ python_module|safe }}
       </div>
     </div>
   </div>

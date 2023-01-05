@@ -165,7 +165,7 @@ def generator():
 
 @app.route("/docs")
 def about():
-    return render_template("docs.html", version=cochar.__version__)
+    return render_template("docs.html", python_module=html, version=cochar.__version__)
 
 
 @app.route("/donation")
