@@ -99,9 +99,8 @@ function sendRequest(
   occupationSet = "",
   tags = ""
 ) {
-  // const url = new URL("http://0.0.0.0:80/api/get");
-  const url = new URL("http://127.0.0.1:5000/api/get");
-  // const url = new URL("https://cochar.loca.lt/api/get");
+  // const url = new URL("http://www.cochar.pl/api/v1/get");
+  const url = new URL("http://127.0.0.1:5000/api/v1/get");
 
   if (firstName) url.searchParams.append("first_name", firstName);
   if (lastName) url.searchParams.append("last_name", lastName);
@@ -118,6 +117,9 @@ function sendRequest(
   console.log(url);
   fetch(url)
     .then((response) => {
+      if (response.status === 400) {
+        return response.json();
+      }
       if (!response.ok)
         throw new Error(`${response.status}, ${response.statusText}`);
       return response.json();
@@ -133,7 +135,10 @@ function sendRequest(
       warningAlert.classList.add("hidden");
       updateForm(data);
     })
-    .catch((e) => console.error(e))
+    .catch((e) => {
+      console.error(e);
+    })
+    .then()
     .finally(loadingSpinnerOff);
 }
 
@@ -169,13 +174,21 @@ function updateForm(data) {
   let temp_skills = [];
   for (const [skill_name, skill_value] of Object.entries(data.skills)) {
     // temp_skills.push(`<strong>${skill_name.replace(skill_name[0], skill_name[0].toUpperCase())}:</strong> ${skill_value}%`)
+    // temp_skills.push(
+    //   `<div class="col-lg-6 col-md-12 col-sm-12"><strong>${skill_name.replace(
+    //     skill_name[0],
+    //     skill_name[0].toUpperCase()
+    //   )}</strong> ${skill_value}%</div>`
+    // );
+
     temp_skills.push(
-      `<div class="col-lg-6 col-md-12 col-sm-12"><strong>${skill_name.replace(
+      `<li><strong>${skill_name.replace(
         skill_name[0],
         skill_name[0].toUpperCase()
-      )}</strong> ${skill_value}%</div>`
+      )}</strong> ${skill_value}%</li>`
     );
   }
+
   // skills.textContent = temp_skills.join(", ")
   // skills.insertAdjacentElement("beforeend", temp_skills.join(""))
   temp_skills.sort();
