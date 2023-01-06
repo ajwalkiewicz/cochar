@@ -2,6 +2,7 @@
 block custom_css %}
 <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
 {% endblock %} {% block content %}
+
 <div class="container mt-0 px-md-5">
   <div class="row">
     <!-- Generator Card -->
@@ -149,45 +150,9 @@ block custom_css %}
                 <select class="form-select" id="validation-occupation" required>
                   <option selected>optimal (max skill points)</option>
                   <option>random (ignore characteristics)</option>
-                  <option>antiquarian</option>
-                  <option>artist</option>
-                  <option>athlete</option>
-                  <option>author</option>
-                  <option>bartender</option>
-                  <option>butler/valet</option>
-                  <option>chauffeur</option>
-                  <option>clergy</option>
-                  <option>criminal</option>
-                  <option>dilettante</option>
-                  <option>doctor of medicine</option>
-                  <option>drifter</option>
-                  <option>driver</option>
-                  <option>engineer</option>
-                  <option>entertainer</option>
-                  <option>farmer</option>
-                  <option>gangster boss</option>
-                  <option>hacker</option>
-                  <option>journalist</option>
-                  <option>laborer, unskilled</option>
-                  <option>lawyer</option>
-                  <option>librarian</option>
-                  <option>mechanic</option>
-                  <option>military officer</option>
-                  <option>missionary</option>
-                  <option>musician</option>
-                  <option>nurse</option>
-                  <option>parapsychologist</option>
-                  <option>pilot</option>
-                  <option>police detective</option>
-                  <option>police officer</option>
-                  <option>private investigator</option>
-                  <option>professor</option>
-                  <option>sailor, commercial</option>
-                  <option>sailor, naval</option>
-                  <option>soldier</option>
-                  <option>tribe member</option>
-                  <option>waiter</option>
-                  <option>zealot</option>
+                  {% for occup in occupations %}
+                  <option>{{ occup }}</option>
+                  {% endfor %}
                 </select>
                 <div class="invalid-feedback">Please select an occupation.</div>
               </div>
@@ -296,7 +261,7 @@ block custom_css %}
       <div class="border rounded bg-light p-5 mt-3 mb-3">
         <!-- Warning -->
         <div id="warning-alert" class="alert alert-dark hidden" role="alert">
-          No character meets following criteria:
+          Bad request
         </div>
         <!-- Character Name -->
         <div class="row">
@@ -359,9 +324,9 @@ block custom_css %}
         <!-- Character Skills -->
         <div class="row">
           <h5>Skills</h5>
-          <div class="row text-nowrap" id="skills">
+          <ul class="text-nowrap list-unstyled character-card" id="skills">
             <!-- <p id="skills"></p> -->
-          </div>
+          </ul>
         </div>
       </div>
     </div>

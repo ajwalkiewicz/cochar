@@ -1,4 +1,5 @@
 import cochar
+import cochar.occup
 import markdown
 import os
 from cochar import error
@@ -15,6 +16,7 @@ from flask import (
 from flask_restful import Api, Resource, reqparse
 
 
+OCCUPATIONS = cochar.occup.get_occupation_list()
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
 
@@ -131,10 +133,10 @@ class GenerateCharacter(Resource):
             )
             return character.get_json_format()
         except error.CocharError as e:
-            return {"status": "fail", "message": str(e)}
+            return {"status": "fail", "message": str(e)}, 400
 
 
-api.add_resource(GenerateCharacter, "/api/get")
+api.add_resource(GenerateCharacter, "/api/v1/get")
 
 # Errors
 
@@ -160,12 +162,19 @@ def index():
 
 @app.route("/generator")
 def generator():
-    return render_template("generator.html", version=cochar.__version__)
+    return render_template(
+        "generator.html", occupations=OCCUPATIONS, version=cochar.__version__
+    )
 
 
 @app.route("/docs")
-def about():
-    return render_template("docs.html", python_module=html, version=cochar.__version__)
+def docs():
+    return render_template(
+        "docs.html",
+        python_module=html,
+        occupations=OCCUPATIONS,
+        version=cochar.__version__,
+    )
 
 
 @app.route("/donation")

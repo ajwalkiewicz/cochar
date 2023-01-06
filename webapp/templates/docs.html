@@ -1,38 +1,315 @@
-{% extends "base.html" %}
-
-{% block title %}Cochar - about{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Cochar - about{% endblock %}{% block
+custom_css %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+{% endblock %} {% block content %}
 <div class="container mt-3 px-md-5">
-  <!-- Api card -->
+  <!-- Webapp Api card -->
   <div class="row">
     <div class="col">
-      <div class="border rounded bg-light p-5 mt-3">
-        <h1>API</h1>
-        <h3>
-          Basic Usage
-        </h3>
-        <p>
-          Using curl
-          <kbd>
-            curl http://walu.pythonanywhere.com/api/get
-          </kbd>
-        </p>
-        <h3>Attributes</h3>
-        <br>
-          <strong>year: </strong>Year of the game<br>
-          <strong>country: </strong>Country of character's origin<br>
-          <strong>first_name: </strong>Character's first name, defaults to random<br>
-          <strong>last_name: </strong>Characters' last name, defaults to random<br>
-          <strong>age: </strong>Character's age<br>
-          <strong>sex: </strong>Character's sex<br>
-          <strong>occupation: </strong>Character's occupation<br>
-          <strong>random_mode: </strong>By default occupations fits characters characteristics and give maximum skill point to character. If random mode is true, occupation is selected randomly regardless character's statistics<br>
-        </p>
-        <h3>Occupations</h3>
-        <p>
-          
-        </p>
+      <div class="border rounded bg-light p-5 mt-0">
+        <div class="row">
+          <h1>Webapp API</h1>
+
+          <h2>
+            <span class="badge bg-success">GET</span>
+            <code>www.cochar.pl/api/v1/get</code>
+          </h2>
+          <div class="col">
+            <span class="badge bg-success">200</span> Success
+            <p>
+              <kbd>curl -X GET http://www.cochar.pl/api/v1/get</kbd>
+            </p>
+            <pre>
+{
+  "year": 1925,
+  "country": "US",
+  "first_name": "Darryl",
+  "last_name": "Delvalle",
+  "age": 51,
+  "sex": "M",
+  "occupation": "musician",
+  "strength": 37,
+  "condition": 25,
+  "size": 81,
+  "dexterity": 67,
+  "appearance": 25,
+  "education": 66,
+  "intelligence": 74,
+  "power": 62,
+  "move_rate": 5,
+  "luck": 18,
+  "damage_bonus": "0",
+  "build": 0,
+  "skills": {
+      "listen": 89,
+      "psychology": 71,
+      "art/craft (writer)": 12,
+      "acting": 88,
+      "drive auto": 46,
+      "swim": 83,
+      "disguise": 38,
+      "doge": 34,
+      "pilot": 7,
+      "track": 56,
+      "art/craft (cook)": 8,
+      "credit rating": 27
+  },
+  "doge": 34,
+  "sanity_points": 62,
+  "magic_points": 12,
+  "hit_points": 10
+}
+            </pre>
+          </div>
+
+          <h2>Parameters</h2>
+
+          <hr />
+
+          <!-- YEAR -->
+          <div class="col col-lg-6">
+            <h4><kbd>year</kbd></h4>
+            <p>Must be a valid integer, default 1925</p>
+            <!-- <span class="badge bg-success">200</span> -->
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd
+                >curl -X GET http://www.cochar.pl/api/v1/get?year=invalid</kbd
+              >
+            </p>
+            <pre>
+{
+  "message": {
+      "year": "invalid literal for int() with base 10: 'invalid'. Year mus be an integer number."
+  }
+}
+            </pre>
+          </div>
+
+          <!-- COUNTRY -->
+          <div class="col col-lg-6">
+            <h4><kbd>country</kbd></h4>
+            <p>Country it's the characters origin. It determines the name</p>
+            <p>Available countries: US, PL, ES.</p>
+            <p>
+              In future there might be more countries. Countries names follow
+              alpha 2 code convention.
+            </p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd
+                >curl -X GET
+                http://www.cochar.pl/api/v1/get?country=invalid</kbd
+              >
+            </p>
+            <pre>
+{
+  "message": {
+      "country": "Bad choice: Invalid is not a valid choice. Country in alpha-2 code format. Available countries: 'US', 'PL', 'ES'"
+  }
+}
+            </pre>
+          </div>
+
+          <!-- FIRST NAME -->
+          <div class="col col-lg-6">
+            <h4><kbd>first_name</kbd></h4>
+            <p>
+              Characters first name. By default random name is drawn. When "first_name" is provided, character with that name is returned.
+            </p>
+          </div>
+
+          <!-- LAST NAME -->
+          <div class="col col-lg-6">
+            <h4><kbd>last_name</kbd></h4>
+            <p>
+              Characters first name. By default random name is drawn. When "last_name" is provided, character with that name is returned.
+            </p>
+          </div>
+
+          <!-- AGE -->
+          <div class="col col-lg-6">
+            <h4><kbd>age</kbd></h4>
+            <p>
+              It's a characters age. By default its random, between 15 and 90.
+              When used, character with provided age is returned.
+            </p>
+            <p>
+              According to Call of Cthulhu rules, age affects basic
+              characteristics.
+            </p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd>curl -X GET http://www.cochar.pl/api/v1/get?age=14</kbd>
+            </p>
+            <pre>
+{
+  "status": "fail",
+  "message": "Age not in range: 14 -> [15, 90]."
+}
+            </pre>
+
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd>curl -X GET http://www.cochar.pl/api/v1/get?age=invalid</kbd>
+            </p>
+            <pre>
+{
+"message": {
+    "age": "Age must be an integer: invalid literal for int() with base 10: 'invalid'"
+  }
+}
+            </pre>
+          </div>
+
+          <!-- SEX -->
+          <div class="col col-lg-6">
+            <h4><kbd>sex</kbd></h4>
+            <p>Character's sex, by default its random</p>
+            <p>Choices to specify gender: "M", "F"</p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd>curl -X GET http://www.cochar.pl/api/v1/get?sex=invalid</kbd>
+            </p>
+            <pre>
+{
+  "message": {
+      "sex": "Bad choice: invalid is not a valid choice. For random choice omit this parameter"
+  }
+}
+            </pre>
+          </div>
+
+          <!-- RANDOM MODE -->
+          <div class="col col-lg-6">
+            <h4><kbd>random_mode</kbd></h4>
+            <p>
+              When random mode is set to True, character's characteristics are
+              completely ignored when choosing occupation.
+            </p>
+            <p>
+              Omit this parameter if you don't want to generate completely
+              random character.
+            </p>
+          </div>
+
+          <!-- ERA -->
+          <div class="col col-lg-6">
+            <h4><kbd>era</kbd></h4>
+            <p>
+              According to Call of Cthulhu rules, game and characters can be
+              placed in 3 different times: 1890, 1920 and modern. Those are just
+              ruth delimiters to distinguish differences between set of skills
+              and occupation that can occur in each era.
+            </p>
+            <p>Available choices: "classic-1920", "modern"</p>
+            <p>To select both eras use: "classic-1920,modern"</p>
+            <p>"classic-1890" is not supported</p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd>curl -X GET http://www.cochar.pl/api/v1/get?era=invalid</kbd>
+            </p>
+            <pre>
+{
+  "status": "fail",
+  "message": "None occupation meets following criteria: type: None, era: ['invalid'], tags: None"
+}
+            </pre>
+          </div>
+
+          <!-- OCCUP TYPE -->
+          <div class="col col-lg-6">
+            <h4><kbd>occup_type</kbd></h4>
+            <p>
+              "occup_type" also known as occupation set, defines from which
+              set/expansion character's occupation are drown.
+            </p>
+            <p>
+              Available choices: "classic", "expansion", "custom"
+            </p>
+            <p>
+              Omit this parameter to select all.
+            </p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd
+                >curl -X GET
+                http://www.cochar.pl/api/v1/get?occup_type=invalid</kbd
+              >
+            </p>
+            <pre>
+{
+  "message": {
+      "occup_type": "invalid is not a valid choice"
+  }
+}
+            </pre>
+          </div>
+
+          <!-- TAGS -->
+          <div class="col col-lg-6">
+            <h4><kbd>tags</kbd></h4>
+            <p>
+              Occupation can hav different tags. 
+            </p>
+            <p>Available choices: "lovecraftian", "criminal".</p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd
+                >curl -X GET http://www.cochar.pl/api/v1/get?tags=invalid</kbd
+              >
+            </p>
+            <pre>
+{
+  "message": {
+      "tags": "invalid is not a valid choice"
+  }
+}
+            </pre>
+          </div>
+
+          <!-- OCCUPATION -->
+          <div class="col col-lg-12">
+            <h4><kbd>occupation</kbd></h4>
+            <p>
+              Character's occupation. 
+              When occupation is provided, character with that occupation is returned
+            </p>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd>curl -X GET http://www.cochar.pl/api/v1/get?occupation=invalid</kbd>
+            </p>
+            <pre>
+{
+  "status": "fail",
+  "message": "'Invalid' not in available occupations. Check cochar.OCCUPATIONS_LIST"
+}
+            </pre>
+            <h4>available occupations</h4>
+            <ul class="list-unstyled">
+              {% for occup in occupations %}
+              <li><code>{{ occup }}</code></li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- OTHER ERRORS -->
+          <div class="col col-lg-6">
+            <h4>Other errors</h4>
+            <h5>None of the occupation meet searching criteria:</h5>
+            <span class="badge bg-danger">400</span> Bad Request
+            <p>
+              <kbd
+                >curl -X GET http://www.cochar.pl/api/v1/get?era=modern&tags=lovecraftian</kbd
+              >
+            </p>
+            <pre>
+{
+  "status": "fail",
+  "message": "None occupation meets following criteria: type: None, era: ['modern'], tags: ['lovecraftian']"
+}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -41,7 +318,13 @@
     <div class="col">
       <div class="border rounded bg-light p-5 mt-3 mb-3">
         <div class="alert alert-info" role="alert">
-          Section generated from <a href="https://github.com/ajwalkiewicz/cochar/blob/main/README.md">README.md</a> to html with <a href="https://github.com/Python-Markdown/markdown">this</a> awesome python package.
+          Section generated from
+          <a href="https://github.com/ajwalkiewicz/cochar/blob/main/README.md"
+            >README.md</a
+          >
+          to html with
+          <a href="https://github.com/Python-Markdown/markdown">this</a> awesome
+          python package.
         </div>
         {{ python_module|safe }}
       </div>
