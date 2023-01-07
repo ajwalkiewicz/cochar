@@ -184,7 +184,7 @@ def donation():
 
 @app.route("/faq")
 def faq():
-    return "Work in progress"
+    return render_template("faq.html", version=cochar.__version__)
 
 
 @app.route("/news")
