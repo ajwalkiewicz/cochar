@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block title %}Cochar - about{% endblock %} {% block
+content %}
+<div class="container mt-3 px-md-5">
+  <!-- Donation -->
+  <div class="row">
+    <div class="col-12">
+      <div class="border rounded bg-light px-5 pt-3">
+        <h1>Frequently asked questions</h1>
+        <hr />
+        <h3>Why generating characters is not historically accurate?</h3>
+        <p>
+          Historical accuracy, although it is very important it is not a main
+          goal of Call of Cthulhu game neither this application. But the real
+          reason is impossibility of providing such accuracy. That would require
+          a huge amount of historical work to determine what was and what wasn't
+          historically possible.
+        </p>
+        <p>
+          Call fo Cthulhu RPG is a game where players fun is more important than
+          historical accuracy. Especially when we are talking about 1920's in
+          the USA, with racisms and poor women rights (1920 - women right to
+          vote).
+        </p>
+        <p>
+          CoC RPG is also a game of imagination, therefore even though
+          characters like 17 yo woman, doctor of medicine are completely
+          historically inaccurate, it doesn't need to be interpret literally.
+        </p>
+        <p>
+          Last but not least, for those users that still feel a need for
+          historical accuracy, generator provides a plenty of options that to
+          some point allows to achieve it. User can choose an era, age, gender
+          etc. to generate characters as much historically accurate as user
+          wants it to be.
+        </p>
+        <h3>Is there an option to create completely random character?</h3>
+        <p>
+          As for now, not really. There are plans to introduce an option of
+          creating a completely random character.
+        </p>
+        <p>
+          Right now, the best option to achieve it is to leave all fields empty
+          and select occupation "random". That will allow to ignore all
+          characteristics, and era options.
+        </p>
+        <h3>What does it mean: occupation (optimal)?</h3>
+        <p>
+          When real player are creating their characters for the game, they
+          usually tends to maximize the amount of points that they can
+          distribute among character's skills. To achieve that they usually
+          choose occupation that suites best for the generated characteristics.
+          The same thing can be achieve, when using alternative ways of creating
+          a character. Player can choose first occupation and them try to fit
+          characteristics that best suits it.
+        </p>
+        <p>
+          "occupation (optimal)" allows to mimic such behavior. It means that
+          the program choose an occupation that maximize, the amount of skills
+          points to distribute, base od prior generated main characteristics,
+          such as strength, dexterity, education and appearance.
+        </p>
+        <h3>How can I notify about an issue/bug that I found?</h3>
+        <p>
+          Project uses
+          <a
+            href="https://www.w3schools.com/git/git_github_flow.asp?remote=github"
+            >github workflow</a
+          >. That means if you spot an issue, bug, or have a suggestion for
+          improvement please, create an
+          <a
+            href="https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue"
+            >issue</a
+          >
+          in the project's
+          <a href="https://github.com/ajwalkiewicz/cochar">github page</a>. It
+          will be later triage. If triage ends positively it will be included to
+          the project's plan.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
