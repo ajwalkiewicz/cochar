@@ -12,7 +12,7 @@ Fast way of creating a random character for Call of Cthulhu RPG 7th ed.
 
 `cochar` stands for `Call of Cthulhu Character`. It's a python package design to create a full characters for Call of Cthulhu RPG 7th ed.
 
-A sample power `cochar` package can be observed on [www.cochar.pl](www.cochar.pl)
+[www.cochar.pl](http://www.cochar.pl) demonstrates a power of `cochar` package.
 
 ## Table of Contents
 
@@ -94,7 +94,7 @@ If you want to contribute to `cochar` project read [contribution](https://github
 
 > Web application is not a part of `cochar` package.
 
-Web application was design to present the power of `cochar` package. You can check it out on [www.cochar.pl](www.cochar.pl)
+Web application was design to present the power of `cochar` package. You can check it out on [www.cochar.pl](http://www.cochar.pl)
 
 ## Author
 
