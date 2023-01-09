@@ -400,6 +400,26 @@
             "fighting (brawl)", "firearms", "law", "listen", "2i", "psychology", "spot hidden"
         ]
     },
+    "deprogrammer": {
+        "type": "expansion",
+        "era": "modern",
+        "tags": [],
+        "groups": ["edu"],
+        "credit_rating": [20, 50],
+        "skills": [
+            "2i", "drive auto", [1, "fighting (brawl)", "firearms"], "history", "occult", "psychology", "stealth"
+        ]
+    },
+    "computer programmer/technician": {
+        "type": "expansion",
+        "era": "modern",
+        "tags": [],
+        "groups": ["edu"],
+        "credit_rating": [10, 70],
+        "skills": [
+            "computer use", "electrical repair", "electronics", "library use", "science (mathematics)", "spot hidden", "2*"
+        ]
+    },
     "software tester": {
         "type": "custom",
         "era": "modern",

@@ -83,7 +83,11 @@ get_args.add_argument(
 get_advanced_args = reqparse.RequestParser(bundle_errors=True)
 
 get_advanced_args.add_argument(
-    "era", default="classic-1920", type=str, case_sensitive=False, location="args"
+    "era",
+    default="classic-1920",
+    type=str,
+    case_sensitive=False,
+    location="args",
 )
 get_advanced_args.add_argument(
     "occup_type",

@@ -90,3 +90,45 @@ html {
     -moz-columns: 3;
   }
 }
+
+/* @media only screen and (max-height: 600px) {
+  #form-advanced {
+    overflow-y: scroll;
+    height: 400px;
+  }
+} */
+
+@media only screen and (max-height: 600px) {
+  #form-advanced {
+    overflow-y: scroll;
+    height: 500px;
+  }
+}
+
+@media only screen and (min-height: 600px) {
+  #form-advanced {
+    overflow-y: scroll;
+    height: 500px;
+  }
+}
+
+@media only screen and (min-height: 800px) {
+  #form-advanced {
+    overflow-y: scroll;
+    height: 700px;
+  }
+}
+
+@media only screen and (min-height: 1000px) {
+  #form-advanced {
+    overflow-y: scroll;
+    height: 900px;
+  }
+}
+
+@media only screen and (min-height: 1200px) {
+  #form-advanced {
+    overflow-y: scroll;
+    height: 100%;
+  }
+}
