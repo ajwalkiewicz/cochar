@@ -344,16 +344,22 @@ block custom_css %}
     <!-- Character Card -->
     <div class="col-lg-8" id="character-card">
       <div class="border rounded bg-light px-5 pt-3 mt-3 mb-3">
+        <!-- Primary -->
+        <div class="row">
+          <div id="primary-alert" class="alert alert-primary hidden" role="alert">
+            Info message.
+          </div>
+        </div>
         <!-- Error -->
         <div class="row">
-          <div id="error-alert" class="alert alert-danger" role="alert">
+          <div id="error-alert" class="alert alert-danger hidden" role="alert">
             Incorrectly filled form.
           </div>
         </div>
         <!-- Warning -->
         <div class="row">
           <div id="warning-alert" class="alert alert-dark hidden" role="alert">
-            Bad request
+            Bad request.
           </div>
         </div>
         <!-- Character Name -->

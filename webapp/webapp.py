@@ -14,11 +14,14 @@ from flask import (
     make_response,
 )
 from flask_restful import Api, Resource, reqparse
+from flask_limiter import Limiter, RateLimitExceeded
+from flask_limiter.util import get_remote_address
 
-
-OCCUPATIONS = cochar.occup.get_occupation_list()
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
+
+OCCUPATIONS = cochar.occup.get_occupation_list()
+LIMITS = ["3 per second", "10000 per day"]
 
 with open(_README, "r", encoding="utf-8") as readme:
     text = readme.read()
@@ -29,6 +32,11 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 api = Api(app)
 
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    storage_uri="memory://",
+)
 
 # API
 
@@ -113,31 +121,40 @@ get_advanced_args.add_argument(
 class GenerateCharacter(Resource):
     def get(self):
         try:
-            kwargs = get_args.parse_args()
-            advanced_args = get_advanced_args.parse_args()
+            with limiter.limit(";".join(LIMITS)):
+                kwargs = get_args.parse_args()
+                advanced_args = get_advanced_args.parse_args()
 
-            era = advanced_args.era.split(",")
+                era = advanced_args.era.split(",")
 
-            if advanced_args.tags:
-                tags = advanced_args.tags.split(",")
-            else:
-                tags = advanced_args.tags
+                if advanced_args.tags:
+                    tags = advanced_args.tags.split(",")
+                else:
+                    tags = advanced_args.tags
 
-            occup_type = advanced_args.occup_type
+                occup_type = advanced_args.occup_type
 
-            cochar.SKILLS_INTERFACE.era = era
-            skills_generator = cochar.skill.SkillsGenerator(cochar.SKILLS_INTERFACE)
+                cochar.SKILLS_INTERFACE.era = era
+                skills_generator = cochar.skill.SkillsGenerator(cochar.SKILLS_INTERFACE)
 
-            character = cochar.create_character(
-                era=era,
-                tags=tags,
-                occup_type=occup_type,
-                skills_generator=skills_generator,
-                **kwargs
-            )
-            return character.get_json_format()
+                character = cochar.create_character(
+                    era=era,
+                    tags=tags,
+                    occup_type=occup_type,
+                    skills_generator=skills_generator,
+                    **kwargs,
+                )
+                return character.get_json_format()
         except error.CocharError as e:
-            return {"status": "fail", "message": str(e)}, 400
+            return {"status": "fail", "origin": "cochar", "message": str(e)}, 400
+        except RateLimitExceeded:
+            return {
+                "status": "fail",
+                "origin": "flask_limiter",
+                "message": "Exceeded limit of requests: \n{}\nPlease try again later.".format(
+                    "\n".join(LIMITS)
+                ),
+            }, 429
 
 
 api.add_resource(GenerateCharacter, "/api/v1/get")
@@ -152,7 +169,7 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template("500.html", version=cochar.__version__), 404
+    return render_template("500.html", version=cochar.__version__), 500
 
 
 # Main Page
