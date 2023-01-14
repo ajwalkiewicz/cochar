@@ -54,6 +54,10 @@ const basicForm = {
   occupationSetForm: document.getElementById("validation-occupation-set"),
 };
 
+function delay(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 // Main Functions
 function loadingSpinnerOn() {
   for (let button of [generateBasicButton, generateAdvancedButton]) {
@@ -101,7 +105,7 @@ function sendRequest(
   console.log(url);
   fetch(url)
     .then((response) => {
-      if (response.status === 400) {
+      if (response.status === 400 || response.status === 429) {
         return response.json();
       }
       if (!response.ok)
@@ -111,7 +115,12 @@ function sendRequest(
     .then((data) => {
       console.log(data);
       // Here add message about fails
-      if (data?.status === "fail") {
+      if (data?.origin === "flask_limiter") {
+        errorAlert.classList.remove("hidden");
+        errorAlert.innerText = data?.message;
+        throw new Error(data.message);
+      }
+      if (data?.origin === "cochar") {
         warningAlert.classList.remove("hidden");
         warningAlert.innerText = data?.message;
         throw new Error(data.message);
@@ -127,8 +136,7 @@ function sendRequest(
     .catch((e) => {
       console.error(e);
     })
-    .then()
-    .finally(loadingSpinnerOff);
+    .finally(delay(250).then(loadingSpinnerOff));
 }
 
 // TODO: Data validation
