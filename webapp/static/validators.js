@@ -162,4 +162,4 @@ function validateTags(tags) {
   return true;
 }
 
-export { validateForm, eraMap, occupationSetMap };
+export { validateForm, eraMap, countriesMap, occupationSetMap };
