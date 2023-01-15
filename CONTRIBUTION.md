@@ -1,3 +1,21 @@
+<!--
+Cochar - create a random character for Call of Cthulhu RPG 7th ed.
+Copyright (C) 2023  Adam Walkiewicz
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
 # Contributing to cochar
 
 In order to make contributing to this project as easy and transparent as possible, whether it's:
@@ -33,9 +51,9 @@ Right now most important are:
 
 If you have any other suggestions feel welcome to open new [issue](https://github.com/ajwalkiewicz/cochar/issues).
 
-## Any contributions you make will be under the GNU General Public License v3.0
+## Any contributions you make will be under the GNU Affero General Public License v3.0
 
-In short, when you submit code changes, your submissions are understood to be under the same [GNU GPLv3 License](https://choosealicense.com/licenses/gpl-3.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
+In short, when you submit code changes, your submissions are understood to be under the same [GNU AGPL v3 License](https://choosealicense.com/licenses/agpl-3.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's [issues](https://github.com/ajwalkiewicz/cochar/issues)
 
