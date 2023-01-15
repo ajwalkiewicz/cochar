@@ -15,8 +15,9 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-{% extends "base.html" %} {% block title %}Cochar - about{% endblock %} {% block
-content %}
+{% extends "base.html" %} 
+{% block title %}Cochar - about{% endblock %} 
+{% block content %}
 <div class="container mt-3 px-md-5">
   <!-- Donation -->
   <div class="row">
@@ -24,23 +25,79 @@ content %}
       <div class="border rounded bg-light px-5 pt-3">
         <h1>Donate</h1>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint
-          adipisci velit obcaecati inventore nostrum cupiditate, reprehenderit
-          nisi ipsa maiores quae delectus unde vero autem rerum incidunt saepe
-          laudantium, dolorem doloremque. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Ea totam commodi perspiciatis deserunt voluptas unde
-          porro, suscipit laudantium facere dignissimos, saepe, nam accusantium
-          ipsa recusandae fugit iste eius facilis consequatur. Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Et corporis, enim natus modi
-          beatae repellendus nobis. Sint ipsam voluptatem adipisci quasi aperiam
-          mollitia numquam cum minima repellendus! Ipsam, nemo autem! Lorem
-          ipsum dolor, sit amet consectetur adipisicing elit. Eos, maiores
-          officiis? Cum consequuntur eaque repellat neque veritatis perspiciatis
-          itaque provident fuga reiciendis, iure, sapiente distinctio mollitia
-          reprehenderit porro aut vitae.
+          <kbd>Cochar</kbd> is a private, non-profit, free and open source
+          project. Unfortunately a smile does not pay a domain and hosting. I
+          would be more than grateful if you would like to support this project
+          even with a small donation.
         </p>
+        <!-- Donate Button -->
+        <p>
+          <a
+            class="btn btn-primary btn-lg"
+            href="https://www.paypal.com/donate/?hosted_button_id=YGLXTMDTMNKUE"
+            role="button"
+            >Donate via PayPal</a
+          >
+        </p>
+        <p>I believe in a full financial transparency. Here you can see the current costs of cochar project.</p>
+        <h6>Project's costs</h6>
+        <div class="table-responsive-xxl">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Service</th>
+                <th scope="col">Costs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Domain <br>(Home.pl)</td>
+                <td>202.95 PLN / year</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Hosting <br>(pythonanywhere.com)</td>
+                <td>7 USD / month</td>
+              </tr>
+            <tfoot>
+              <tr class="table-secondary">
+                <th scope="row"></th>
+                <td class="text-end"><b>Total</b></td>
+                <td>641.78 PLN (130.87 USD) / year *</td>
+              </tr>
+            </tfoot>
+            </tbody>
+          </table>
+        </div>
+        
+        <p><b>* calculations:</b></p>
+        <pre>
+          7 * 4.33 * 12 + 202.95 = 641.78 PLN
+          7 * 12 + 202.95 / 4.33 = 130.87 USD
+        </pre>
+        <p><small>USD to PLN rate from 2023-01-13</small></p>
       </div>
     </div>
   </div>
 </div>
+<script>
+  const currentURL = new URL(window.location.href);
+
+  if (currentURL.hostname === "www.staging.cochar.pl") {
+    
+    const message = '<div class="row">\
+      <div id="primary-alert" class="alert alert-primary hidden" role="alert">\
+        Donation is disabled in staging version of application.\
+      </div>\
+    </div>'
+    
+    const mainContainer = document.getElementsByClassName("border")[0]
+    const donateButton = document.getElementsByClassName("btn-primary")[0]
+
+    mainContainer.insertAdjacentHTML("afterbegin", message)
+    donateButton.classList.add("disabled")
+  }
+</script>
 {% endblock %}
