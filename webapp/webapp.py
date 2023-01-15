@@ -218,6 +218,16 @@ def donation():
     return render_template("donation.html", version=cochar.__version__)
 
 
+@app.route("/canceled")
+def canceled():
+    return render_template("canceled.html", version=cochar.__version__)
+
+
+@app.route("/completed")
+def completed():
+    return render_template("completed.html", version=cochar.__version__)
+
+
 @app.route("/faq")
 def faq():
     return render_template("faq.html", version=cochar.__version__)
