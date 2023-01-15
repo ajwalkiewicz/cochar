@@ -1,5 +1,23 @@
+<!--
+Cochar - create a random character for Call of Cthulhu RPG 7th ed.
+Copyright (C) 2023  Adam Walkiewicz
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
 [![PyPI version](https://badge.fury.io/py/cochar.svg)](https://badge.fury.io/py/cochar)
-[![License: GNU GPL v3](https://img.shields.io/badge/License-GNU%20GPL%20v3-red.svg)](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
+[![License: GNU AGPL v3](https://img.shields.io/badge/License-GNU%20AGPL%20v3-red.svg)](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Language: Python](https://img.shields.io/badge/Language-Python-blue.svg)](https://shields.io/)
 [![Author: Walu](https://img.shields.io/badge/Aurhor-Walu-gray.svg)](https://shields.io/)
@@ -12,7 +30,7 @@ Fast way of creating a random character for Call of Cthulhu RPG 7th ed.
 
 `cochar` stands for `Call of Cthulhu Character`. It's a python package design to create a full characters for Call of Cthulhu RPG 7th ed.
 
-A sample power `cochar` package can be observed on [www.cochar.pl](www.cochar.pl)
+[www.cochar.pl](http://www.cochar.pl) demonstrates a power of `cochar` package.
 
 ## Table of Contents
 
@@ -94,7 +112,7 @@ If you want to contribute to `cochar` project read [contribution](https://github
 
 > Web application is not a part of `cochar` package.
 
-Web application was design to present the power of `cochar` package. You can check it out on [www.cochar.pl](www.cochar.pl)
+Web application was design to present the power of `cochar` package. You can check it out on [www.cochar.pl](http://www.cochar.pl)
 
 ## Author
 
@@ -102,4 +120,4 @@ Adam Walkiewicz
 
 ## License
 
-Cochar is licensed under the terms of the [GNU GPL v3](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
+Cochar is licensed under the terms of the [GNU AGPL v3](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
