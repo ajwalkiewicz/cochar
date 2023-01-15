@@ -18,24 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 {% extends "base.html" %} 
 {% block title %}Cochar - about{% endblock %} 
 {% block content %}
-<script>
-  const currentURL = new URL(window.location.href);
-
-  if (currentURL.hostname === "www.staging.cochar.pl") {
-    
-    const message = '<div class="row">\
-      <div id="primary-alert" class="alert alert-primary hidden" role="alert">\
-        Donation is disable in staging version of application.\
-      </div>\
-    </div>'
-    
-    const mainContainer = document.getElementsByClassName("border")[0]
-    const donateButton = document.getElementsByClassName("btn-primary")[0]
-
-    mainContainer.insertAdjacentElement("afterbegin", message)
-    donateButton.classList.add("disabled")
-  }
-</script>
 <div class="container mt-3 px-md-5">
   <!-- Donation -->
   <div class="row">
@@ -100,4 +82,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     </div>
   </div>
 </div>
+<script>
+  const currentURL = new URL(window.location.href);
+
+  if (currentURL.hostname === "www.staging.cochar.pl") {
+    
+    const message = '<div class="row">\
+      <div id="primary-alert" class="alert alert-primary hidden" role="alert">\
+        Donation is disable in staging version of application.\
+      </div>\
+    </div>'
+    
+    const mainContainer = document.getElementsByClassName("border")[0]
+    const donateButton = document.getElementsByClassName("btn-primary")[0]
+
+    mainContainer.insertAdjacentHTML("afterbegin", message)
+    donateButton.classList.add("disabled")
+  }
+</script>
 {% endblock %}
