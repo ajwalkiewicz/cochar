@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 {% extends "base.html" %} 
 {% block title %}Cochar - about{% endblock %} 
+{% block content %}
 <script>
   const currentURL = new URL(window.location.href);
 
@@ -35,7 +36,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     donateButton.classList.add("disabled")
   }
 </script>
-{% block content %}
 <div class="container mt-3 px-md-5">
   <!-- Donation -->
   <div class="row">
