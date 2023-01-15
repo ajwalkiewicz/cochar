@@ -13,7 +13,12 @@
 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import { validateForm, eraMap, occupationSetMap } from "./validators.js";
+import {
+  validateForm,
+  eraMap,
+  countriesMap,
+  occupationSetMap,
+} from "./validators.js";
 // Cards and buttons
 // const characterCard = document.getElementById("character-card");
 const generateBasicButton = document.getElementById("generate-basic-btn");
@@ -65,8 +70,9 @@ const advancedForm = {
 // Basic Form
 const basicForm = {
   HTMLElement: document.getElementById("form-basic"),
-  eraForm: document.getElementById("validation-era"),
-  occupationSetForm: document.getElementById("validation-occupation-set"),
+  countryForm: document.getElementById("validation-country-basic"),
+  sexForm: document.getElementById("validation-sex-basic"),
+  occupationForm: document.getElementById("validation-occupation-basic"),
 };
 
 function delay(time) {
@@ -213,7 +219,7 @@ function generateCharacter(form) {
 
   let firstName = form?.firstNameForm?.value ?? "";
   let lastName = form?.lastNameForm?.value ?? "";
-  let country = form?.countriesMap?.get(countryForm.value);
+  let country = countriesMap.get(form?.countryForm.value);
   let age = form?.ageForm?.value;
   let sex = form?.sexForm?.value.toLowerCase();
   let year = form?.yearForm?.value;
