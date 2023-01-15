@@ -33,9 +33,9 @@ Right now most important are:
 
 If you have any other suggestions feel welcome to open new [issue](https://github.com/ajwalkiewicz/cochar/issues).
 
-## Any contributions you make will be under the GNU General Public License v3.0
+## Any contributions you make will be under the GNU Affero General Public License v3.0
 
-In short, when you submit code changes, your submissions are understood to be under the same [GNU GPLv3 License](https://choosealicense.com/licenses/gpl-3.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
+In short, when you submit code changes, your submissions are understood to be under the same [GNU AGPL v3 License](https://choosealicense.com/licenses/agpl-3.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's [issues](https://github.com/ajwalkiewicz/cochar/issues)
 

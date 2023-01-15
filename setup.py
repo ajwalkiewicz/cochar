@@ -18,7 +18,7 @@ setup(
         "Documentation": "https://ajwalkiewicz.github.io/cochar/_build/html/index.html"
     },
     author="Adam Walkiewicz",
-    license="GPL 3.0",
+    license="AGPL v3",
     classifiers=[
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
@@ -27,6 +27,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     packages=["cochar"],
     include_package_data=True,

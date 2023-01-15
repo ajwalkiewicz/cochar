@@ -1,5 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/cochar.svg)](https://badge.fury.io/py/cochar)
-[![License: GNU GPL v3](https://img.shields.io/badge/License-GNU%20GPL%20v3-red.svg)](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
+[![License: GNU AGPL v3](https://img.shields.io/badge/License-GNU%20AGPL%20v3-red.svg)](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Language: Python](https://img.shields.io/badge/Language-Python-blue.svg)](https://shields.io/)
 [![Author: Walu](https://img.shields.io/badge/Aurhor-Walu-gray.svg)](https://shields.io/)
@@ -102,4 +102,4 @@ Adam Walkiewicz
 
 ## License
 
-Cochar is licensed under the terms of the [GNU GPL v3](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)
+Cochar is licensed under the terms of the [GNU AGPL v3](https://github.com/ajwalkiewicz/cochar/blob/main/LICENSE)

@@ -10,7 +10,7 @@ import randname
 __title__ = "cochar"
 __version__ = "1.0.0-alpha.5"
 __author__ = "Adam Walkiewicz"
-__license__ = "GPL 3.0"
+__license__ = "AGPL v3.0"
 
 DEFAULT_LOGGING_LEVEL = logging.ERROR
 
