@@ -65,7 +65,7 @@ content %}
           as professional as I can, but I'm not even a developer. With that
           having said I hope you enjoy it :)
         </p>
-        <h3>Support</h3>
+        <h3 id="support-title">Support</h3>
         <p>
           If you would like to financially support cochar project, please visit
           <a href="/donation">donation</a> section.
@@ -107,4 +107,21 @@ content %}
     </div>
   </div>
 </div>
+<script>
+  const currentURL = new URL(window.location.href);
+
+  if (currentURL.hostname === "www.staging.cochar.pl") {
+    const message =
+      '\
+      <div id="primary-alert" class="alert alert-primary" role="alert">\
+        Donation is disabled in staging version of application.\
+      </div>';
+
+    const donateButton = document.getElementsByClassName("btn-primary")[0];
+    const supportTitle = document.getElementById("support-title");
+
+    supportTitle.insertAdjacentHTML("afterend", message);
+    donateButton.classList.add("disabled");
+  }
+</script>
 {% endblock %}
