@@ -58,17 +58,37 @@ echo_help() {
 #     $VERBOSE && echo -e "$*";
 # }
 
-change_version(){
+SEMVER_REGEX="^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"
+
+
+function validate_version {
     if $SOFTWARE_VERSION_FLAG; then
-        rx="^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
-        if [[ ! "$SOFTWARE_VERSION" =~ $rx ]]; then
-            echo -e "\033[31m\e[1minvalid version format: $SOFTWARE_VERSION\e[0m"
-            echo_help
+        local version=$1
+        if [[ "$version" =~ $SEMVER_REGEX ]]; then
+            # if a second argument is passed, store the result in var named by $2
+            if [ "$#" -eq "2" ]; then
+                local major=${BASH_REMATCH[1]}
+                local minor=${BASH_REMATCH[2]}
+                local patch=${BASH_REMATCH[3]}
+                local prere=${BASH_REMATCH[4]}
+                local build=${BASH_REMATCH[5]}
+                eval "$2=(\"$major\" \"$minor\" \"$patch\" \"$prere\" \"$build\")"
+            else
+                echo "Version valid"
+            fi
         else
-            sed -i "s,\"[[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\",\"$SOFTWARE_VERSION\",g" setup.py
-            sed -i "s,\"[[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\",\"$SOFTWARE_VERSION\",g" docs/conf.py
-            sed -i "s,\"[[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\",\"$SOFTWARE_VERSION\",g" cochar/__init__.py
+            error "version $version does not match the semver scheme 'X.Y.Z(-PRERELEASE)(+BUILD)'. See help for more information."
         fi
+    fi
+}
+
+change_version(){
+    local version=$1
+    if $SOFTWARE_VERSION_FLAG; then
+        sed -i "s,\"[[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+.*\",\"$1\",g" setup.py
+        sed -i "s,\"[[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+.*\",\"$1\",g" docs/conf.py
+        sed -i "s,\"[[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+.*\",\"$1\",g" cochar/__init__.py
+        echo "Versioin changed to: $1"
     fi
 }
 
@@ -78,7 +98,8 @@ main(){
     # run tests, check packages, uploadd packages
     pytest -q && \
     # change version in all files that contains info about it
-    # change_version && \
+    validate_version $SOFTWARE_VERSION && \
+    change_version $SOFTWARE_VERSION && \
     # clean dist directory
     rm -rvf -i build && \
     rm -rvf -i $(echo dist/*) && \
