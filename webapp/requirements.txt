@@ -71,3 +71,4 @@ webencodings==0.5.1
 Werkzeug==2.2.2
 wrapt==1.14.1
 zipp==3.11.0
+cochar>=1.0.0a0

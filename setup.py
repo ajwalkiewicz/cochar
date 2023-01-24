@@ -27,7 +27,6 @@ setup(
     description="Call of Cthulhu character generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    # long_description_content_type="text/x-rst",
     url="https://github.com/ajwalkiewicz/cochar",
     project_urls={
         "Documentation": "https://ajwalkiewicz.github.io/cochar/_build/html/index.html"
@@ -37,8 +36,6 @@ setup(
     classifiers=[
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
-        # "Programming Language :: Python :: 3.6",
-        # "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -47,7 +44,5 @@ setup(
     packages=["cochar"],
     include_package_data=True,
     install_requires=["rname"],
-    # packages=find_packages("src"),
-    # package_dir={'': 'src'},
     entry_points={"console_scripts": ["cochar=cochar.__main__:main"]},
 )

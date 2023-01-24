@@ -14,9 +14,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# apline 3.17 and python 3.8
-# copied from https://github.com/docker-library/python/blob/f5b7b5a332bd4d2c1518325ab9647b09bf07412f/3.8/alpine3.17/Dockerfile
-
 FROM ubuntu:20.04
 
 # set the working directory
@@ -27,9 +24,9 @@ RUN apt-get upgrade --yes
 RUN apt-get install python3.8 python3-pip --yes
 
 # install dependencies
-COPY ./dev_requirements.txt .
+COPY ./requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r dev_requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # copy the scripts to the folder
 COPY . /cochar
