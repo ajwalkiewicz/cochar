@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Welcome to cochar’s documentation! &#8212; cochar 1.0.0-alpha.5 documentation</title>
+    <title>Welcome to cochar’s documentation! &#8212; cochar 1.0.0-alpha.6 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
@@ -15,6 +15,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -32,7 +33,7 @@
         <li class="right" >
           <a href="readme.html" title="Call Of Cthulhu Character Generator"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">cochar 1.0.0-alpha.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">cochar 1.0.0-alpha.6 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Welcome to cochar’s documentation!</a></li> 
       </ul>
     </div>  
@@ -65,12 +66,85 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cochar.html">cochar package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.cochar">cochar.cochar module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.character">cochar.character module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.occup">cochar.occupations module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.skill">cochar.skills module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.utils">cochar.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.error">cochar.errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.cochar">cochar.cochar module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_build"><code class="docutils literal notranslate"><span class="pre">calc_build()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_combat_characteristics"><code class="docutils literal notranslate"><span class="pre">calc_combat_characteristics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_damage_bonus"><code class="docutils literal notranslate"><span class="pre">calc_damage_bonus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_derived_attributes"><code class="docutils literal notranslate"><span class="pre">calc_derived_attributes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_doge"><code class="docutils literal notranslate"><span class="pre">calc_doge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_hit_points"><code class="docutils literal notranslate"><span class="pre">calc_hit_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_magic_points"><code class="docutils literal notranslate"><span class="pre">calc_magic_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_move_rate"><code class="docutils literal notranslate"><span class="pre">calc_move_rate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.calc_sanity_points"><code class="docutils literal notranslate"><span class="pre">calc_sanity_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.characteristic_test"><code class="docutils literal notranslate"><span class="pre">characteristic_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.create_character"><code class="docutils literal notranslate"><span class="pre">create_character()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.generate_age"><code class="docutils literal notranslate"><span class="pre">generate_age()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.generate_base_characteristics"><code class="docutils literal notranslate"><span class="pre">generate_base_characteristics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.generate_first_name"><code class="docutils literal notranslate"><span class="pre">generate_first_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.generate_last_name"><code class="docutils literal notranslate"><span class="pre">generate_last_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.generate_sex"><code class="docutils literal notranslate"><span class="pre">generate_sex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.subtract_points_from_characteristic"><code class="docutils literal notranslate"><span class="pre">subtract_points_from_characteristic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.cochar.subtract_points_from_str_con_dex"><code class="docutils literal notranslate"><span class="pre">subtract_points_from_str_con_dex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.character">cochar.character module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Age"><code class="docutils literal notranslate"><span class="pre">Age</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Build"><code class="docutils literal notranslate"><span class="pre">Build</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Character"><code class="docutils literal notranslate"><span class="pre">Character</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Characteristic"><code class="docutils literal notranslate"><span class="pre">Characteristic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Country"><code class="docutils literal notranslate"><span class="pre">Country</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.DamageBonus"><code class="docutils literal notranslate"><span class="pre">DamageBonus</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Name"><code class="docutils literal notranslate"><span class="pre">Name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Occupation"><code class="docutils literal notranslate"><span class="pre">Occupation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Sex"><code class="docutils literal notranslate"><span class="pre">Sex</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Validator"><code class="docutils literal notranslate"><span class="pre">Validator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.character.Year"><code class="docutils literal notranslate"><span class="pre">Year</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.occup">cochar.occupations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.occup.calc_hobby_points"><code class="docutils literal notranslate"><span class="pre">calc_hobby_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.occup.calc_occupation_points"><code class="docutils literal notranslate"><span class="pre">calc_occupation_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.occup.generate_occupation"><code class="docutils literal notranslate"><span class="pre">generate_occupation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.occup.get_occupation_list"><code class="docutils literal notranslate"><span class="pre">get_occupation_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.skill">cochar.skills module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.skill.SkillsDict"><code class="docutils literal notranslate"><span class="pre">SkillsDict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.skill.SkillsGenerator"><code class="docutils literal notranslate"><span class="pre">SkillsGenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.skill.calc_skill_points"><code class="docutils literal notranslate"><span class="pre">calc_skill_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.skill.generate_credit_rating_points"><code class="docutils literal notranslate"><span class="pre">generate_credit_rating_points()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.skill.skill_test"><code class="docutils literal notranslate"><span class="pre">skill_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.utils">cochar.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.utils.is_skill_valid"><code class="docutils literal notranslate"><span class="pre">is_skill_valid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.utils.narrowed_bisect"><code class="docutils literal notranslate"><span class="pre">narrowed_bisect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cochar.html#module-cochar.error">cochar.errors module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.AgeNotInRange"><code class="docutils literal notranslate"><span class="pre">AgeNotInRange</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.CharacteristicPointsBelowMinValue"><code class="docutils literal notranslate"><span class="pre">CharacteristicPointsBelowMinValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.CharacteristicValueNotAnInt"><code class="docutils literal notranslate"><span class="pre">CharacteristicValueNotAnInt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.CocharError"><code class="docutils literal notranslate"><span class="pre">CocharError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.EmptyName"><code class="docutils literal notranslate"><span class="pre">EmptyName</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.IncorrectOccupation"><code class="docutils literal notranslate"><span class="pre">IncorrectOccupation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidAgeValue"><code class="docutils literal notranslate"><span class="pre">InvalidAgeValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidBuildValue"><code class="docutils literal notranslate"><span class="pre">InvalidBuildValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidCountryValue"><code class="docutils literal notranslate"><span class="pre">InvalidCountryValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidDamageBonusValue"><code class="docutils literal notranslate"><span class="pre">InvalidDamageBonusValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidOccupationEra"><code class="docutils literal notranslate"><span class="pre">InvalidOccupationEra</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidOccupationTags"><code class="docutils literal notranslate"><span class="pre">InvalidOccupationTags</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidOccupationType"><code class="docutils literal notranslate"><span class="pre">InvalidOccupationType</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidOccupationValue"><code class="docutils literal notranslate"><span class="pre">InvalidOccupationValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidSexValue"><code class="docutils literal notranslate"><span class="pre">InvalidSexValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.InvalidYearValue"><code class="docutils literal notranslate"><span class="pre">InvalidYearValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.NoneOccupationMeetsCriteria"><code class="docutils literal notranslate"><span class="pre">NoneOccupationMeetsCriteria</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.OccupationPointsBelowZero"><code class="docutils literal notranslate"><span class="pre">OccupationPointsBelowZero</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.SkillPointsBelowZero"><code class="docutils literal notranslate"><span class="pre">SkillPointsBelowZero</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.SkillValueNotAnInt"><code class="docutils literal notranslate"><span class="pre">SkillValueNotAnInt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cochar.html#cochar.error.SkillsNotADict"><code class="docutils literal notranslate"><span class="pre">SkillsNotADict</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -138,13 +212,13 @@
         <li class="right" >
           <a href="readme.html" title="Call Of Cthulhu Character Generator"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">cochar 1.0.0-alpha.5 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">cochar 1.0.0-alpha.6 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Welcome to cochar’s documentation!</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Adam Walkiewicz.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
