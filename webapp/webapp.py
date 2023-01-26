@@ -20,35 +20,40 @@ import os
 from cochar import error
 from flask import (
     Flask,
-    Response,
-    abort,
-    jsonify,
     render_template,
-    url_for,
     request,
-    make_response,
 )
 from flask_restful import Api, Resource, reqparse
 from flask_limiter import Limiter, RateLimitExceeded
-from flask_limiter.util import get_remote_address
 
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
 
 OCCUPATIONS = cochar.occup.get_occupation_list()
-LIMITS = ["3 per second", "10000 per day"]
+LIMITS = ["10 per second", "10000 per day"]
+
+def get_remote_address() -> str:
+    """Get client's IP address.
+    pythonanywhere.com stores original client's IP in 'X-Real-IP' header.
+    Without it `request.remote_addr` returns internal load-balancer IP and
+    FlaskLimiter blocks all requests world wide.
+
+    :return: client's IP address
+    :rtype: str
+    """
+    return request.headers.get('X-Real-IP') or request.remote_addr or "127.0.0.1"
+
 
 with open(_README, "r", encoding="utf-8") as readme:
     text = readme.read()
     html = markdown.markdown(text)
 
 app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 api = Api(app)
 
 limiter = Limiter(
-    get_remote_address,
+    key_func=get_remote_address,
     app=app,
     storage_uri="memory://",
 )
@@ -166,9 +171,12 @@ class GenerateCharacter(Resource):
             return {
                 "status": "fail",
                 "origin": "flask_limiter",
-                "message": "Exceeded limit of requests: \n{}\nPlease try again later.".format(
-                    "\n".join(LIMITS)
-                ),
+                "message": (
+                    f"Exceeded limit of requests: {os.linesep}{os.linesep.join(LIMITS)}"
+                    "\nPlease try again later.\n"
+                    "If you did not exceed the limit check if someone "
+                    "else in your network is using this website"
+                    )
             }, 429
 
 
@@ -239,4 +247,5 @@ def news():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.config["TEMPLATES_AUTO_RELOAD"] = True
+    app.run(host="0.0.0.0", debug=True)
