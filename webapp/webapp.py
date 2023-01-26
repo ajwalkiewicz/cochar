@@ -30,7 +30,7 @@ _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
 
 OCCUPATIONS = cochar.occup.get_occupation_list()
-LIMITS = ["10 per second", "10000 per day"]
+LIMITS = ["10 per second", "10 per day"]
 
 def get_remote_address() -> str:
     """Get client's IP address.
@@ -171,9 +171,12 @@ class GenerateCharacter(Resource):
             return {
                 "status": "fail",
                 "origin": "flask_limiter",
-                "message": "Exceeded limit of requests: \n{}\nPlease try again later.".format(
-                    "\n".join(LIMITS)
-                ),
+                "message": (
+                    f"Exceeded limit of requests: {os.linesep}{os.linesep.join(LIMITS)}"
+                    "\nPlease try again later.\n"
+                    "If you did not exceed the limit check if someone "
+                    "else in your network is using this website"
+                    )
             }, 429
 
 
