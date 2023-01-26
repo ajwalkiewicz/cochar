@@ -30,7 +30,7 @@ _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
 
 OCCUPATIONS = cochar.occup.get_occupation_list()
-LIMITS = ["10 per second", "10 per day"]
+LIMITS = ["10 per second", "10000 per day"]
 
 def get_remote_address() -> str:
     """Get client's IP address.
