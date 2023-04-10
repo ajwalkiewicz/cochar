@@ -157,7 +157,9 @@ function sendRequest(
     .catch((e) => {
       console.error(e);
     })
-    .finally(delay(250).then(loadingSpinnerOff));
+    .finally(() => {
+      delay(200).then(() => loadingSpinnerOff());
+    });
 }
 
 // TODO: Data validation

@@ -11,20 +11,18 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Affero General Public License for more details.
 
+import os
+
+import markdown
+from flask import Flask, render_template, request
+from flask_limiter import Limiter, RateLimitExceeded
+from flask_restful import Api, Resource, reqparse
+
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import cochar
 import cochar.occup
-import markdown
-import os
 from cochar import error
-from flask import (
-    Flask,
-    render_template,
-    request,
-)
-from flask_restful import Api, Resource, reqparse
-from flask_limiter import Limiter, RateLimitExceeded
 
 _THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
