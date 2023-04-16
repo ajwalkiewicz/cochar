@@ -22,7 +22,7 @@ copyright = "2021, Adam Walkiewicz"
 author = "Adam Walkiewicz"
 
 # The full version, including alpha/beta/rc tags
-release = "1.0.0-alpha.6"
+release = "1.0.0"
 
 
 # -- General configuration ---------------------------------------------------
