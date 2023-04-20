@@ -43,7 +43,7 @@ const characterCard = {
   luck: document.getElementById("luck"),
   damageBonus: document.getElementById("damage-bonus"),
   build: document.getElementById("build"),
-  doge: document.getElementById("doge"),
+  dodge: document.getElementById("dodge"),
   moveRate: document.getElementById("move-rate"),
   skills: document.getElementById("skills"),
   hitPoints: document.getElementById("hit-points"),
@@ -185,7 +185,7 @@ function updateCharacterCard(data) {
   characterCard.luck.innerHTML = `<strong>Luck</strong>: ${data.luck}`;
   characterCard.damageBonus.innerHTML = `<strong>Damage bonus:</strong> ${data.damage_bonus}`;
   characterCard.build.innerHTML = `<strong>Build:</strong> ${data.build}`;
-  characterCard.doge.innerHTML = `<strong>Doge:</strong> ${data.doge}`;
+  characterCard.dodge.innerHTML = `<strong>Dodge:</strong> ${data.dodge}`;
   characterCard.moveRate.innerHTML = `<strong>Move rate:</strong> ${data.move_rate}`;
   characterCard.hitPoints.innerHTML = `<strong>Hit points:</strong> ${data.hit_points}`;
   characterCard.magicPoints.innerHTML = `<strong>Magic points:</strong> ${data.magic_points}`;

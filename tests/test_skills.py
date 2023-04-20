@@ -104,23 +104,23 @@ def test_filter_skills(input_skills, output_skills, skills_interface):
     )
 
 
-def test_filter_skills_doge_language_own(skills_interface):
+def test_filter_skills_dodge_language_own(skills_interface):
     skills_generator = cochar.skill.SkillsGenerator(skills_interface)
     skills_generator.skills_data["language (own)"] = 60
-    skills_generator.skills_data["doge"] = 60
-    assert skills_generator._filter_skills({"language (own)": 60, "doge": 60}) == {}
+    skills_generator.skills_data["dodge"] = 60
+    assert skills_generator._filter_skills({"language (own)": 60, "dodge": 60}) == {}
 
 
 @pytest.mark.parametrize(
     "args,output_skills",
     [
-        ([1, ["doge"], {}], {"doge": 1}),
+        ([1, ["dodge"], {}], {"dodge": 1}),
         ([1, ["non existing skill"], {}], {"non existing skill": 2}),
-        ([100, ["doge"], {}], {"doge": 0}),  # TODO: fix this edge case
+        ([100, ["dodge"], {}], {"dodge": 0}),  # TODO: fix this edge case
         ([100, ["electronics"], {}], {"electronics": 90}),  # That's good case
         ([0, [], {}], {}),
-        ([0, ["doge", "nothing"], {}], {"doge": 0, "nothing": 1}),
-        ([0, [], {"doge": 0, "nothing": 1}], {"doge": 0, "nothing": 1}),
+        ([0, ["dodge", "nothing"], {}], {"dodge": 0, "nothing": 1}),
+        ([0, [], {"dodge": 0, "nothing": 1}], {"dodge": 0, "nothing": 1}),
     ],
 )
 def test_assign_skill_points(args, output_skills, skills_interface):

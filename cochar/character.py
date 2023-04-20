@@ -302,7 +302,7 @@ class Character:
     sanity_points = Characteristic(min_value=0)
     magic_points = Characteristic(min_value=0)
     hit_points = Characteristic(min_value=0)
-    doge = Characteristic(min_value=0)
+    dodge = Characteristic(min_value=0)
 
     first_name = Name()
     last_name = Name()
@@ -336,7 +336,7 @@ class Character:
         move_rate: int = 0,
         damage_bonus: str = 0,
         build: int = 0,
-        doge: int = 0,
+        dodge: int = 0,
         skills: cochar.skill.SkillsDict = {},
         sanity_points: int = 0,
         magic_points: int = 0,
@@ -362,7 +362,7 @@ class Character:
         self.damage_bonus = damage_bonus
         self.build = build
         self.skills = cochar.skill.SkillsDict(skills)
-        self.doge = doge
+        self.dodge = dodge
         self.sanity_points = sanity_points
         self.magic_points = magic_points
         self.hit_points = hit_points
@@ -407,7 +407,7 @@ class Character:
             f"dexterity={self._dexterity}, appearance={self._appearance}, education={self._education}, "
             f"intelligence={self._intelligence}, power={self._power}, move_rate={self._move_rate}, "
             f"luck={self._luck}, skills={self._skills}, damage_bonus='{self._damage_bonus}', "
-            f"build={self._build}, doge={self._doge}, sanity_points={self._sanity_points}, "
+            f"build={self._build}, dodge={self._dodge}, sanity_points={self._sanity_points}, "
             f"magic_points={self._magic_points}, hit_points={self._hit_points})"
         )
 
@@ -433,7 +433,7 @@ class Character:
             f"INT: {self._intelligence} POW: {self._power} Luck: {self._luck}\n"
             f"Damage bonus: {self._damage_bonus}\n"
             f"Build: {self._build}\n"
-            f"Doge: {self._doge}\n"
+            f"Dodge: {self._dodge}\n"
             f"Move rate: {self._move_rate}\n"
             f"Skills:\n"
             f"{skills}"
