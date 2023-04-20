@@ -51,7 +51,7 @@
         "groups": ["edudex", "edustr"],
         "credit_rating": [9, 30],
         "skills": [
-            "doge", "stealth", "survival", [1, "climb", "swim"],
+            "dodge", "stealth", "survival", [1, "climb", "swim"],
             [2, "first aid", "mechanical repair", "1l"], "1f", "1g", "1l"
         ]
     },
@@ -377,7 +377,7 @@
         "groups": ["eduapp", "edudex"],
         "credit_rating": [9, 20],
         "skills": [
-            "accounting", "1a", "doge", "listen", "2i", "psychology", "1*"
+            "accounting", "1a", "dodge", "listen", "2i", "psychology", "1*"
         ]
     },
     "laborer, unskilled": {

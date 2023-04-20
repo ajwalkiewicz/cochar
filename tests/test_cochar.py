@@ -202,7 +202,7 @@ def test_calc_hit_points(size, condition, result):
 
 
 @pytest.mark.parametrize(
-    "strength,size,dexterity,damage_bonus,build,doge,result",
+    "strength,size,dexterity,damage_bonus,build,dodge,result",
     [
         (0, 0, 0, "+K4", 1, 1, ("+K4", 1, 1)),
         (0, 0, 0, "", 0, 0, ("-2", -2, 0)),
@@ -210,11 +210,11 @@ def test_calc_hit_points(size, condition, result):
     ],
 )
 def test_calc_combat_characteristics(
-    strength, size, dexterity, damage_bonus, build, doge, result
+    strength, size, dexterity, damage_bonus, build, dodge, result
 ):
     assert (
         cochar.calc_combat_characteristics(
-            strength, size, dexterity, damage_bonus, build, doge
+            strength, size, dexterity, damage_bonus, build, dodge
         )
         == result
     )
@@ -271,8 +271,8 @@ def test_calc_build(strength, size, result):
         (0, 0),
     ],
 )
-def test_calc_doge(dexterity, result):
-    assert cochar.calc_doge(dexterity) == result
+def test_calc_dodge(dexterity, result):
+    assert cochar.calc_dodge(dexterity) == result
 
 
 @pytest.mark.parametrize(
@@ -384,6 +384,6 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(cochar.error.InvalidOccupationValue):
             self.character.occupation = "invalid_occupation"
 
-    def test_points_assignment_to_doge(self):
+    def test_points_assignment_to_dodge(self):
         # TODO: Create a proper test
         pass

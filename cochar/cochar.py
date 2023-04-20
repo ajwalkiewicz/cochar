@@ -124,7 +124,7 @@ def create_character(
         power, size, condition
     )
 
-    damage_bonus, build, doge = calc_combat_characteristics(strength, size, dexterity)
+    damage_bonus, build, dodge = calc_combat_characteristics(strength, size, dexterity)
 
     occupation_points = cochar.occup.calc_occupation_points(
         occupation, education, power, dexterity, appearance, strength
@@ -135,7 +135,7 @@ def create_character(
         occupation, occupation_points, hobby_points, dexterity, education, skills
     )
 
-    doge = skills.get("doge", doge)
+    dodge = skills.get("dodge", dodge)
 
     return cochar.character.Character(
         year=year,
@@ -158,7 +158,7 @@ def create_character(
         build=build,
         move_rate=move_rate,
         skills=skills,
-        doge=doge,
+        dodge=dodge,
         sanity_points=sanity_points,
         magic_points=magic_points,
         hit_points=hit_points,
@@ -390,11 +390,11 @@ def calc_combat_characteristics(
     dexterity: int,
     damage_bonus: str = "",
     build: int = 0,
-    doge: int = 0,
+    dodge: int = 0,
 ) -> Tuple[str, int, int]:
     """Based on strength, size and dexterity,
     return combat characteristics such as:
-    dame bonus, build, doge
+    dame bonus, build, dodge
 
     :param strength: strength points
     :type strength: int
@@ -402,17 +402,17 @@ def calc_combat_characteristics(
     :type size: int
     :param dexterity: dexterity points
     :type dexterity: int
-    :return: (damage bonus, build, doge)
+    :return: (damage bonus, build, dodge)
     :rtype: Tuple(str, int, int)
     """
     if damage_bonus == "":
         damage_bonus = calc_damage_bonus(strength, size)
     if build == 0:
         build = calc_build(strength, size)
-    if doge == 0:
-        doge = calc_doge(dexterity)
+    if dodge == 0:
+        dodge = calc_dodge(dexterity)
 
-    return damage_bonus, build, doge
+    return damage_bonus, build, dodge
 
 
 def calc_damage_bonus(strength: int, size: int) -> str:
@@ -465,14 +465,14 @@ def calc_build(strength: int, size: int) -> int:
     return build
 
 
-def calc_doge(dexterity: int) -> int:
-    """Return doge based on dexterity:
+def calc_dodge(dexterity: int) -> int:
+    """Return dodge based on dexterity:
 
-    doge = dexterity // 2
+    dodge = dexterity // 2
 
     :param dexterity: character's dexterity
     :type dexterity: int
-    :return: character's doge
+    :return: character's dodge
     :rtype: int
     """
     return dexterity // 2

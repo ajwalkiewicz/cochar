@@ -29,6 +29,7 @@ import cochar.utils
 
 Skill = Dict[str, int]
 
+
 # TODO: write unit test
 class SkillsDict(UserDict):
     """Dictionary like object to store character's skills.
@@ -93,7 +94,7 @@ class SkillsGenerator:
         each skill has randomly assigned skill level - number of points related
         with that skill.
 
-        Dexterity is required for `doge` skill.
+        Dexterity is required for `dodge` skill.
         Education is required for `language(own)` skill.
 
         :param occupation: occupation
@@ -116,7 +117,7 @@ class SkillsGenerator:
         else:
             skills = SkillsDict()
 
-            self.skills_data["doge"] = dexterity // 2
+            self.skills_data["dodge"] = dexterity // 2
             self.skills_data["language (own)"] = education
 
             # Assigning points to credit rating

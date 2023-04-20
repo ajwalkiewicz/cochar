@@ -7,7 +7,7 @@
     "charm":                    { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 15 },
     "climb":                    { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 20 },
     "disguise":                 { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 5 },
-    "doge":                     { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 0 },
+    "dodge":                    { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 0 },
     "drive auto":               { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 20 },
     "electrical repair":        { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 10 },
     "first aid":                { "era": ["classic-1920", "modern"], "categories": ["basic"], "value": 30 },
