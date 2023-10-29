@@ -14,24 +14,50 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM ubuntu:20.04
+FROM python:3.11-bullseye AS build
 
-# set the working directory
-WORKDIR /webapp
+# Add non root user
+RUN useradd -u 1001 nonroot
 
-RUN apt-get update
-RUN apt-get upgrade --yes
-RUN apt-get install python3.8 python3-pip --yes
+WORKDIR /app
 
-# install dependencies
-COPY ./requirements.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# clean .build-deps
-# RUN apk del --no-network .build-deps
+RUN <<EOT
+apt-get update
+apt-get install -y --no-install-recommends gcc
+EOT
 
-# copy the scripts to the folder
-COPY . /webapp
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
-# start the server
+# Copy the scripts to the folder
+COPY . .
+
+FROM python:3.11-slim-bullseye
+
+WORKDIR /app
+
+RUN <<EOT
+apt-get update
+apt-get install python3-libxml2 -y
+EOT
+
+# Copy the passwd file
+COPY --from=build /etc/passwd /etc/passwd
+
+COPY --link --from=build /app/wheels /wheels
+COPY --link --from=build /app/requirements.txt .
+
+RUN pip install --no-cache /wheels/*
+
+COPY --link --from=build /app .
+
+# Use nonroot user
+USER nonroot
+
+EXPOSE 80
+
+# Start the server
 CMD ["uwsgi", "--http", "0.0.0.0:80", "--master", "-p", "4", "-w", "wsgi", "--py-autoreload", "3"]
