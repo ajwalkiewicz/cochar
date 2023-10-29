@@ -22,7 +22,7 @@ from typing import Dict, List, Union, Set
 import randname
 
 __title__ = "cochar"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Adam Walkiewicz"
 __license__ = "AGPL v3.0"
 
