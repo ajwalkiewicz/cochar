@@ -5,3 +5,4 @@ Markdown==3.4.1
 rname==0.3.7
 cochar>=1.0.0
 uWSGI==2.0.21
+Werkzeug==2.3.7
