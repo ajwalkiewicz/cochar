@@ -32,6 +32,9 @@ EOT
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
+# Clone randname repo with full database with names
+RUN git clone https://github.com/ajwalkiewicz/randname.git /app/randname
+
 # Copy the scripts to the folder
 COPY . .
 
@@ -53,6 +56,8 @@ COPY --link --from=build /app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
 COPY --link --from=build /app .
+
+RUN cp -r /app/randname/full_database/* /usr/local/lib/python3.11/site-packages/randname/data
 
 # Use nonroot user
 USER nonroot
