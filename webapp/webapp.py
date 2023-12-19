@@ -30,6 +30,7 @@ _README = os.path.abspath(os.path.join(_THIS_FOLDER, "static", "README.md"))
 OCCUPATIONS = cochar.occup.get_occupation_list()
 LIMITS = ["10 per second", "10000 per day"]
 
+
 def get_remote_address() -> str:
     """Get client's IP address.
     pythonanywhere.com stores original client's IP in 'X-Real-IP' header.
@@ -39,7 +40,7 @@ def get_remote_address() -> str:
     :return: client's IP address
     :rtype: str
     """
-    return request.headers.get('X-Real-IP') or request.remote_addr or "127.0.0.1"
+    return request.headers.get("X-Real-IP") or request.remote_addr or "127.0.0.1"
 
 
 with open(_README, "r", encoding="utf-8") as readme:
@@ -174,7 +175,7 @@ class GenerateCharacter(Resource):
                     "\nPlease try again later.\n"
                     "If you did not exceed the limit check if someone "
                     "else in your network is using this website"
-                    )
+                ),
             }, 429
 
 
