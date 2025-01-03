@@ -15,17 +15,12 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
-{% extends "base.html" %}
-
-{% block title %}
-Cochar - Generator
-{% endblock %} 
-
-{% block custom_css %}
+{% extends "base.html" %} {% block title %}Cochar - Generator{% endblock %} {%
+block custom_css %}
 <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
-{% endblock %}
+{% endblock %} {% block content %}
 
-{% block content %}
+
 <!-- The Modal -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -65,7 +60,7 @@ Cochar - Generator
   <div class="row">
     <!-- Generator Card -->
     <div class="col-lg-4">
-      <div class="border rounded bg-light p-3 mb-3">
+      <div class="border rounded bg-light p-3 mt-3 mb-3">
         <!-- Tabs -->
         <ul class="nav nav-tabs nav-justified" role="tablist">
           <li class="nav-item">
