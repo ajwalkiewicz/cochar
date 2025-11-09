@@ -26,7 +26,7 @@ and reduces the time spent debugging non-existent bugs.
 Before setting up the environment, ensure you have the following installed:
 
 - **Python**: The project is built using Python. Make sure you have Python 
-  installed on your machine. The project has to be compatible with **python3.10**
+  installed on your machine. The project has to be compatible with **python3.12**
 - **Make**: We use Make to simplify various tasks such as setup, testing, 
   and building the project.
 - **Curl**: Required for downloading scripts.
