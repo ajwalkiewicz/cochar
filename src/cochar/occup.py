@@ -17,14 +17,16 @@
 Occupations is a module that contains functions related
 with occupations
 """
+
 import copy
 import random
 from itertools import compress
-from typing import List, Tuple
+from typing import List
 
 import cochar
-import cochar.skill
+import cochar.config
 import cochar.error
+import cochar.skill
 
 
 def generate_occupation(
@@ -34,41 +36,35 @@ def generate_occupation(
     appearance: int = 1,
     strength: int = 1,
     random_mode: bool = False,
-    occupation: str = None,
-    occup_type: str = None,
-    era: List[str] = None,
-    tags: List[str] = None,
+    occupation: str | None = None,
+    occup_type: str | None = None,
+    era: list[str] | None = None,
+    tags: list[str] | None = None,
 ) -> str:
     """Return occupation based on:
     education, power, dexterity, appearance and strength.
 
-    :param education: education points, defaults to 1
-    :type education: int, optional
-    :param power: power points, defaults to 1
-    :type power: int, optional
-    :param dexterity: dexterity points, defaults to 1
-    :type dexterity: int, optional
-    :param appearance: appearance points, defaults to 1
-    :type appearance: int, optional
-    :param strength: strength points, defaults to 1
-    :type strength: int, optional
-    :param random_mode: ignore edu, pow, dex and str points and return totally random occupation, defaults to False
-    :type random_mode: bool, optional
-    :param occupation: return specified occupation, defaults to None
-    :type occupation: str, optional
-    :param occup_type: specify type of occupation to return, defaults to None
-    :type occup_type: str, optional
-    :param era: specify era of occupation to return, defaults to None
-    :type era: str, optional
-    :param tags: return occupation with defined tags, defaults to None
-    :type tags: List[str], optional
-    :raises cochar.error.IncorrectOccupation: when occupation is not in the list of available occupations
-    :raises cochar.error.NoneOccupationMeetsCriteria: when searching criteria are not met by any occupation
-    :return: occupation name
-    :rtype: str
+    Args:
+        education: education points, defaults to 1
+        power: power points, defaults to 1
+        dexterity: dexterity points, defaults to 1
+        appearance: appearance points, defaults to 1
+        strength: strength points, defaults to 1
+        random_mode: ignore edu, pow, dex and str points and return totally random occupation, defaults to False
+        occupation: return specified occupation, defaults to None
+        occup_type: specify type of occupation to return, defaults to None
+        era: specify era of occupation to return, defaults to None
+        tags: return occupation with defined tags, defaults to None
+
+    Raises:
+        cochar.error.IncorrectOccupation: when occupation is not in the list of available occupations
+        cochar.error.NoneOccupationMeetsCriteria: when searching criteria are not met by any occupation
+
+    Returns:
+        occupation name
     """
     # TODO: What happen if user provide illegal values, strings or below 0?
-    skill_points_groups: List[int] = [
+    skill_points_groups: list[int] = [
         education * 4,  # 1
         education * 2 + power * 2,  # 2
         education * 2 + dexterity * 2,  # 3
@@ -77,27 +73,29 @@ def generate_occupation(
     ]
 
     if random_mode:
-        return random.choice(cochar.OCCUPATIONS_LIST)
+        return random.choice(cochar.config.OCCUPATIONS_LIST)
 
     if occupation:
-        if occupation not in cochar.OCCUPATIONS_LIST:
+        if occupation not in cochar.config.OCCUPATIONS_LIST:
             raise cochar.error.IncorrectOccupation(occupation)
         return occupation
 
-    occupation_groups = copy.deepcopy(cochar.OCCUPATIONS_GROUPS)
+    occupation_groups = copy.deepcopy(cochar.config.OCCUPATIONS_GROUPS)
 
     if occup_type:
         for i, group in enumerate(occupation_groups):
             occupation_groups[i] = [
                 occup
                 for occup in group
-                if cochar.OCCUPATIONS_DATA[occup]["type"] == occup_type
+                if cochar.config.OCCUPATIONS_DATA[occup]["type"] == occup_type
             ]
 
     if era:
         for i, group in enumerate(occupation_groups):
             occupation_groups[i] = [
-                occup for occup in group if cochar.OCCUPATIONS_DATA[occup]["era"] in era
+                occup
+                for occup in group
+                if cochar.config.OCCUPATIONS_DATA[occup]["era"] in era
             ]
 
     if tags:
@@ -105,7 +103,9 @@ def generate_occupation(
             occupation_groups[i] = [
                 occup
                 for occup in group
-                if set(tags).issubset(set(cochar.OCCUPATIONS_DATA[occup]["tags"]))
+                if set(tags).issubset(
+                    set(cochar.config.OCCUPATIONS_DATA[occup]["tags"])
+                )
             ]
 
     filtered_occupation_groups = [
@@ -141,29 +141,24 @@ def calc_occupation_points(
     dexterity: int,
     appearance: int,
     strength: int,
-    occupation_points: int = None,
+    occupation_points: int | None = None,
 ) -> int:
     """Return occupation points based on occupation, education, power,
     dexterity, appearance and strength.
 
-    If ``occupation_points`` provided, return ``occupation_points``
+    If `occupation_points` provided, return `occupation_points`
 
-    :param occupation: occupation points
-    :type occupation: str
-    :param education: education points
-    :type education: int
-    :param power: power points
-    :type power: int
-    :param dexterity: dexterity points
-    :type dexterity: int
-    :param appearance: appearance points
-    :type appearance: int
-    :param strength: strength points
-    :type strength: int
-    :param occupation_points: occupation points, if provided function returns that value instead of calculating it, defaults to None
-    :type occupation_points: int, optional
-    :return: occupation points for provided occupation
-    :rtype: int
+    Args:
+        occupation: occupation points
+        education: education points
+        power: power points
+        dexterity: dexterity points
+        appearance: appearance points
+        strength: strength points
+        occupation_points: occupation points, if provided function returns that value instead of calculating it, defaults to None
+
+    Returns:
+        occupation points for provided occupation
     """
     return (
         occupation_points
@@ -174,22 +169,22 @@ def calc_occupation_points(
     )
 
 
-def calc_hobby_points(intelligence: int, hobby_points: int = None) -> int:
+def calc_hobby_points(intelligence: int, hobby_points: int | None = None) -> int:
     """Return hobby points, based on intelligence.
 
     occupation points = 2 * intelligence
 
     If `hobby_points` provided, return `hobby_points`
 
-    :param intelligence: intelligence points
-    :type intelligence: int
-    :param hobby_points: hobby_points, defaults to None
-    :type hobby_points: int, optional
-    :return: hobby points
-    :rtype: int
+    Args:
+        intelligence: intelligence points
+        hobby_points: hobby_points, defaults to None
+
+    Returns:
+        hobby points
     """
     return hobby_points if hobby_points else intelligence * 2
 
 
 def get_occupation_list():
-    return sorted(cochar.OCCUPATIONS_LIST)
+    return sorted(cochar.config.OCCUPATIONS_LIST)

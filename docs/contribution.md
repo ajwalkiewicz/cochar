@@ -43,7 +43,8 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 
 ## What do we need
 
-Look at the [To Do](README#to-do) list in [README](README).
+Look at the [issue](https://github.com/ajwalkiewicz/cochar/issues) to see what 
+do we need now.
 
 Right now most important are:
 

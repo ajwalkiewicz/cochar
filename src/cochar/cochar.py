@@ -14,24 +14,24 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """**Cochar - main module**"""
+
 import json
 import random
-from typing import List, Tuple, Union
 
 import randname
 
-import cochar
 import cochar.character
+import cochar.config
+import cochar.error
+import cochar.interface
 import cochar.occup
 import cochar.skill
 import cochar.utils
-import cochar.error
-import cochar.interface
 
-cochar.set_logging_level("debug")
+cochar.config.set_logging_level("debug")
 
 SKILLS_INTERFACE = cochar.interface.SkillsJSONInterface(
-    cochar.SKILLS_DATABASE, cochar.ERA
+    cochar.config.SKILLS_DATABASE, cochar.config.ERA
 )
 SKILLS_GENERATOR = cochar.skill.SkillsGenerator(SKILLS_INTERFACE)
 
@@ -39,50 +39,47 @@ SKILLS_GENERATOR = cochar.skill.SkillsGenerator(SKILLS_INTERFACE)
 def create_character(
     year: int,
     country: str,
-    first_name: str = cochar.FIRST_NAME,
-    last_name: str = cochar.LAST_NAME,
-    age: int = cochar.AGE,
-    sex: str = cochar.SEX,
+    first_name: str = cochar.config.FIRST_NAME,
+    last_name: str = cochar.config.LAST_NAME,
+    age: int = cochar.config.AGE,
+    sex: str = cochar.config.SEX,
     random_mode: bool = False,
-    occupation: str = cochar.OCCUPATION,
-    skills: cochar.skill.SkillsDict = {},
-    occup_type: str = cochar.OCCUPATION_TYPE,
-    era: str = cochar.ERA,
-    tags: List[str] = cochar.TAGS,
+    occupation: str = cochar.config.OCCUPATION,
+    skills: cochar.skill.SkillsDict | None = None,
+    occup_type: str = cochar.config.OCCUPATION_TYPE,
+    era: str = cochar.config.ERA,
+    tags: list[str] = cochar.config.TAGS,
     skills_generator: cochar.skill.SkillsGenerator = SKILLS_GENERATOR,
 ) -> cochar.character.Character:
     """Main function for creating Character.
     Use this function instead of instantiating Character class.
 
-    :param year: year of the game
-    :type year: int
-    :param country: country of character's origin
-    :type country: str
-    :param first_name: character's first name, defaults to ""
-    :type first_name: str, optional
-    :param last_name: character's last name, defaults to ""
-    :type last_name: str, optional
-    :param age: character's age, defaults to False
-    :type age: int, optional
-    :param sex: character's sex, defaults to False
-    :type sex: str, optional
-    :param random_mode: choose occupation completely randomly, regardless the character's statistics, defaults to "False"
-    :type random_mode: bool, optional
-    :param occupation: character's occupation return provided occupation as character's occupation if it exists, defaults to "None"
-    :type occupation: str, optional
-    :param skills: character's skills, defaults to {}
-    :type skills: Skills, optional
-    :param occup_type: occupation type, defaults to None
-    :type occup_type: str, optional
-    :param era: occupation era, defaults to None
-    :type era: str, optional
-    :param tags: occupation tags, defaults to None
-    :type tags: List[str], optional
-    :raises ValueError: raise if sex is incorrect
-    :return: generated character
-    :rtype: Character
+    Args:
+        year: year of the game
+        country: country of character's origin
+        first_name: character's first name, defaults to ""
+        last_name: character's last name, defaults to ""
+        age: character's age, defaults to False
+        sex: character's sex, defaults to False
+        random_mode: choose occupation completely randomly, regardless the character's statistics, defaults to "False"
+        occupation: character's occupation return provided occupation as character's occupation if it exists, defaults to "None"
+        skills: character's skills, defaults to {}
+        occup_type: occupation type, defaults to None
+        era: occupation era, defaults to None
+        tags: occupation tags, defaults to None
+
+    Raises:
+        cochar.error.InvalidYearValue: raise if year is incorrect
+        cochar.error.InvalidCountryValue: raise if country is incorrect
+        cochar.error.InvalidOccupationValue: raise if occupation is incorrect
+        cochar.error.InvalidOccupationTypeValue: raise if occupation type is incorrect
+        cochar.error.InvalidEraValue: raise if era is incorrect
+        cochar.error.InvalidTagsValue: raise if tags are incorrect
+
+    Returns:
+        Generated character.
     """
-    weights = cochar.WEIGHTS
+    weights = cochar.config.WEIGHTS
 
     sex = generate_sex(sex)
 
@@ -131,6 +128,9 @@ def create_character(
     )
     hobby_points = cochar.occup.calc_hobby_points(intelligence)
 
+    if skills is None:
+        skills = cochar.skill.SkillsDict()
+
     skills = skills_generator.generate_skills(
         occupation, occupation_points, hobby_points, dexterity, education, skills
     )
@@ -169,14 +169,13 @@ def generate_age(year: int, sex: str, age: int = False) -> int:
     """Generate characters age, based on year and sex.
     Return age if age is provided.
 
-    :param year: year of the game
-    :type year: int
-    :param sex: character's sex
-    :type sex: str
-    :param age: character's age, defaults to False
-    :type age: int, optional
-    :return: character's age
-    :rtype: int
+    Args:
+        year: year of the game
+        sex: character's sex
+        age: character's age, defaults to False
+
+    Returns:
+        Character's age
     """
     if not isinstance(year, int):
         raise cochar.error.InvalidYearValue(year)
@@ -192,15 +191,15 @@ def generate_age(year: int, sex: str, age: int = False) -> int:
 
     file_name = f"pop{corrected_year}"
 
-    with open(cochar.POP_PYRAMID_PATH, "r", encoding="utf-8") as json_file:
+    with open(cochar.config.POP_PYRAMID_PATH, "r", encoding="utf-8") as json_file:
 
-        def correct_age_range(age_range: Tuple[int, int], max_age: int):
+        def correct_age_range(age_range: tuple[tuple[int, int], ...], max_age: int):
             for i, elem in enumerate(age_range):
                 if elem[1] > max_age:
                     return i
             return len(age_range) + 1
 
-        max_age_index = correct_age_range(cochar.utils.AGE_RANGE, cochar.MAX_AGE)
+        max_age_index = correct_age_range(cochar.utils.AGE_RANGE, cochar.config.MAX_AGE)
         age_population = cochar.utils.AGE_RANGE[:max_age_index]
 
         age_weights = json.load(json_file)[file_name][sex][3 : 3 + max_age_index]
@@ -212,7 +211,7 @@ def generate_age(year: int, sex: str, age: int = False) -> int:
 
 
 def generate_base_characteristics(
-    age,
+    age: int,
     strength: int = 0,
     condition: int = 0,
     size: int = 0,
@@ -238,30 +237,21 @@ def generate_base_characteristics(
     9. luck
     10. move rate
 
-    :param age: character's age
-    :type age: int
-    :param strength: strength, defaults to 0
-    :type strength: int, optional
-    :param condition: condition, defaults to 0
-    :type condition: int, optional
-    :param size: size, defaults to 0
-    :type size: int, optional
-    :param dexterity: dexterity, defaults to 0
-    :type dexterity: int, optional
-    :param appearance: appearance, defaults to 0
-    :type appearance: int, optional
-    :param education: education, defaults to 0
-    :type education: int, optional
-    :param intelligence: intelligence, defaults to 0
-    :type intelligence: int, optional
-    :param power: power, defaults to 0
-    :type power: int, optional
-    :param move_rate: move rate, defaults to 0
-    :type move_rate: int, optional
-    :param luck: luck, defaults to 0
-    :type luck: int, optional
-    :return: (strength, condition, size, dexterity, appearance, education, intelligence, power, luck, move_rate)
-    :rtype: tuple
+    Args:
+        age: character's age
+        strength: strength, defaults to 0
+        condition: condition, defaults to 0
+        size: size, defaults to 0
+        dexterity: dexterity, defaults to 0
+        appearance: appearance, defaults to 0
+        education: education, defaults to 0
+        intelligence: intelligence, defaults to 0
+        power: power, defaults to 0
+        move_rate: move rate, defaults to 0
+        luck: luck, defaults to 0
+
+    Returns:
+        (strength, condition, size, dexterity, appearance, education, intelligence, power, luck, move_rate)
     """
     if strength == 0:
         strength = random.randint(15, 90)
@@ -286,11 +276,11 @@ def generate_base_characteristics(
     if age <= 19:
         luck = max(luck, random.randint(15, 90))
 
-    age_range = cochar.utils.narrowed_bisect(cochar.MODIFIERS["age_range"], age)
-    mod_char_points = cochar.MODIFIERS["mod_char_points"][age_range]
-    mod_app = cochar.MODIFIERS["mod_app"][age_range]
-    mod_move_rate = cochar.MODIFIERS["mod_move_rate"][age_range]
-    mod_edu = cochar.MODIFIERS["mod_edu"][age_range]
+    age_range = cochar.utils.narrowed_bisect(cochar.config.MODIFIERS["age_range"], age)
+    mod_char_points = cochar.config.MODIFIERS["mod_char_points"][age_range]
+    mod_app = cochar.config.MODIFIERS["mod_app"][age_range]
+    mod_move_rate = cochar.config.MODIFIERS["mod_move_rate"][age_range]
+    mod_edu = cochar.config.MODIFIERS["mod_edu"][age_range]
 
     appearance = subtract_points_from_characteristic(appearance, mod_app)
     strength, condition, dexterity = subtract_points_from_str_con_dex(
@@ -320,24 +310,20 @@ def calc_derived_attributes(
     sanity_points: int = 0,
     magic_points: int = 0,
     hit_points: int = 0,
-) -> Tuple[int, int, int]:
+) -> tuple[int, int, int]:
     """Based on power, size and condition,
     return sanity, magic and hit points
 
-    :param power: power points
-    :type power: int
-    :param size: size points
-    :type size: int
-    :param condition: condition points
-    :type condition: int
-    :param sanity_points: sanity points, defaults to 0
-    :type sanity_points: int, optional
-    :param magic_points: magic points, defaults to 0
-    :type magic_points: int, optional
-    :param hit_points: hit points, defaults to 0
-    :type hit_points: int, optional
-    :return: (sanity points, magic points, hit points)
-    :rtype: tuple
+    Args:
+        power: power points
+        size: size points
+        condition: condition points
+        sanity_points: sanity points, defaults to 0
+        magic_points: magic points, defaults to 0
+        hit_points: hit points, defaults to 0
+
+    Returns:
+        (sanity points, magic points, hit points)
     """
     if sanity_points == 0:
         sanity_points = calc_sanity_points(power)
@@ -352,10 +338,11 @@ def calc_derived_attributes(
 def calc_sanity_points(power: int) -> int:
     """Return sanity points based on power
 
-    :param power: power value
-    :type power: int
-    :return: sanity points
-    :rtype: int
+    Args:
+        power: power value
+
+    Returns:
+        sanity points
     """
     return power
 
@@ -363,10 +350,11 @@ def calc_sanity_points(power: int) -> int:
 def calc_magic_points(power: int) -> int:
     """Return magic points based on power
 
-    :param power: power value
-    :type power: int
-    :return: magic points
-    :rtype: int
+    Args:
+        power: power value
+
+    Returns:
+        magic points
     """
     return power // 5
 
@@ -375,11 +363,8 @@ def calc_hit_points(size: int, condition: int) -> int:
     """Return hit points based on size and condition.
 
     :param size: size value
-    :type size: int
     :param condition: condition value
-    :type condition: int
     :return: hit points
-    :rtype: int
     """
     return (size + condition) // 10
 
@@ -391,19 +376,18 @@ def calc_combat_characteristics(
     damage_bonus: str = "",
     build: int = 0,
     dodge: int = 0,
-) -> Tuple[str, int, int]:
+) -> tuple[str, int, int]:
     """Based on strength, size and dexterity,
     return combat characteristics such as:
     dame bonus, build, dodge
 
-    :param strength: strength points
-    :type strength: int
-    :param size: size points
-    :type size: int
-    :param dexterity: dexterity points
-    :type dexterity: int
-    :return: (damage bonus, build, dodge)
-    :rtype: Tuple(str, int, int)
+    Args:
+        strength: strength points
+        size: size points
+        dexterity: dexterity points
+
+    Returns:
+        (damage bonus, build, dodge)
     """
     if damage_bonus == "":
         damage_bonus = calc_damage_bonus(strength, size)
@@ -418,25 +402,27 @@ def calc_combat_characteristics(
 def calc_damage_bonus(strength: int, size: int) -> str:
     """Return damage bonus, based on sum of strength and size.
 
+    ```
     f: X -> Y
 
     X: {64, 84, 124, 164, 204, 283, 364, 444, 524}
     Y: {"-2", "-1", "0", "+1K4", "+1K6", "+2K6", "+3K6", "+4K6", "+5K6",}
+    ```
 
     TODO: Increase bonus damage for +1K6 for every 80 points above 524
 
-    :param strength: character's strength
-    :type strength: int
-    :param size: character's size
-    :type size: int
-    :return: character's damage bonus
-    :rtype: str
+    Args:
+        strength: character's strength
+        size: character's size
+
+    Returns:
+        character's damage bonus
     """
     sum_str_siz = strength + size
     combat_range = cochar.utils.narrowed_bisect(
-        cochar.VALUE_MATRIX["combat_range"], sum_str_siz
+        cochar.config.VALUE_MATRIX["combat_range"], sum_str_siz
     )
-    damage_bonus = cochar.VALUE_MATRIX["damage_bonus"][combat_range]
+    damage_bonus = cochar.config.VALUE_MATRIX["damage_bonus"][combat_range]
     return damage_bonus
 
 
@@ -450,18 +436,18 @@ def calc_build(strength: int, size: int) -> int:
 
     TODO: Increase bonus damage for +1K6 for every 80 points above 524
 
-    :param strength: character's strength
-    :type strength: int
-    :param size: character's size
-    :type size: int
-    :return: character's build
-    :rtype: int
+    Args:
+        strength: character's strength
+        size: character's size
+
+    Returns:
+        character's build
     """
     sum_str_siz = strength + size
     combat_range = cochar.utils.narrowed_bisect(
-        cochar.VALUE_MATRIX["combat_range"], sum_str_siz
+        cochar.config.VALUE_MATRIX["combat_range"], sum_str_siz
     )
-    build = cochar.VALUE_MATRIX["build"][combat_range]
+    build = cochar.config.VALUE_MATRIX["build"][combat_range]
     return build
 
 
@@ -470,10 +456,11 @@ def calc_dodge(dexterity: int) -> int:
 
     dodge = dexterity // 2
 
-    :param dexterity: character's dexterity
-    :type dexterity: int
-    :return: character's dodge
-    :rtype: int
+    Args:
+        dexterity: character's dexterity
+
+    Returns:
+        character's dodge
     """
     return dexterity // 2
 
@@ -484,20 +471,21 @@ def subtract_points_from_characteristic(
     """Subtract points from characteristic points,
     but if result would be zero or below, than return 1.
 
-    :param characteristic_points: _description_
-    :type characteristic_points: int
-    :param subtract_points: _description_
-    :type subtract_points: int
-    :return: _description_
-    :rtype: int
+    Args:
+        characteristic_points: _description_
+        subtract_points: _description_
 
-    >>> education = 50
-    >>> points_to_subtract = 10
-    >>> subtract_points_from_characteristic(education, points_to_subtract)
-    40
-    >>> points_to_subtract = 60
-    >>> subtract_points_from_characteristic(education, points_to_subtract)
-    1
+    Returns:
+        characteristic points after subtraction
+
+    Examples:
+        >>> education = 50
+        >>> points_to_subtract = 10
+        >>> subtract_points_from_characteristic(education, points_to_subtract)
+        40
+        >>> points_to_subtract = 60
+        >>> subtract_points_from_characteristic(education, points_to_subtract)
+        1
     """
     return (
         characteristic_points - subtract_points
@@ -508,21 +496,19 @@ def subtract_points_from_characteristic(
 
 def subtract_points_from_str_con_dex(
     strength: int, condition: int, dexterity: int, subtract_points: int
-) -> Tuple[int, int, int]:
+) -> tuple[int, int, int]:
     """Subtract certain amount of points from strength, condition and
     dexterity, but prevent each of the characteristics to be
     lower than 1.
 
-    :param strength: character's strength
-    :type strength: int
-    :param condition: character's condition
-    :type condition: int
-    :param dexterity: character's dexterity
-    :type dexterity: int
-    :param subtract_points: amount of points to subtract
-    :type subtract_points: int
-    :return: (strength, condition, dexterity)
-    :rtype: Tuple[int, int, int]
+    Args:
+        strength: character's strength
+        condition: character's condition
+        dexterity: character's dexterity
+        subtract_points: amount of points to subtract
+
+    Returns:
+        (strength, condition, dexterity)
     """
     characteristics = {
         "strength": strength,
@@ -557,15 +543,15 @@ def characteristic_test(tested_value: int, repetition: int = 1) -> int:
     Repeat `repetition` times.
     If result would be higher than 99, return 99
 
-    .. note:
+    Notes:
         for skills use skill_test()
 
-    :param tested_value: tested value
-    :type tested_value: int
-    :param repetition: how many test to perform
-    :type repetition: int
-    :return: unchanged or increased tested value, but not higher than 99
-    :rtype: int
+    Args:
+        tested_value: tested value
+        repetition: how many test to perform
+
+    Returns:
+        Unchanged or increased tested value, but not higher than 99.
     """
     for _ in range(repetition):
         test = random.randint(1, 100)
@@ -584,14 +570,14 @@ def calc_move_rate(strength: int, dexterity: int, size: int) -> int:
     return 9
     else return 8
 
-    :param strength: character's strength
-    :type strength: int
-    :param dexterity: characters dexterity
-    :type dexterity: int
-    :param size: character's size
-    :type size: int
-    :return: move rate
-    :rtype: int
+    Args:
+        strength: character's strength
+        dexterity: characters dexterity
+        size: character's size
+
+
+    Returns:
+        character's move rate
     """
     if dexterity < size and strength < size:
         move_rate = 7
@@ -607,19 +593,17 @@ def calc_move_rate(strength: int, dexterity: int, size: int) -> int:
 def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random last name based on the given parameters
 
-    .. note:
+    Notes:
         For generating only last name, use randname module.
 
-    :param year: year of the data set with names (if data set not available use a closes available data set)
-    :type year: int
-    :param sex: name gender, available options ['M', 'F', 'N', None]
-    :type sex: str
-    :param country: name country
-    :type country: str
-    :param weights: If true, take under account popularity of names. [default: True]
-    :type weights: bool
-    :return: last name
-    :rtype: str
+    Args:
+        year: year of the data set with names (if data set not available use a closes available data set)
+        sex: name gender, available options ['M', 'F', 'N', None]
+        country: name country
+        weights: If true, take under account popularity of names. [default: True]
+
+    Returns:
+        last name
     """
     sex = _verify_and_return_sex(sex, country, name="last_names")
     return randname.last_name(
@@ -627,8 +611,8 @@ def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
         sex,
         country,
         weights,
-        database=cochar.DATABASE,
-        show_warnings=cochar.SHOW_WARNINGS,
+        database=cochar.config.DATABASE,
+        show_warnings=cochar.config.SHOW_WARNINGS,
     )
 
 
@@ -636,19 +620,17 @@ def generate_last_name(year: int, sex: str, country: str, weights: bool) -> str:
 def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str:
     """Return random first name based on given parameters.
 
-    .. note:
+    Notes:
         For generating only first name, use randname module.
 
-    :param year: year of the data set with names (if data set not available use a closes available data set)
-    :type year: int
-    :param sex: name gender, available options ['M', 'F', 'N', None]
-    :type sex: str
-    :param country: name country
-    :type country: str
-    :param weights: if true, take under account popularity of names. [default: True]
-    :type weights: bool
-    :return: first name
-    :rtype: str
+    Args:
+        year: year of the data set with names (if data set not available use a closes available data set)
+        sex: name gender, available options ['M', 'F', 'N', None]
+        country: name country
+        weights: if true, take under account popularity of names. [default: True]
+
+    Returns:
+        first name
     """
     sex = _verify_and_return_sex(sex, country, name="first_names")
     return randname.first_name(
@@ -656,8 +638,8 @@ def generate_first_name(year: int, sex: str, country: str, weights: bool) -> str
         sex,
         country,
         weights,
-        database=cochar.DATABASE,
-        show_warnings=cochar.SHOW_WARNINGS,
+        database=cochar.config.DATABASE,
+        show_warnings=cochar.config.SHOW_WARNINGS,
     )
 
 
@@ -667,14 +649,13 @@ def _verify_and_return_sex(sex: str, country: str, name: str) -> str:
     if provided sex is invalid, it will be overridden, and
     function return valid sex.
 
-    :param sex: _description_
-    :type sex: str
-    :param country: _description_
-    :type country: str
-    :param name: _description_
-    :type name: str
-    :return: _description_
-    :rtype: str
+    Args:
+        sex: Sex to validate
+        country: Country with data
+        name: Name type (e.g., "first_names" or "last_names")
+
+    Returns:
+        valid sex
     """
     available_sex = randname.show_data()[country][name]
     if sex not in available_sex:
@@ -685,16 +666,19 @@ def _verify_and_return_sex(sex: str, country: str, name: str) -> str:
     return sex
 
 
-def generate_sex(sex: Union[str, bool] = None) -> str:
+def generate_sex(sex: str | None = None) -> str:
     """Generate character's sex
 
-    :param sex: Character's sex, if provided return that value
-    :type sex: Union[str, bool]
-    :raises ValueError: If provided sex is not in {"M", "F", None}, raise this error
-    :return: Character's sex as "M" or "F"
-    :rtype: str
+    Args:
+        sex: Character's sex, if provided return that value
+
+    Raises:
+        ValueError: If provided sex is not in {"M", "F", None}, raise this error
+
+    Returns:
+        Character's sex as "M" or "F"
     """
-    if sex not in cochar.SEX_OPTIONS:
+    if sex not in cochar.config.SEX_OPTIONS:
         raise ValueError(f"incorrect sex value: {sex} -> ['M', 'F', None]")
 
     return random.choice(("M", "F")) if sex is None else sex.upper()

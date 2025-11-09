@@ -3,9 +3,26 @@ from unittest.mock import patch
 
 import pytest
 
-import cochar
+import cochar.config
 import cochar.error
-import cochar.skill
+from cochar.cochar import (
+    calc_build,
+    calc_combat_characteristics,
+    calc_damage_bonus,
+    calc_derived_attributes,
+    calc_dodge,
+    calc_hit_points,
+    calc_magic_points,
+    calc_move_rate,
+    calc_sanity_points,
+    characteristic_test,
+    create_character,
+    generate_age,
+    generate_base_characteristics,
+    generate_sex,
+    subtract_points_from_characteristic,
+    subtract_points_from_str_con_dex,
+)
 
 
 @pytest.fixture
@@ -64,26 +81,26 @@ def country():
     ],
 )
 def test_all_occupations(occupation, year, country):
-    c = cochar.create_character(year, country, occupation=occupation)
+    c = create_character(year, country, occupation=occupation)
     assert c.occupation == occupation
 
 
 @pytest.mark.parametrize("occup_type", ["classic", "expansion"])
 def test_create_character_occup_type(year, country, occup_type):
-    c = cochar.create_character(year, country, occup_type=occup_type)
-    assert cochar.OCCUPATIONS_DATA[c.occupation]["type"] == occup_type
+    c = create_character(year, country, occup_type=occup_type)
+    assert cochar.config.OCCUPATIONS_DATA[c.occupation]["type"] == occup_type
 
 
 @pytest.mark.parametrize("era", ["classic-1920", "modern"])
 def test_create_character_occup_era(year, country, era):
-    c = cochar.create_character(year, country, era=era)
-    assert cochar.OCCUPATIONS_DATA[c.occupation]["era"] == era
+    c = create_character(year, country, era=era)
+    assert cochar.config.OCCUPATIONS_DATA[c.occupation]["era"] == era
 
 
 @pytest.mark.parametrize("tags", [["lovecraftian"], ["criminal"]])
-def test_create_character_occup_era(year, country, tags):
-    c = cochar.create_character(year, country, tags=tags)
-    assert cochar.OCCUPATIONS_DATA[c.occupation]["tags"] == tags
+def test_create_character_occup_era_tags(year, country, tags):
+    c = create_character(year, country, tags=tags)
+    assert cochar.config.OCCUPATIONS_DATA[c.occupation]["tags"] == tags
 
 
 # TODO: write better test
@@ -100,8 +117,7 @@ def test_create_character_occup_era(year, country, tags):
 )
 def test_create_character(param, value):
     assert (
-        cochar.create_character(1925, "US", **{param: value}).__getattribute__(param)
-        == value
+        create_character(1925, "US", **{param: value}).__getattribute__(param) == value
     )
 
 
@@ -114,12 +130,12 @@ def test_create_character(param, value):
     ],
 )
 def test_generate_age(year, sex, age, result):
-    assert cochar.generate_age(year, sex, age) == result
+    assert generate_age(year, sex, age) == result
 
 
 def test_generate_age_invalid_year():
     with pytest.raises(cochar.error.InvalidYearValue):
-        cochar.generate_age("invalid", "F")
+        generate_age("invalid", "F")
 
 
 # TODO: write better unit test
@@ -137,7 +153,7 @@ def test_generate_base_characteristics():
         "luck": 0,
         "move_rate": 0,
     }
-    c = cochar.generate_base_characteristics(**data)
+    c = generate_base_characteristics(**data)
     assert 15 <= c[0] <= 90  # strength
     assert 15 <= c[1] <= 90  # condition
     assert 40 <= c[2] <= 90  # size
@@ -162,7 +178,7 @@ def test_calc_derived_attributes(
     power, size, condition, sanity_points, magic_points, hit_points, result
 ):
     assert (
-        cochar.calc_derived_attributes(
+        calc_derived_attributes(
             power, size, condition, sanity_points, magic_points, hit_points
         )
         == result
@@ -171,7 +187,7 @@ def test_calc_derived_attributes(
 
 @pytest.mark.parametrize("power", [-1, 0, 1, 50])
 def test_sanity_points(power):
-    assert cochar.calc_sanity_points(power) == power
+    assert calc_sanity_points(power) == power
 
 
 @pytest.mark.parametrize(
@@ -185,7 +201,7 @@ def test_sanity_points(power):
     ],
 )
 def test_calc_magic_points(power, result):
-    assert cochar.calc_magic_points(power) == result
+    assert calc_magic_points(power) == result
 
 
 @pytest.mark.parametrize(
@@ -198,7 +214,7 @@ def test_calc_magic_points(power, result):
     ],
 )
 def test_calc_hit_points(size, condition, result):
-    assert cochar.calc_hit_points(size, condition) == result
+    assert calc_hit_points(size, condition) == result
 
 
 @pytest.mark.parametrize(
@@ -213,7 +229,7 @@ def test_calc_combat_characteristics(
     strength, size, dexterity, damage_bonus, build, dodge, result
 ):
     assert (
-        cochar.calc_combat_characteristics(
+        calc_combat_characteristics(
             strength, size, dexterity, damage_bonus, build, dodge
         )
         == result
@@ -238,7 +254,7 @@ def test_calc_combat_characteristics(
     ],
 )
 def test_calc_damage_bonus(strength, size, result):
-    assert cochar.calc_damage_bonus(strength, size) == result
+    assert calc_damage_bonus(strength, size) == result
 
 
 # TODO: test for bigger ranges
@@ -259,7 +275,7 @@ def test_calc_damage_bonus(strength, size, result):
     ],
 )
 def test_calc_build(strength, size, result):
-    assert cochar.calc_build(strength, size) == result
+    assert calc_build(strength, size) == result
 
 
 @pytest.mark.parametrize(
@@ -272,7 +288,7 @@ def test_calc_build(strength, size, result):
     ],
 )
 def test_calc_dodge(dexterity, result):
-    assert cochar.calc_dodge(dexterity) == result
+    assert calc_dodge(dexterity) == result
 
 
 @pytest.mark.parametrize(
@@ -290,9 +306,7 @@ def test_subtract_points_from_characteristic(
     characteristic_points, subtract_points, result
 ):
     assert (
-        cochar.subtract_points_from_characteristic(
-            characteristic_points, subtract_points
-        )
+        subtract_points_from_characteristic(characteristic_points, subtract_points)
         == result
     )
 
@@ -309,7 +323,7 @@ def test_subtract_points_from_str_con_dex(
     strength, condition, dexterity, subtract_points, result
 ):
     assert (
-        cochar.subtract_points_from_str_con_dex(
+        subtract_points_from_str_con_dex(
             strength, condition, dexterity, subtract_points
         )
         == result
@@ -338,7 +352,7 @@ def test_characteristic_test(tested_value, repetition, result):
             return 1
 
     with patch("random.randint", mock_random):
-        assert cochar.characteristic_test(tested_value, repetition) == result
+        assert characteristic_test(tested_value, repetition) == result
 
 
 @pytest.mark.parametrize(
@@ -352,18 +366,18 @@ def test_characteristic_test(tested_value, repetition, result):
     ],
 )
 def test_calc_move_rate(strength, dexterity, size, result):
-    assert cochar.calc_move_rate(strength, dexterity, size) == result
+    assert calc_move_rate(strength, dexterity, size) == result
 
 
 @pytest.mark.parametrize("input", ["M", "m", "F", "f", None])
 def test_generate_sex_valid_input(input):
-    assert cochar.generate_sex(input) in ["M", "F"]
+    assert generate_sex(input) in ["M", "F"]
 
 
 @pytest.mark.parametrize("input", ["", False, True])
 def test_generate_sex_invalid_input(input):
     with pytest.raises(ValueError):
-        cochar.generate_sex(input)
+        generate_sex(input)
 
 
 class TestCharacter(unittest.TestCase):
@@ -371,10 +385,10 @@ class TestCharacter(unittest.TestCase):
     def setUpClass(cls):
         cls.year = 1925
         cls.country = "US"
-        cls.character = cochar.create_character(cls.year, cls.country)
+        cls.character = create_character(cls.year, cls.country)
 
     def test_year_bigger_that_range(self):
-        cochar.create_character(year=2022, country="US")
+        create_character(year=2022, country="US")
 
     def test_invalid_country(self):
         with self.assertRaises(cochar.error.InvalidCountryValue):

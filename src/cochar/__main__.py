@@ -14,45 +14,48 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
+from collections.abc import Sequence
 
-from . import cochar
+import cochar.cochar as cochar
+import cochar.config as config
+import cochar.error as error
 
 
-def pars_arguments():
+def parse_arguments(args: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--year",
         type=int,
         required=False,
-        default=cochar.YEAR,
+        default=config.YEAR,
         help="Character's year of born",
     )
     parser.add_argument(
         "--first_name",
         type=str,
         required=False,
-        default=cochar.FIRST_NAME,
+        default=config.FIRST_NAME,
         help="Character's first name",
     )
     parser.add_argument(
         "--last_name",
         type=str,
         required=False,
-        default=cochar.LAST_NAME,
+        default=config.LAST_NAME,
         help="Character's last name",
     )
     parser.add_argument(
         "--age",
         type=int,
         required=False,
-        default=cochar.AGE,
+        default=config.AGE,
         help="Character's age",
     )
     parser.add_argument(
         "--sex",
         type=str,
         required=False,
-        default=cochar.SEX,
+        default=config.SEX,
         dest="sex",
         help="Character's sex",
     )
@@ -60,7 +63,7 @@ def pars_arguments():
         "--country",
         type=str,
         required=False,
-        default=cochar.COUNTRY,
+        default=config.COUNTRY,
         choices=["US", "PL", "ES"],
         help="Character's country",
     )
@@ -68,14 +71,14 @@ def pars_arguments():
         "--occupation",
         type=str,
         required=False,
-        default=cochar.OCCUPATION,
+        default=config.OCCUPATION,
         help="Character's occupation",
     )
     parser.add_argument(
         "--occup_type",
         type=str,
         required=False,
-        default=cochar.OCCUPATION_TYPE,
+        default=config.OCCUPATION_TYPE,
         choices=["classic", "expansion", "custom"],
         help="Occupation type",
     )
@@ -83,7 +86,7 @@ def pars_arguments():
         "--era",
         type=str,
         required=False,
-        default=cochar.ERA,
+        default=config.ERA,
         choices=["classic-1920", "modern"],
         help="Occupation era",
     )
@@ -91,16 +94,16 @@ def pars_arguments():
         "--tags",
         type=str,
         required=False,
-        default=cochar.TAGS,
+        default=config.TAGS,
         choices=["lovecraftian", "criminal"],
         help="Occupation tags",
     )
 
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def main():
-    args = pars_arguments()
+    args = parse_arguments()
     if args.tags:
         tags = [args.tags]
     else:
@@ -120,7 +123,7 @@ def main():
                 tags=tags,
             )
         )
-    except cochar.error.NoneOccupationMeetsCriteria as e:
+    except error.NoneOccupationMeetsCriteria as e:
         print(e)
 
 

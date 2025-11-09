@@ -56,6 +56,11 @@ type:
 	@echo "checking typing with mypy..."
 	uv run mypy .
 
+docs_serve: docs
+	uv run mkdocs serve
+
+docs_upload: docs
+	uv run mkdocs gh-deploy
+
 docs:
-	@echo "Building documentation..."
-	uv run sphinx-build -b html docs/ docs/_build/html
+	uv run mkdocs build

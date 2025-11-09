@@ -13,63 +13,70 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-from abc import ABC, abstractmethod, abstractproperty
-from pathlib import Path
-from typing import List, Dict
-
-import os
-import json
 import itertools
+import json
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import TypedDict
 
 
 class SkillsDataInterface(ABC):
-    def __init__(self, database: Path, era: str):
+    def __init__(self, database: Path, era: set[str] | str | None = None):
         self.database = database
         self.era = era
 
     @abstractmethod
-    def get_skills(self) -> Dict[str, int]:
+    def get_skills(self) -> dict[str, int]:
         pass
 
     @abstractmethod
-    def get_skills_from_category(self) -> Dict[str, int]:
+    def get_skills_from_category(self, category: str) -> list[str]:
         pass
 
     @abstractmethod
-    def get_all_skills_names(self) -> List[str]:
+    def get_all_skills_names(self) -> list[str]:
         pass
 
     @abstractmethod
-    def get_categories_names(self) -> List[str]:
+    def get_categories_names(self) -> list[str]:
         pass
 
     @abstractmethod
-    def get_basic_skills_names(self) -> List[str]:
+    def get_basic_skills_names(self) -> list[str]:
         pass
+
+
+# TODO: actually use it
+class SkillData(TypedDict):
+    value: int
+    era: set[str]
+    categories: list[str]
 
 
 class SkillsJSONInterface(SkillsDataInterface):
-    def __init__(self, database: Path, era: set = None):
+    def __init__(self, database: Path, era: set[str] | str | None = None):
         super().__init__(database, era)
         self.load_data(database)
         self.database = database
-        if not era:
+        if era is None:
             self.era = {"classic-1920", "modern"}
+        elif isinstance(era, str):
+            self.era = {era}
         else:
-            self.era = set(era)
+            self.era = era
 
     def load_data(self, database) -> None:
         with open(database, "r", encoding="utf-8") as json_file:
-            self.skills_data: Dict = json.load(json_file)
+            self.skills_data: dict[str, SkillData] = json.load(json_file)
 
-    def get_skills(self) -> Dict[str, int]:
+    def get_skills(self) -> dict[str, int]:
         return {
             skill: item["value"]
             for skill, item in self.skills_data.items()
             if set(item["era"]).issuperset(self.era)
         }
 
-    def get_all_skills_names(self) -> List[str]:
+    def get_all_skills_names(self) -> list[str]:
         return [
             skill
             for skill, item in self.skills_data.items()
@@ -77,7 +84,7 @@ class SkillsJSONInterface(SkillsDataInterface):
         ]
 
     # TODO: filter out categories that are not in current era
-    def get_categories_names(self) -> List[str]:
+    def get_categories_names(self) -> list[str]:
         return list(
             set(
                 itertools.chain(
@@ -86,7 +93,7 @@ class SkillsJSONInterface(SkillsDataInterface):
             )
         )
 
-    def get_basic_skills_names(self) -> List:
+    def get_basic_skills_names(self) -> list:
         skills_basic = [
             skill
             for skill, item in self.skills_data.items()
@@ -95,7 +102,7 @@ class SkillsJSONInterface(SkillsDataInterface):
         ]
         return skills_basic
 
-    def get_skills_from_category(self, category) -> List[str]:
+    def get_skills_from_category(self, category: str) -> list[str]:
         return [
             skill
             for skill, item in self.skills_data.items()

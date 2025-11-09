@@ -31,10 +31,11 @@
 - *: any
 
 """
-from bisect import bisect_left
-from typing import Dict, Tuple, Sequence
 
-TRANSLATION_DICT: Dict[str, str] = {
+from bisect import bisect_left
+from collections.abc import Sequence
+
+TRANSLATION_DICT: dict[str, str | None] = {
     "a": "art/craft",
     "s": "science",
     "f": "fighting",
@@ -46,7 +47,7 @@ TRANSLATION_DICT: Dict[str, str] = {
     "*": None,
 }
 
-AGE_RANGE: Tuple[int, int] = (
+AGE_RANGE: tuple[tuple[int, int], ...] = (
     (15, 19),
     (20, 24),
     (25, 29),
@@ -66,7 +67,7 @@ AGE_RANGE: Tuple[int, int] = (
     (95, 99),
 )
 
-YEAR_RANGE: Tuple[int] = (
+YEAR_RANGE: tuple[int, ...] = (
     1950,
     1955,
     1960,
@@ -93,12 +94,13 @@ def narrowed_bisect(a: Sequence[int], x: int) -> int:
     It is to prevent IndexError, as many other variables
     relay on the index number returned.
 
-    :param a: sequence of numbers
-    :type a: Sequence
-    :param x: number to insert
-    :type x: int
-    :return: position of insertion
-    :rtype: int
+    Args:
+        a: sequence of numbers
+        x: number to insert
+
+
+    Returns:
+        index in sequence a where x can be inserted without exceeding len(a)
     """
     i = bisect_left(a, x)
     return i if i != len(a) else i - 1
@@ -108,10 +110,11 @@ def is_skill_valid(skill_value: int) -> bool:
     """Check if skill value is int type and it is not
     below 0.
 
-    :param skill_value: skill value to test
-    :type skill_value: int
-    :return: True if value is valid, else False
-    :rtype: bool
+    Args:
+        skill_value: skill value to test
+
+    Returns:
+        True if value is valid, else False
     """
     if not isinstance(skill_value, int):
         return False

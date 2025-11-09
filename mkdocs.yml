@@ -1,0 +1,34 @@
+site_name: COCHAR
+
+theme:
+  name: "material"
+  features:
+    - content.code.copy
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            group_by_category: true
+            show_submodules: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - About Project: README.md
+  - Getting Started: getting-started.md
+  - How-To Guides:
+    - Use make: use-make.md
+  - Development:
+    - Contribution: contribution.md
+    - Setting up environment: environment.md
+  - Documentation: documentation.md
+  - License: license.md
