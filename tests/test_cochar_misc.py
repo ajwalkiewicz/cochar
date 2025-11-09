@@ -1,16 +1,14 @@
 #!/usr/bin/python3
-import unittest
 import random
-import pytest
+import unittest
+
 from deepdiff import DeepDiff
-
-import cochar
-import cochar.occup
 from randname import randname
-from cochar import create_character, generate_first_name, generate_last_name
-from cochar.character import Character
-from cochar.error import *
 
+import cochar.config
+import cochar.error
+from cochar.character import Character
+from cochar.cochar import create_character, generate_first_name, generate_last_name
 
 TEST_OCC = {
     "test_occ": {
@@ -60,7 +58,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.character.age, 21)
 
     def test_invalid_sex_value(self):
-        with self.assertRaises(InvalidSexValue):
+        with self.assertRaises(cochar.error.InvalidSexValue):
             self.character.sex = "Alien"
 
     def test_first_name(self):
@@ -78,7 +76,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(c.first_name, name)
 
     def test_first_name_setter_invalid(self):
-        with self.assertRaises(EmptyName):
+        with self.assertRaises(cochar.error.EmptyName):
             self.character.first_name = ""
 
     def test_last_name(self):
@@ -97,172 +95,172 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(c.last_name, name)
 
     def test_last_name_setter_invalid(self):
-        with self.assertRaises(EmptyName):
+        with self.assertRaises(cochar.error.EmptyName):
             self.character.last_name = ""
 
     def test_year_normal(self):
         self.character.year = 45
 
     def test_year_not_integer(self):
-        with self.assertRaises(InvalidYearValue):
+        with self.assertRaises(cochar.error.InvalidYearValue):
             self.character.year = "a"
 
     def test_age_normal(self):
         self.character.age = 45
 
     def test_age_below_range(self):
-        with self.assertRaises(AgeNotInRange):
+        with self.assertRaises(cochar.error.AgeNotInRange):
             self.character.age = 14
 
     def test_age_above_range(self):
-        with self.assertRaises(AgeNotInRange):
+        with self.assertRaises(cochar.error.AgeNotInRange):
             self.character.age = 91
 
     def test_age_not_integer(self):
-        with self.assertRaises(InvalidAgeValue):
+        with self.assertRaises(cochar.error.InvalidAgeValue):
             self.character.age = "a"
 
     def test_strength_normal(self):
         self.character.strength = 0
 
     def test_strength_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.strength = -1
 
     def test_strength_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.strength = "a"
 
     def test_condition_normal(self):
         self.character.condition = 0
 
     def test_condition_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.condition = -1
 
     def test_condition_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.condition = "a"
 
     def test_size_normal(self):
         self.character.size = 0
 
     def test_size_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.size = -1
 
     def test_size_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.size = "a"
 
     def test_dexterity_normal(self):
         self.character.dexterity = 0
 
     def test_dexterity_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.dexterity = -1
 
     def test_dexterity_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.dexterity = "a"
 
     def test_appearance_normal(self):
         self.character.appearance = 0
 
     def test_appearance_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.appearance = -1
 
     def test_appearance_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.appearance = "a"
 
     def test_education_normal(self):
         self.character.education = 0
 
     def test_education_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.education = -1
 
     def test_education_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.education = "a"
 
     def test_intelligence_normal(self):
         self.character.intelligence = 0
 
     def test_intelligence_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.intelligence = -1
 
     def test_intelligence_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.intelligence = "a"
 
     def test_power_normal(self):
         self.character.power = 0
 
     def test_power_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.power = -1
 
     def test_power_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.power = "a"
 
     def test_sanity_points_normal(self):
         self.character.sanity_points = 0
 
     def test_sanity_points_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.sanity_points = -1
 
     def test_sanity_points_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.sanity_points = "a"
 
     def test_magic_points_normal(self):
         self.character.magic_points = 0
 
     def test_magic_points_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.magic_points = -1
 
     def test_magic_points_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.magic_points = "a"
 
     def test_hit_points_normal(self):
         self.character.hit_points = 0
 
     def test_hit_points_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.hit_points = -1
 
     def test_hit_points_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.hit_points = "a"
 
     def test_luck_normal(self):
         self.character.luck = 0
 
     def test_luck_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.luck = -1
 
     def test_luck_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.luck = "a"
 
     def test_move_rate_normal(self):
         self.character.move_rate = 0
 
     def test_move_rate_below_range(self):
-        with self.assertRaises(CharacteristicPointsBelowMinValue):
+        with self.assertRaises(cochar.error.CharacteristicPointsBelowMinValue):
             self.character.move_rate = -1
 
     def test_move_rate_not_integer(self):
-        with self.assertRaises(CharacteristicValueNotAnInt):
+        with self.assertRaises(cochar.error.CharacteristicValueNotAnInt):
             self.character.move_rate = "a"
 
     def test_skills_correct(self):
@@ -271,12 +269,12 @@ class TestCharacter(unittest.TestCase):
 
     def test_skills_incorrect_type(self):
         skills = "ride"
-        with self.assertRaises(SkillsNotADict):
+        with self.assertRaises(cochar.error.SkillsNotADict):
             self.character.skills = skills
 
     def test_skills_value_not_an_int(self):
         skills = {"ride": "a"}
-        with self.assertRaises(SkillValueNotAnInt):
+        with self.assertRaises(cochar.error.SkillValueNotAnInt):
             self.character.skills = skills
 
     # def test_skills_incorrect_key(self):
@@ -287,7 +285,7 @@ class TestCharacter(unittest.TestCase):
 
     def test_skills_incorrect_value_below_0(self):
         skills = {"ride": 50, "occult": -1}
-        with self.assertRaises(SkillPointsBelowZero):
+        with self.assertRaises(cochar.error.SkillPointsBelowZero):
             self.character.skills = skills
 
     def test_skills_change_one_skill(self):
@@ -334,7 +332,7 @@ class TestCharacter(unittest.TestCase):
         self.character.damage_bonus = "+1K4"
 
     def test_damage_bonus_below_range(self):
-        with self.assertRaises(InvalidDamageBonusValue):
+        with self.assertRaises(cochar.error.InvalidDamageBonusValue):
             self.character.damage_bonus = -3
 
     def test_build_normal(self):
@@ -343,7 +341,7 @@ class TestCharacter(unittest.TestCase):
         self.character.build = 6
 
     def test_build_below_range(self):
-        with self.assertRaises(InvalidBuildValue):
+        with self.assertRaises(cochar.error.InvalidBuildValue):
             self.character.build = -3
             self.character.build = -7
 
@@ -374,14 +372,14 @@ class TestCharacter(unittest.TestCase):
     def test_repr_true(self):
         for _ in range(20):
             c = self.character
-            d = eval(c.__repr__())
+            d: Character = eval(c.__repr__())
             print(DeepDiff(c.__dict__, d.__dict__), end="")
             assert c == d
 
     def test_repr_false(self):
         c = self.character
-        d = eval(c.__repr__())
-        all_occupations = cochar.OCCUPATIONS_LIST.copy()
+        d: Character = eval(c.__repr__())
+        all_occupations = cochar.config.OCCUPATIONS_LIST.copy()
         all_occupations.remove(c.occupation)
         random_occupation = random.choice(all_occupations)
         c.occupation = random_occupation

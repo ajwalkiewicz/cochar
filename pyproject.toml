@@ -1,0 +1,52 @@
+[project]
+name = "cochar"
+version = "2.0.0-beta.1"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Adam Walkiewicz", email = "aj.walkiewicz@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "rname>=0.3.7",
+]
+
+keywords = ["python", "cthulhu", "lovecraft", "rpg"]
+classifiers = [
+  # How mature is this project?
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Everyone",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+
+[project.urls]
+Documentation = "https://ajwalkiewicz.github.io/cochar/_build/html/index.html"
+Repository = "https://github.com/ajwalkiewicz/cochar"
+Issues = "https://github.com/ajwalkiewicz/cochar/issues"
+
+
+[project.scripts]
+cochar = "cochar:main"
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "deepdiff>=8.6.1",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.23",
+    "mkdocstrings[python]>=0.30.1",
+    "mypy>=1.18.2",
+    "pytest>=8.4.2",
+    "ruff>=0.14.3",
+]

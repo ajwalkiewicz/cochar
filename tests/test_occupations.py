@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 import pytest
 
-import cochar
-import cochar.occup
+import cochar.config
 import cochar.error
+import cochar.occup
 
 
 def test_get_occupation_list():
-    assert set(cochar.occup.get_occupation_list()) == set(cochar.OCCUPATIONS_LIST)
+    assert set(cochar.occup.get_occupation_list()) == set(
+        cochar.config.OCCUPATIONS_LIST
+    )
 
 
 @pytest.mark.parametrize(
@@ -122,7 +124,7 @@ def test_calc_occupation_points(
 
 def test_generate_occupation_random():
     o = cochar.occup.generate_occupation(random_mode=True)
-    assert o in cochar.OCCUPATIONS_LIST
+    assert o in cochar.config.OCCUPATIONS_LIST
 
 
 def test_generate_occupation_with_occupation():
@@ -202,8 +204,11 @@ def test_generate_occupation_lovecraftian():
     ]
 
 
-def test_generate_occupation_random():
-    assert cochar.occup.generate_occupation(random_mode=True) in cochar.OCCUPATIONS_LIST
+def test_generate_occupation_random_2():
+    assert (
+        cochar.occup.generate_occupation(random_mode=True)
+        in cochar.config.OCCUPATIONS_LIST
+    )
 
 
 def test_generate_occupation_incorrect_occupation():

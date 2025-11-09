@@ -1,0 +1,124 @@
+# Cochar - create a random character for Call of Cthulhu RPG 7th ed.
+# Copyright (C) 2023  Adam Walkiewicz
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+**Utilities for cochar module**
+
+:param TRANSLATION_DICT: dictionary with translations for skills
+:param AGE_RANGE: tuple[int, int], contains ranges of possible ages.
+:param YEAR_RANGE: tuple[int], available years for last names
+
+**legend**:
+
+- a: art/craft
+- s: science
+- f: fighting
+- g: firearms
+- i: interpersonal
+- l: language
+- *: any
+
+"""
+
+from bisect import bisect_left
+from collections.abc import Sequence
+
+TRANSLATION_DICT: dict[str, str | None] = {
+    "a": "art/craft",
+    "s": "science",
+    "f": "fighting",
+    "g": "firearms",
+    "i": "interpersonal",
+    "l": "language",
+    "v": "survival",
+    "p": "special",
+    "*": None,
+}
+
+AGE_RANGE: tuple[tuple[int, int], ...] = (
+    (15, 19),
+    (20, 24),
+    (25, 29),
+    (30, 34),
+    (35, 39),
+    (40, 44),
+    (45, 49),
+    (50, 54),
+    (55, 59),
+    (60, 64),
+    (65, 69),
+    (70, 74),
+    (75, 79),
+    (80, 84),
+    (85, 89),
+    (90, 94),
+    (95, 99),
+)
+
+YEAR_RANGE: tuple[int, ...] = (
+    1950,
+    1955,
+    1960,
+    1965,
+    1970,
+    1975,
+    1980,
+    1985,
+    1990,
+    1995,
+    2000,
+    2005,
+    2010,
+    2015,
+    2020,
+)
+
+
+def narrowed_bisect(a: Sequence[int], x: int) -> int:
+    """Standard bisect_left from bisect module
+    can return number that exceed len(a).
+    narrowed_bisect returns number that is <= len(a).
+
+    It is to prevent IndexError, as many other variables
+    relay on the index number returned.
+
+    Args:
+        a: sequence of numbers
+        x: number to insert
+
+
+    Returns:
+        index in sequence a where x can be inserted without exceeding len(a)
+    """
+    i = bisect_left(a, x)
+    return i if i != len(a) else i - 1
+
+
+def is_skill_valid(skill_value: int) -> bool:
+    """Check if skill value is int type and it is not
+    below 0.
+
+    Args:
+        skill_value: skill value to test
+
+    Returns:
+        True if value is valid, else False
+    """
+    if not isinstance(skill_value, int):
+        return False
+    if skill_value < 0:
+        return False
+
+    return True

@@ -1,7 +1,7 @@
 import pytest
 
-import cochar
 import cochar.character
+from cochar.cochar import create_character
 
 
 @pytest.fixture
@@ -85,7 +85,7 @@ def example_characters_json():
 
 
 def test_year_bigger_that_range():
-    c = cochar.create_character(year=2022, country="US")
+    c = create_character(year=2022, country="US")
     assert c.year == 2022
 
 

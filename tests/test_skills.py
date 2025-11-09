@@ -1,14 +1,18 @@
-import pytest
 from unittest.mock import patch
 
+import pytest
+
 import cochar
-import cochar.skill
+import cochar.config
 import cochar.interface
+import cochar.skill
 
 
 @pytest.fixture(scope="function", autouse=False)
 def skills_interface():
-    return cochar.interface.SkillsJSONInterface(cochar.SKILLS_DATABASE, cochar.ERA)
+    return cochar.interface.SkillsJSONInterface(
+        cochar.config.SKILLS_DATABASE, cochar.config.ERA
+    )
 
 
 def test_skill_test():
@@ -245,7 +249,7 @@ def test_generate_credit_rating_points_one_example(occupation, occupation_points
 
 
 def test_generate_credit_rating_points_all_occupations():
-    for occupation, item in cochar.OCCUPATIONS_DATA.items():
+    for occupation, item in cochar.config.OCCUPATIONS_DATA.items():
         occupation_credit_rating_range = item["credit_rating"]
         points_to_test = [
             occupation_credit_rating_range[0] - 1
